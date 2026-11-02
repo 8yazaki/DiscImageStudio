@@ -29,7 +29,7 @@ def unescape_xaml(s):
         s = s.replace(k, v)
     return re.sub(r'\\(.)', r'\1', s)
 
-def main():
+def collect_keys():
     keys = {}
     for path in sorted((ROOT / 'src').rglob('*')):
         if any(p in path.parts for p in ('bin', 'obj')):
@@ -58,11 +58,15 @@ def main():
             try: walk(json.loads(path.read_text(encoding='utf-8')))
             except json.JSONDecodeError: pass
     cjk = re.compile(r'[\u3000-\u9fff\uff00-\uffef]')
-    result = [k for k in keys if cjk.search(k)]
+    return [k for k in keys if cjk.search(k)]
+
+def main():
+    result = collect_keys()
     out = json.dumps(result, ensure_ascii=False, indent=1)
     if len(sys.argv) > 2 and sys.argv[1] == '--out':
         pathlib.Path(sys.argv[2]).write_text(out, encoding='utf-8')
     else:
+        sys.stdout.reconfigure(encoding='utf-8')
         print(out)
 
 if __name__ == '__main__':

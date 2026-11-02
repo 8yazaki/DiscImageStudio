@@ -6,16 +6,18 @@
 * placeholders ({0}, {1:N0}…) match between the key and each translation
 Run from anywhere: python tools/check_locales.py   (add --list to print missing keys)
 """
-import json, pathlib, re, subprocess, sys
+import json, pathlib, re, sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from extract_locale_keys import collect_keys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 LOCALES = ROOT / 'src' / 'DiscImageStudio.Localization' / 'Locales'
 PH = re.compile(r'\{\d+(?::[^}]*)?\}')
 
 def main():
-    out = subprocess.run([sys.executable, str(ROOT / 'tools' / 'extract_locale_keys.py')],
-                         check=True, capture_output=True, text=True, encoding='utf-8').stdout
-    keys = json.loads(out)
+    sys.stdout.reconfigure(encoding='utf-8')  # keys are Chinese; Windows consoles default to a legacy code page
+    keys = collect_keys()
     problems = 0
     for path in sorted(LOCALES.glob('*.json')):
         table = json.loads(path.read_text(encoding='utf-8'))

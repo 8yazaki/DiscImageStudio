@@ -1,5 +1,6 @@
 using System.IO;
 using System.Reflection;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.ViewModels;
 
@@ -25,6 +26,6 @@ public class AboutViewModel
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
         string? version = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-        return $"版本 {version?.Split('+')[0] ?? assembly.GetName().Version?.ToString(3) ?? "1.0.0"}";
+        return L.F("版本 {0}", version?.Split('+')[0] ?? assembly.GetName().Version?.ToString(3) ?? "1.0.0");
     }
 }

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Core.Calibration;
 
 public sealed record CalibrationObservation(
@@ -15,7 +16,7 @@ public sealed record CalibrationFitOptions(
             || !double.IsFinite(HuberDeltaMm) || HuberDeltaMm is <= 0 or > 10
             || MaxCandidates is < 1 or > 20
             || !double.IsFinite(PitchCoefficientRange) || PitchCoefficientRange is <= 0 or > 10)
-            throw new ArgumentException("搜索半径范围应在 0–5 mm 内，控制点容差应在 0–10 mm 内，轨距系数搜索范围应在 0–10 内。");
+            throw new ArgumentException(L.T("搜索半径范围应在 0–5 mm 内，控制点容差应在 0–10 mm 内，轨距系数搜索范围应在 0–10 内。"));
         if (SearchCenter is not null) target.ValidateCompatible(SearchCenter);
     }
 }
@@ -62,7 +63,7 @@ public static class CalibrationFitter
         observations = observations.Where(observation =>
             target.GetGroupRole(observation.CellId) != CalibrationGroupRole.Validation).ToArray();
         if (observations.Count < 4)
-            return Failed("至少确认 4 个用于拟合的角点，并选择分布在不同半径的控制块；验证组与未确认角点不参与拟合。");
+            return Failed(L.T("至少确认 4 个用于拟合的角点，并选择分布在不同半径的控制块；验证组与未确认角点不参与拟合。"));
 
         var originalGeometry = new CalibrationGeometry(target.Parameters);
         Datum[] data = observations.Select(observation =>
@@ -75,7 +76,7 @@ public static class CalibrationFitter
         }).ToArray();
         double progressSpan = data.Max(datum => datum.Progress) - data.Min(datum => datum.Progress);
         if (progressSpan < 0.12)
-            return Failed("控制点集中在相近半径，无法稳定区分内外半径；请补选靠内圈或外圈的角点。");
+            return Failed(L.T("控制点集中在相近半径，无法稳定区分内外半径；请补选靠内圈或外圈的角点。"));
 
         CalibrationParameters center = options.SearchCenter ?? target.Parameters;
         double minimumInner = Math.Max(0.1, center.InnerRadiusMm - options.RadiusRangeMm);
@@ -179,23 +180,23 @@ public static class CalibrationFitter
             else if (solution.Cost < refined[duplicate].Cost) refined[duplicate] = solution;
         }
         refined.Sort((left, right) => left.Cost.CompareTo(right.Cost));
-        if (refined.Count == 0) return Failed("搜索范围内没有有效模型，请检查控制点对应关系或扩大搜索范围。");
+        if (refined.Count == 0) return Failed(L.T("搜索范围内没有有效模型，请检查控制点对应关系或扩大搜索范围。"));
         Solution best = refined[0];
         var warnings = new List<string>();
         if (progressSpan < 0.4)
-            warnings.Add("控制点覆盖的径向范围偏窄，建议补选更靠内、外的角点复核。");
+            warnings.Add(L.T("控制点覆盖的径向范围偏窄，建议补选更靠内、外的角点复核。"));
         if (best.Rms > delta * 2)
-            warnings.Add("控制点与预测图形偏差较大，请检查分组与弧片身份、控制点对应关系和显示尺度。");
+            warnings.Add(L.T("控制点与预测图形偏差较大，请检查分组与弧片身份、控制点对应关系和显示尺度。"));
         if (Math.Min(best.Inner - minimumInner, maximumInner - best.Inner) < options.RadiusRangeMm * 0.005
             || Math.Min(best.Outer - minimumOuter, maximumOuter - best.Outer) < options.RadiusRangeMm * 0.005)
-            warnings.Add("最佳结果靠近搜索边界，建议扩大搜索范围并补充控制点复核。");
+            warnings.Add(L.T("最佳结果靠近搜索边界，建议扩大搜索范围并补充控制点复核。"));
         double nearCost = best.Cost + Math.Max(0.005, best.Cost * 0.25);
         bool ambiguous = refined.Skip(1).Any(candidate => candidate.Cost <= nearCost
             && (Math.Abs(candidate.Inner - best.Inner) > 0.0002 || Math.Abs(candidate.Outer - best.Outer) > 0.0002));
         if (ambiguous)
-            warnings.Add("存在拟合程度接近的绕圈候选，暂不能唯一确定参数；请在预测差异明显的另一半径补选角点。");
+            warnings.Add(L.T("存在拟合程度接近的绕圈候选，暂不能唯一确定参数；请在预测差异明显的另一半径补选角点。"));
         if (incompleteSearch)
-            warnings.Add("搜索范围包含过多绕圈组合，已进行有限多起点搜索；请缩小范围或增加分散的控制点后复核。");
+            warnings.Add(L.T("搜索范围包含过多绕圈组合，已进行有限多起点搜索；请缩小范围或增加分散的控制点后复核。"));
         CalibrationFitCandidate[] candidates = refined.Take(options.MaxCandidates)
             .Select(solution => new CalibrationFitCandidate(
                 center with { InnerRadiusMm = solution.Inner, OuterRadiusMm = solution.Outer },
@@ -225,7 +226,7 @@ public static class CalibrationFitter
 
     public static void ValidateObservations(CalibrationTarget target, IReadOnlyList<CalibrationObservation> observations)
     {
-        if (observations.Count > 2000) throw new ArgumentException("控制点数量超出限制。");
+        if (observations.Count > 2000) throw new ArgumentException(L.T("控制点数量超出限制。"));
         var identifiers = new HashSet<(string, int)>();
         var physicalPoints = new HashSet<string>(StringComparer.Ordinal);
         foreach (CalibrationObservation observation in observations)
@@ -234,11 +235,11 @@ public static class CalibrationFitter
                 || !double.IsFinite(observation.Weight) || observation.Weight is <= 0 or > 1000
                 || Math.Abs(observation.X) > 1000 || Math.Abs(observation.Y) > 1000
                 || observation.X * observation.X + observation.Y * observation.Y < 0.01)
-                throw new ArgumentException("控制点坐标或权重无效。");
+                throw new ArgumentException(L.T("控制点坐标或权重无效。"));
             CalibrationControlPoint source = target.GetControlPoint(observation.CellId, observation.CornerIndex);
             if (!identifiers.Add((observation.CellId, observation.CornerIndex))
                 || !physicalPoints.Add(source.Id))
-                throw new ArgumentException("同一角点或共享角点不能重复录入。");
+                throw new ArgumentException(L.T("同一角点或共享角点不能重复录入。"));
         }
     }
 

@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using DiscImageStudio.Core;
 using DiscImageStudio.Services;
 using DiscImageStudio.ViewModels;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio;
 
@@ -190,7 +191,7 @@ internal static class UiPreviewRenderer
         if (mode == "edit")
         {
             viewModel.Family = OpticalDiscFamily.Dvd;
-            viewModel.Name = "示例工程";
+            viewModel.Name = L.T("示例工程");
             viewModel.InnerRadiusText = "24.0";
             viewModel.OuterRadiusText = "58.0";
             viewModel.SectorsText = "2295104";

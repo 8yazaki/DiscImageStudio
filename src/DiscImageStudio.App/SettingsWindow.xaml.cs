@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using DiscImageStudio.ViewModels;
 using Microsoft.Win32;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio;
 
@@ -44,9 +45,9 @@ public partial class SettingsWindow : Window
     }
 
     private Task<bool> ConfirmClearCacheAsync() => ClearCacheConfirm.ShowAsync(
-        "清空缓存",
-        "将删除本应用写入缓存目录的缩略图、合成图与预览图片。工程文件与导出文件不受影响。",
-        "清空缓存");
+        L.T("清空缓存"),
+        L.T("将删除本应用写入缓存目录的缩略图、合成图与预览图片。工程文件与导出文件不受影响。"),
+        L.T("清空缓存"));
 
     internal void ShowCategoryForSnapshot(int index) => SelectCategory(index);
 

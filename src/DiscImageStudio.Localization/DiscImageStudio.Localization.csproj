@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- One JSON table per UI language, keyed by the original (zh-CN) source text.
+         Adding a language = adding Locales/<code>.json plus one entry in L.SupportedLanguages. -->
+    <EmbeddedResource Include="Locales\*.json" LogicalName="DiscImageStudio.Locales.%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

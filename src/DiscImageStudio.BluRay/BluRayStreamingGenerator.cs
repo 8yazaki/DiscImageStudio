@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Numerics;
 using DiscImageStudio.BluRay.Encoding;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.BluRay;
 
@@ -51,7 +52,7 @@ public sealed record BluRayStreamingSummary(uint StartSector, uint SectorCount, 
 
 public static class BluRayStreamingGenerator
 {
-    public const string PendingMappingMessage = "请提供蓝光数据映射；图片可使用 BluRayRunLengthMapping 的 3T / 6T 数量偏向策略。";
+    public static string PendingMappingMessage => L.T("请提供蓝光数据映射；图片可使用 BluRayRunLengthMapping 的 3T / 6T 数量偏向策略。");
 
     public static BluRayStreamingSummary GenerateToStream(Stream output, BluRayStreamingOptions options,
         IBluRayPayloadMapping? mapping, IProgress<BluRayStreamingProgress>? progress = null,

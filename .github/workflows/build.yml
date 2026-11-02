@@ -42,6 +42,12 @@ jobs:
       - name: Build
         run: dotnet build DiscImageStudio.slnx --configuration Release --no-restore
 
+      - name: Check locale tables
+        run: python tools/check_locales.py
+
+      - name: Test localization
+        run: dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release --no-build
+
       - name: Test module architecture
         run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build
 

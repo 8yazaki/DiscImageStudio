@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Windows.Media;
+using DiscImageStudio.Localization;
 using DiscImageStudio.Services;
 
 namespace DiscImageStudio;
@@ -31,11 +33,26 @@ internal static class AppHost
         {
             Source = new Uri("/Themes/Tokens.xaml", UriKind.Relative),
         });
+        ApplyLanguageFonts(application);
         ThemeResolver.Apply(application, theme);
         application.Resources.MergedDictionaries.Add(new ResourceDictionary
         {
             Source = new Uri("/Themes/Controls.xaml", UriKind.Relative),
         });
         return application;
+    }
+
+    /// <summary>The embedded HarmonyOS Sans SC draws Han characters with Simplified Chinese
+    /// shapes and lacks kana, so Japanese gets system Japanese faces first. Values set on the
+    /// Application itself win over the merged Tokens dictionary.</summary>
+    private static void ApplyLanguageFonts(Application application)
+    {
+        if (L.Language != "ja")
+        {
+            return;
+        }
+
+        application.Resources["AppFontFamily"] = new FontFamily("Yu Gothic UI, Meiryo UI, Segoe UI");
+        application.Resources["MonoFontFamily"] = new FontFamily("Cascadia Mono, Consolas, MS Gothic, Yu Gothic UI");
     }
 }

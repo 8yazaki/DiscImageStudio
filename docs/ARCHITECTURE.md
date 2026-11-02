@@ -22,7 +22,7 @@ flowchart LR
 
 ## Core 契约
 
-`DiscImageStudio.Core` 不引用 WPF、CD、DVD 或任何具体编码器，并以 `net10.0` 为目标。
+`DiscImageStudio.Core` 不引用 WPF、CD、DVD 或任何具体编码器，并以 `net10.0` 为目标。界面文本通过独立的叶子项目 `DiscImageStudio.Localization`（无任何项目或包依赖）本地化，Core、Burning 与 App 都只引用它；Burning 因此仍不依赖 Core。机制与翻译流程见 [LOCALIZATION.md](LOCALIZATION.md)。
 
 - `IOpticalDiscModule`：模块执行边界。
 - `DiscModuleDescriptor`：模块 ID、介质家族、取消能力和命令元数据。

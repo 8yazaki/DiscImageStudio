@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Core.Calibration;
 
 /// <summary>Forward prediction of the observed curve at measured radii, including valid continuation beyond the generation annulus.</summary>
@@ -24,7 +25,7 @@ public static class CalibrationCrossPrediction
         cancellationToken.ThrowIfCancellationRequested();
         if (!double.IsFinite(minimumObservedRadiusMm) || !double.IsFinite(maximumObservedRadiusMm)
             || minimumObservedRadiusMm <= 0 || maximumObservedRadiusMm <= minimumObservedRadiusMm)
-            throw new ArgumentException("预测曲线需要有限、递增且大于零的观测半径区间。");
+            throw new ArgumentException(L.T("预测曲线需要有限、递增且大于零的观测半径区间。"));
         if (maxPoints is < 2 or > 1_000_000) throw new ArgumentOutOfRangeException(nameof(maxPoints));
         CalibrationCrossModel model = CreateModel(target, actual, rotationRadians, armIndex);
         double startAngle = -Math.PI / 2 + armIndex * Math.PI / 2 + rotationRadians;
@@ -73,13 +74,13 @@ public static class CalibrationCrossPrediction
         ArgumentNullException.ThrowIfNull(actual);
         target.ValidateCompatible(actual);
         if (!double.IsFinite(rotationRadians) || armIndex is < 0 or > 3)
-            throw new ArgumentException("曲线旋转或臂编号无效。");
+            throw new ArgumentException(L.T("曲线旋转或臂编号无效。"));
         return new(new(target.Parameters), new(actual), target.Parameters.Kind, target.Parameters == actual);
     }
 
     private static CalibrationCrossSample Sample(CalibrationCrossModel model, double radius)
         => model.TryAtRadius(radius, out CalibrationCrossSample sample) ? sample
-            : throw new ArgumentException("该观测半径在当前参数下没有有效的正半径曲线延拓，请检查照片尺度、盘心或参数范围。");
+            : throw new ArgumentException(L.T("该观测半径在当前参数下没有有效的正半径曲线延拓，请检查照片尺度、盘心或参数范围。"));
 
     private static CalibrationPoint ToPoint(CalibrationCrossSample sample, double startAngle)
         => new(sample.Radius * Math.Cos(startAngle + sample.Phase), sample.Radius * Math.Sin(startAngle + sample.Phase));
@@ -92,7 +93,7 @@ public static class CalibrationCrossPrediction
     }
 
     private static InvalidOperationException OutlineLimit()
-        => new("完整曲线采样超出点数上限；请缩小预测范围或提高采样上限后再确认形状。");
+        => new(L.T("完整曲线采样超出点数上限；请缩小预测范围或提高采样上限后再确认形状。"));
 }
 
 internal readonly record struct CalibrationCrossSample(double Radius, double SourceRadius, double Phase, double Derivative);

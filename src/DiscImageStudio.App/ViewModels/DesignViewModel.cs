@@ -10,6 +10,7 @@ using DiscImageStudio.Cd;
 using DiscImageStudio.Core;
 using DiscImageStudio.Imaging;
 using DiscImageStudio.Services;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.ViewModels;
 
@@ -239,7 +240,7 @@ public partial class DesignViewModel : ObservableObject
         if (failed.Count > 0)
         {
             _shell.ShowToast(
-                "图片无法导入",
+                L.T("图片无法导入"),
                 string.Join("\n", failed),
                 ToastKind.Warning);
         }
@@ -368,7 +369,7 @@ public partial class DesignViewModel : ObservableObject
             if (unreadable.Count > 0)
             {
                 _shell.ShowToast(
-                    "部分图层图片无法读取",
+                    L.T("部分图层图片无法读取"),
                     string.Join("\n", unreadable),
                     ToastKind.Warning);
             }
@@ -480,8 +481,8 @@ public partial class DesignViewModel : ObservableObject
             }
             catch (Exception exception)
             {
-                _shell.AppendLog($"[{DateTime.Now:HH:mm:ss}] 设计合成失败：{exception.Message}\n");
-                _shell.ShowToast("设计合成失败", exception.Message, ToastKind.Error);
+                _shell.AppendLog(L.F("[{0:HH:mm:ss}] 设计合成失败：{1}\n", DateTime.Now, exception.Message));
+                _shell.ShowToast(L.T("设计合成失败"), exception.Message, ToastKind.Error);
                 return;
             }
         }
@@ -501,7 +502,7 @@ public partial class DesignViewModel : ObservableObject
     {
         if (!HasLayers)
         {
-            throw new ArgumentException("请先在设计页导入图片。");
+            throw new ArgumentException(L.T("请先在设计页导入图片。"));
         }
 
         if (_exportRenderedRevision == _compositeRevision && _lastExportPath is not null && File.Exists(_lastExportPath))

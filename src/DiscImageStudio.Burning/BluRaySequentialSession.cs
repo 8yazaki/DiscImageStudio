@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices.ComTypes;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.Burning;
 
@@ -76,7 +77,7 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         if (_acquired || _cleanup.HasPendingLocks)
-            throw new InvalidOperationException("蓝光会话已经取得刻录机访问权。");
+            throw new InvalidOperationException(L.T("蓝光会话已经取得刻录机访问权。"));
         _cleanup.Acquire();
         _acquired = true;
     }
@@ -90,7 +91,7 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
     public OpticalWriteSpeed ConfigureWrite(OpticalWriteSpeed? requested)
     {
         RequireAcquired();
-        if (_configured) throw new InvalidOperationException("蓝光写入参数已经设置。");
+        if (_configured) throw new InvalidOperationException(L.T("蓝光写入参数已经设置。"));
         if (requested is not null)
         {
             requested.Validate();
@@ -108,7 +109,7 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
     {
         RequireAcquired();
         if (!_configured)
-            throw new InvalidOperationException("必须先设置蓝光顺序写入参数。");
+            throw new InvalidOperationException(L.T("必须先设置蓝光顺序写入参数。"));
 
         // The first WRITE initializes a blank BD-R in SRM without allocating
         // spare areas. No FORMAT UNIT, RESERVE TRACK, page 05 or OPC is issued.
@@ -160,7 +161,7 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
     private void RequireAcquired()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        if (!_acquired) throw new InvalidOperationException("尚未独占并锁定蓝光刻录机。");
+        if (!_acquired) throw new InvalidOperationException(L.T("尚未独占并锁定蓝光刻录机。"));
     }
 }
 
@@ -205,7 +206,7 @@ internal sealed class BluRaySessionCleanup : IDisposable
     internal void Acquire()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        if (HasPendingLocks) throw new InvalidOperationException("蓝光会话仍有未释放的刻录机访问权。");
+        if (HasPendingLocks) throw new InvalidOperationException(L.T("蓝光会话仍有未释放的刻录机访问权。"));
         _releaseAttempted = false;
         try
         {
@@ -236,9 +237,9 @@ internal sealed class BluRaySessionCleanup : IDisposable
     {
         _releaseAttempted = true;
         Exception? first = null;
-        ReleaseOne(ref _removalPrevented, _allowRemoval, "解除盘片弹出保护", retry, ref first);
-        ReleaseOne(ref _mcnDisabled, _enableMcn, "恢复介质变化通知", retry, ref first);
-        ReleaseOne(ref _exclusive, _releaseExclusive, "释放刻录机独占访问", retry, ref first);
+        ReleaseOne(ref _removalPrevented, _allowRemoval, L.T("解除盘片弹出保护"), retry, ref first);
+        ReleaseOne(ref _mcnDisabled, _enableMcn, L.T("恢复介质变化通知"), retry, ref first);
+        ReleaseOne(ref _exclusive, _releaseExclusive, L.T("释放刻录机独占访问"), retry, ref first);
         if (first is not null)
             System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(first).Throw();
     }
@@ -269,7 +270,7 @@ internal sealed class BluRaySessionCleanup : IDisposable
             try { ReleaseCore(retry: false); } catch { }
         }
         try { _releaseWriteEngine(); }
-        catch (Exception exception) { ReportFailure("释放蓝光写入引擎", exception, retry: false); }
+        catch (Exception exception) { ReportFailure(L.T("释放蓝光写入引擎"), exception, retry: false); }
         if (HasPendingLocks)
         {
             try { ReleaseCore(retry: true); } catch { }
@@ -281,7 +282,7 @@ internal sealed class BluRaySessionCleanup : IDisposable
         try
         {
             _reportCleanupWarning?.Invoke(
-                $"蓝光清理{(retry ? "重试" : string.Empty)}：{operation}失败（HRESULT 0x{exception.HResult:X8}）：{exception.Message}");
+                L.F("蓝光清理{0}：{1}失败（HRESULT 0x{2:X8}）：{3}", (retry ? L.T("重试") : string.Empty), operation, exception.HResult, exception.Message));
         }
         catch { /* Diagnostics must never interrupt remaining unlocks or replace a write failure. */ }
     }

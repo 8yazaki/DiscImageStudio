@@ -1,5 +1,7 @@
 <div align="center">
 
+<p align="center"><b>简体中文</b> · <a href="README.en.md">English</a> · <a href="README.ja.md">日本語</a></p>
+
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
 <h2>全能的光盘盘面可见图像生成与刻录工具</h2>
@@ -111,9 +113,15 @@ dotnet run --project src/DiscImageStudio.App --configuration Release
 ```powershell
 dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
+dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release
+python tools/check_locales.py
 ```
 
 版本规则、CI 生成 EXE、Release 草稿检查、MSIX 打包与签名流程见[发布指南](docs/RELEASING.md)。
+
+## 界面语言
+
+应用界面支持 **简体中文 / English / 日本語**。默认跟随系统界面语言；也可在「设置 → 通用 → 界面语言」中手动选择，**重新启动后生效**。命令行默认保持中文输出，可用 `--lang en|ja|zh-CN` 或环境变量 `DISC_IMAGE_STUDIO_LANG` 切换。翻译机制与新增语言的方法见 [docs/LOCALIZATION.md](docs/LOCALIZATION.md)。`docs/` 下的技术文档目前仅有中文版，界面截图为中文界面。
 
 ## 命令行
 
@@ -144,6 +152,7 @@ src/DiscImageStudio.Cd/      CD-DA 生成核心与 CD 模块
 src/DiscImageStudio.Dvd/     DVD 引擎适配模块
 src/DiscImageStudio.BluRay/  BD-R 几何、17PP/ECC、3T/6T 映射、流式生成与 ISO
 src/DiscImageStudio.Iso/     UDF 2.01 / ISO9660 写入器
+src/DiscImageStudio.Localization/ 无依赖的界面文本本地化（zh-CN / en / ja 翻译表）
 src/DiscImageStudio.App/     WPF GUI、统一命令行与商店资源
 src/DvdImageSolver/          保持隔离的 DVD 编码/求解引擎
 tests/                       无第三方测试框架的架构回归测试
@@ -165,6 +174,7 @@ docs/                        架构、引擎、预设、发布等文档
 | [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.md) | CD / DVD 生成物理模型复核 |
 | [VALIDATION.md](docs/VALIDATION.md) | 各轮构建、回归与实盘测试的本地验证记录 |
 | [RELEASING.md](docs/RELEASING.md) | GitHub Release、MSIX 打包、签名测试与商店提交流程 |
+| [LOCALIZATION.md](docs/LOCALIZATION.md) | 界面翻译机制、新增或修正语言的方法（英文） |
 | [CHANGELOG.md](CHANGELOG.md) | 版本变更记录 |
 
 ## 参考标准

@@ -6,4 +6,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DiscImageStudio.Localization\DiscImageStudio.Localization.csproj" />
+  </ItemGroup>
 </Project>

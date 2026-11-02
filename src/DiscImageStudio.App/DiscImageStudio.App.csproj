@@ -58,4 +58,7 @@
           Condition="'%(ResolvedFileToPublish.Filename)%(ResolvedFileToPublish.Extension)' == 'DvdImageSolver.runtimeconfig.json'" />
     </ItemGroup>
   </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\DiscImageStudio.Localization\DiscImageStudio.Localization.csproj" />
+  </ItemGroup>
 </Project>

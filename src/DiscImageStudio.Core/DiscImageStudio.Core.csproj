@@ -14,4 +14,7 @@
     <EmbeddedResource Include="Calibration\Patterns\target_slim.gray.gz"
                       LogicalName="DiscImageStudio.Core.Calibration.target_slim.gray.gz" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DiscImageStudio.Localization\DiscImageStudio.Localization.csproj" />
+  </ItemGroup>
 </Project>

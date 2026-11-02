@@ -7,6 +7,7 @@ using DiscImageStudio.Core.Calibration;
 using DiscImageStudio.Services;
 using DiscImageStudio.Dvd;
 using CommunityToolkit.Mvvm.ComponentModel;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.ViewModels;
 
@@ -169,8 +170,8 @@ public partial class DiscParametersState : ObservableObject
         ? $"+{ToneBrightness:0}"
         : $"{ToneBrightness:0}";
 
-    public string ToneSummary => $"{ToneLevels} 级 · {ToneDitherText} 抖动"
-        + (ToneSrgbLinearization ? " · sRGB 线性化" : string.Empty);
+    public string ToneSummary => L.F("{0} 级 · {1} 抖动", ToneLevels, ToneDitherText)
+        + (ToneSrgbLinearization ? L.T(" · sRGB 线性化") : string.Empty);
 
     /// <summary>A CUE sheet only accompanies PCM WAV tracks, so the CD page offers its
     /// toggle only while the chosen output is a .wav file.</summary>
@@ -183,11 +184,11 @@ public partial class DiscParametersState : ObservableObject
 
     /// <summary>Label of the CD output the design page's pipeline card offers; the artifact
     /// switches between a data ISO and an audio track as the on-disc folder appears.</summary>
-    public string CdOutputLabel => HasCdFiles ? "输出数据盘 (.iso)" : "输出音轨 (.wav / .raw)";
+    public string CdOutputLabel => HasCdFiles ? L.T("输出数据盘 (.iso)") : L.T("输出音轨 (.wav / .raw)");
 
     public string CdOutputHint => HasCdFiles
-        ? "包含随盘文件，导出为 CD 数据盘 ISO。"
-        : "无随盘文件时生成音轨，推荐 WAV 格式。";
+        ? L.T("包含随盘文件，导出为 CD 数据盘 ISO。")
+        : L.T("无随盘文件时生成音轨，推荐 WAV 格式。");
 
     partial void OnCdDataDirectoryChanged(string value) => NormalizeCdOutputFormat();
 
@@ -219,17 +220,17 @@ public partial class DiscParametersState : ObservableObject
         try
         {
             return DvdPitchDisplay.Format(new(CalibrationDiscKind.Dvd,
-                ParameterParser.ParsePositiveDouble(actual ? DvdActualInnerRadius : DvdInnerRadius, "内半径"),
-                ParameterParser.ParsePositiveDouble(actual ? DvdActualOuterRadius : DvdOuterRadius, "外半径"),
-                ParameterParser.ParsePositiveLong(DvdTotalSectors, "总扇区数"),
+                ParameterParser.ParsePositiveDouble(actual ? DvdActualInnerRadius : DvdInnerRadius, L.T("内半径")),
+                ParameterParser.ParsePositiveDouble(actual ? DvdActualOuterRadius : DvdOuterRadius, L.T("外半径")),
+                ParameterParser.ParsePositiveLong(DvdTotalSectors, L.T("总扇区数")),
                 DvdStreamingOptions.StandardChannelBitLengthNm,
-                ParameterParser.ParseDouble(actual ? DvdActualPitchLinear : DvdPitchLinear, "相对一次项"),
-                ParameterParser.ParseDouble(actual ? DvdActualPitchQuadratic : DvdPitchQuadratic, "相对二次项"),
-                ParameterParser.ParseDouble(actual ? DvdActualPitchCubic : DvdPitchCubic, "相对三次项")));
+                ParameterParser.ParseDouble(actual ? DvdActualPitchLinear : DvdPitchLinear, L.T("相对一次项")),
+                ParameterParser.ParseDouble(actual ? DvdActualPitchQuadratic : DvdPitchQuadratic, L.T("相对二次项")),
+                ParameterParser.ParseDouble(actual ? DvdActualPitchCubic : DvdPitchCubic, L.T("相对三次项"))));
         }
         catch (Exception exception) when (exception is ArgumentException or FormatException or OverflowException)
         {
-            return "轨距模型无效：请检查半径、扇区数及系数，整个刻录区的轨距必须为正。";
+            return L.T("轨距模型无效：请检查半径、扇区数及系数，整个刻录区的轨距必须为正。");
         }
     }
 
@@ -273,7 +274,7 @@ public partial class DiscParametersState : ObservableObject
                 FallbackLanguage: "zh-CN",
                 BluRayPresets: []);
             ApplyPresetDocuments(MergePresets(builtIn, emptyUser));
-            return $"用户预设 JSON 无法加载，已继续使用程序内置参数。\n\n{exception.Message}\n\n文件位置：\n{_discPresetJsonPath}";
+            return L.F("用户预设 JSON 无法加载，已继续使用程序内置参数。\n\n{0}\n\n文件位置：\n{1}", exception.Message, _discPresetJsonPath);
         }
     }
 
@@ -311,7 +312,7 @@ public partial class DiscParametersState : ObservableObject
         string name = displayName.Trim();
         if (name.Length == 0)
         {
-            throw new ArgumentException("请填写预设名称。", nameof(displayName));
+            throw new ArgumentException(L.T("请填写预设名称。"), nameof(displayName));
         }
 
         EnsurePresetsJsonExists();
@@ -324,9 +325,9 @@ public partial class DiscParametersState : ObservableObject
             _ => "cd",
         };
         string id = $"user-{familyToken}-{now:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToString("N")[..4]}";
-        string note = string.Create(
+        string note = L.F(
             System.Globalization.CultureInfo.InvariantCulture,
-            $"用户预设：内半径 {innerRadiusMm:0.###} mm、外半径 {outerRadiusMm:0.###} mm、{sectors:N0} 扇区。");
+            "用户预设：内半径 {0:0.###} mm、外半径 {1:0.###} mm、{2:N0} 扇区。", innerRadiusMm, outerRadiusMm, sectors);
         DiscPresetJsonDocument updated = family switch
         {
             OpticalDiscFamily.Dvd => user with
@@ -396,7 +397,7 @@ public partial class DiscParametersState : ObservableObject
         ArgumentException.ThrowIfNullOrWhiteSpace(presetId);
         if (!presetId.StartsWith("user-", StringComparison.Ordinal))
         {
-            throw new InvalidOperationException("内置预设不能删除。");
+            throw new InvalidOperationException(L.T("内置预设不能删除。"));
         }
 
         EnsurePresetsJsonExists();

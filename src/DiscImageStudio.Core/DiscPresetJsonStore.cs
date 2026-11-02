@@ -1,6 +1,7 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.Core;
 
@@ -103,9 +104,34 @@ public static class DiscPresetJsonStore
     {
         using Stream stream = typeof(DiscPresetJsonStore).Assembly
             .GetManifestResourceStream(BuiltInResourceName)
-            ?? throw new InvalidOperationException("程序缺少内置盘片预设资源。");
-        return Deserialize(stream, "内置盘片预设");
+            ?? throw new InvalidOperationException(L.T("程序缺少内置盘片预设资源。"));
+        return Localize(Deserialize(stream, L.T("内置盘片预设")));
     }
+
+    /// <summary>Built-in preset names and descriptions are stored in the source language and
+    /// translated on load. Only the built-in document goes through this, so user presets and
+    /// files written back to disk keep exactly what the user typed.</summary>
+    private static DiscPresetJsonDocument Localize(DiscPresetJsonDocument document)
+        => document with
+        {
+            CdPresets = [.. document.CdPresets.Select(preset => preset with
+            {
+                DisplayName = L.T(preset.DisplayName),
+                Description = L.T(preset.Description),
+            })],
+            DvdPresets = [.. document.DvdPresets.Select(preset => preset with
+            {
+                DisplayName = L.T(preset.DisplayName),
+                Description = L.T(preset.Description),
+            })],
+            BluRayPresets = document.BluRayPresets is null
+                ? null
+                : [.. document.BluRayPresets.Select(preset => preset with
+                {
+                    DisplayName = L.T(preset.DisplayName),
+                    Description = L.T(preset.Description),
+                })],
+        };
 
     public static DiscPresetJsonDocument CreateInitialUserDocument()
         => new(
@@ -113,8 +139,8 @@ public static class DiscPresetJsonStore
             [
                 new CdDiscPresetDefinition(
                     "user-custom-cd",
-                    "自定义 CD 参数",
-                    "用户预设，可直接修改或复制后添加更多 CD 参数。",
+                    L.T("自定义 CD 参数"),
+                    L.T("用户预设，可直接修改或复制后添加更多 CD 参数。"),
                     359_849,
                     24.5,
                     56.8,
@@ -123,8 +149,8 @@ public static class DiscPresetJsonStore
             [
                 new DvdDiscPresetDefinition(
                     "user-custom-dvd",
-                    "自定义 DVD 参数",
-                    "用户预设，可直接修改或复制后添加更多 DVD 参数。",
+                    L.T("自定义 DVD 参数"),
+                    L.T("用户预设，可直接修改或复制后添加更多 DVD 参数。"),
                     2_295_104,
                     24.0,
                     58.0,
@@ -136,8 +162,8 @@ public static class DiscPresetJsonStore
             [
                 new BluRayDiscPresetDefinition(
                     "user-custom-bd",
-                    "自定义蓝光参数",
-                    "用户预设，可直接修改或复制后添加更多蓝光参数。",
+                    L.T("自定义蓝光参数"),
+                    L.T("用户预设，可直接修改或复制后添加更多蓝光参数。"),
                     12_219_392,
                     24.0,
                     58.0),
@@ -226,7 +252,7 @@ public static class DiscPresetJsonStore
         string? directory = Path.GetDirectoryName(fullPath);
         if (string.IsNullOrEmpty(directory))
         {
-            throw new ArgumentException("预设 JSON 路径必须包含目录。", nameof(path));
+            throw new ArgumentException(L.T("预设 JSON 路径必须包含目录。"), nameof(path));
         }
 
         Directory.CreateDirectory(directory);
@@ -260,24 +286,22 @@ public static class DiscPresetJsonStore
         if (document.SchemaVersion is not (LegacySchemaVersion or InterimSchemaVersion or CurrentSchemaVersion))
         {
             throw new InvalidDataException(
-                $"不支持 schemaVersion={document.SchemaVersion}；当前支持 "
-                + $"{LegacySchemaVersion}、{InterimSchemaVersion} 与 {CurrentSchemaVersion}。请把顶层 schemaVersion 改为受支持的值，"
-                + "或删除该文件让程序重新生成分层配置模板。");
+                L.F("不支持 schemaVersion={0}；当前支持 {1}、{2} 与 {3}。请把顶层 schemaVersion 改为受支持的值，或删除该文件让程序重新生成分层配置模板。", document.SchemaVersion, LegacySchemaVersion, InterimSchemaVersion, CurrentSchemaVersion));
         }
 
         if (document.SchemaVersion == CurrentSchemaVersion && document.BluRayPresets is null)
         {
-            throw new InvalidDataException("schemaVersion 4 必须包含 bluRayPresets 列表。");
+            throw new InvalidDataException(L.T("schemaVersion 4 必须包含 bluRayPresets 列表。"));
         }
 
         if (document.CdPresets is null)
         {
-            throw new InvalidDataException("cdPresets 不能为空。");
+            throw new InvalidDataException(L.T("cdPresets 不能为空。"));
         }
 
         if (document.DvdPresets is null)
         {
-            throw new InvalidDataException("dvdPresets 不能为空。");
+            throw new InvalidDataException(L.T("dvdPresets 不能为空。"));
         }
 
         ValidateUniqueIds(document.CdPresets.Select(value => value?.Id), "CD");
@@ -310,7 +334,7 @@ public static class DiscPresetJsonStore
         {
             if (preset is null)
             {
-                throw new InvalidDataException("CD 预设不能是 null。");
+                throw new InvalidDataException(L.T("CD 预设不能是 null。"));
             }
 
             ValidateText(preset.Id, "CD", "id");
@@ -327,7 +351,7 @@ public static class DiscPresetJsonStore
             ValidateReservedId(preset.Id, "CD");
             if (preset.Sectors <= 0)
             {
-                throw InvalidValue(preset.Id, "sectors", "必须大于 0");
+                throw InvalidValue(preset.Id, "sectors", L.T("必须大于 0"));
             }
 
             ValidateRadiusRange(preset.Id, preset.InnerRadiusMm, preset.OuterRadiusMm);
@@ -341,7 +365,7 @@ public static class DiscPresetJsonStore
         {
             if (preset is null)
             {
-                throw new InvalidDataException("DVD 预设不能是 null。");
+                throw new InvalidDataException(L.T("DVD 预设不能是 null。"));
             }
 
             ValidateText(preset.Id, "DVD", "id");
@@ -358,12 +382,12 @@ public static class DiscPresetJsonStore
             ValidateReservedId(preset.Id, "DVD");
             if (preset.TotalSectors == 0)
             {
-                throw InvalidValue(preset.Id, "totalSectors", "必须大于 0");
+                throw InvalidValue(preset.Id, "totalSectors", L.T("必须大于 0"));
             }
 
             if (preset.TotalSectors % 16 != 0)
             {
-                throw InvalidValue(preset.Id, "totalSectors", "必须是 16 的倍数");
+                throw InvalidValue(preset.Id, "totalSectors", L.T("必须是 16 的倍数"));
             }
 
             ValidateRadiusRange(preset.Id, preset.InnerRadiusMm, preset.OuterRadiusMm);
@@ -374,7 +398,7 @@ public static class DiscPresetJsonStore
             }
             catch (ArgumentException exception)
             {
-                throw new InvalidDataException($"预设 '{preset.Id}' 的轨距系数无效：{exception.Message}", exception);
+                throw new InvalidDataException(L.F("预设 '{0}' 的轨距系数无效：{1}", preset.Id, exception.Message), exception);
             }
         }
 
@@ -382,7 +406,7 @@ public static class DiscPresetJsonStore
         {
             if (preset is null)
             {
-                throw new InvalidDataException("蓝光预设不能是 null。");
+                throw new InvalidDataException(L.T("蓝光预设不能是 null。"));
             }
 
             ValidateText(preset.Id, "Blu-ray", "id");
@@ -398,13 +422,13 @@ public static class DiscPresetJsonStore
                 throw InvalidValue(
                     preset.Id,
                     "totalSectors",
-                    $"必须是 32 的倍数且不超过 {ProjectDocument.BluRaySectorsPerLayer:N0}");
+                    L.F("必须是 32 的倍数且不超过 {0:N0}", ProjectDocument.BluRaySectorsPerLayer));
             }
 
             ValidateRadiusRange(preset.Id, preset.InnerRadiusMm, preset.OuterRadiusMm);
             if (preset.OuterRadiusMm > 60)
             {
-                throw InvalidValue(preset.Id, "outerRadiusMm", "不能超过 60");
+                throw InvalidValue(preset.Id, "outerRadiusMm", L.T("不能超过 60"));
             }
         }
     }
@@ -418,7 +442,7 @@ public static class DiscPresetJsonStore
                 JsonOptions);
             if (document is null)
             {
-                throw new InvalidDataException($"{sourceName} 不能为空。");
+                throw new InvalidDataException(L.F("{0} 不能为空。", sourceName));
             }
 
             Validate(document);
@@ -427,7 +451,7 @@ public static class DiscPresetJsonStore
         catch (JsonException exception)
         {
             throw new InvalidDataException(
-                $"{sourceName} 格式有误（第 {exception.LineNumber + 1} 行，第 {exception.BytePositionInLine + 1} 列）：{exception.Message}",
+                L.F("{0} 格式有误（第 {1} 行，第 {2} 列）：{3}", sourceName, exception.LineNumber + 1, exception.BytePositionInLine + 1, exception.Message),
                 exception);
         }
     }
@@ -470,7 +494,7 @@ public static class DiscPresetJsonStore
         {
             if (!string.IsNullOrWhiteSpace(id) && !uniqueIds.Add(id))
             {
-                throw new InvalidDataException($"{family} 预设 id '{id}' 重复。");
+                throw new InvalidDataException(L.F("{0} 预设 id '{1}' 重复。", family, id));
             }
         }
     }
@@ -480,7 +504,7 @@ public static class DiscPresetJsonStore
         if (string.Equals(id, "__manual__", StringComparison.Ordinal))
         {
             throw new InvalidDataException(
-                $"{family} 预设 id '__manual__' 由界面的未保存状态保留，请换一个 id。");
+                L.F("{0} 预设 id '__manual__' 由界面的未保存状态保留，请换一个 id。", family));
         }
     }
 
@@ -488,7 +512,7 @@ public static class DiscPresetJsonStore
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw InvalidValue(presetId, fieldName, "不能为空");
+            throw InvalidValue(presetId, fieldName, L.T("不能为空"));
         }
     }
 
@@ -509,7 +533,7 @@ public static class DiscPresetJsonStore
         ValidatePositiveFinite(presetId, "outerRadiusMm", outerRadius);
         if (outerRadius <= innerRadius)
         {
-            throw InvalidValue(presetId, "outerRadiusMm", "必须大于 innerRadiusMm");
+            throw InvalidValue(presetId, "outerRadiusMm", L.T("必须大于 innerRadiusMm"));
         }
     }
 
@@ -517,7 +541,7 @@ public static class DiscPresetJsonStore
     {
         if (!double.IsFinite(value) || value <= 0)
         {
-            throw InvalidValue(presetId, fieldName, "必须是大于 0 的有限数值");
+            throw InvalidValue(presetId, fieldName, L.T("必须是大于 0 的有限数值"));
         }
     }
 
@@ -525,5 +549,5 @@ public static class DiscPresetJsonStore
         string presetId,
         string fieldName,
         string requirement)
-        => new($"预设 '{presetId}' 的 {fieldName} {requirement}。");
+        => new(L.F("预设 '{0}' 的 {1} {2}。", presetId, fieldName, requirement));
 }

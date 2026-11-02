@@ -1,4 +1,5 @@
 using System.IO;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.Services;
 
@@ -27,6 +28,10 @@ public sealed record AppSettings
     /// the system temp folder.</summary>
     public string CacheDirectory { get; init; } = string.Empty;
 
+    /// <summary>UI language: "auto" (follow the OS) or a code from <see cref="L.SupportedLanguages"/>.
+    /// Applied at startup only.</summary>
+    public string Language { get; init; } = L.AutoSetting;
+
     /// <summary>Drops values that cannot be represented on this machine: an unknown enum,
     /// relative paths, and paths with invalid characters. Hand-edited files therefore load
     /// without a crash.</summary>
@@ -36,6 +41,7 @@ public sealed record AppSettings
         Theme = Enum.IsDefined(Theme) ? Theme : AppTheme.Dark,
         DefaultProjectDirectory = NormalizeDirectory(DefaultProjectDirectory),
         CacheDirectory = NormalizeDirectory(CacheDirectory),
+        Language = L.Normalize(Language) ?? L.AutoSetting,
     };
 
     private static string NormalizeDirectory(string? path)

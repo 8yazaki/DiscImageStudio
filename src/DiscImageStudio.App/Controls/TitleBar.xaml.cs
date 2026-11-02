@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.Controls;
 
@@ -130,7 +131,7 @@ public partial class TitleBar : UserControl
     private void UpdateGlyph()
     {
         bool maximized = _window?.WindowState == WindowState.Maximized;
-        MaximizeButton.ToolTip = maximized ? "还原" : "最大化";
+        MaximizeButton.ToolTip = maximized ? L.T("还原") : L.T("最大化");
         if (_maximizeGlyph is null || _restoreGlyph is null)
         {
             return;

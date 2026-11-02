@@ -9,6 +9,7 @@ using DiscImageStudio.Core;
 using DiscImageStudio.Dvd;
 using DiscImageStudio.Services;
 using MahApps.Metro.IconPacks;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.ViewModels;
 
@@ -158,7 +159,7 @@ public partial class HomeViewModel : ObservableObject
         string nature = family switch
         {
             OpticalDiscFamily.Dvd => "DVD",
-            OpticalDiscFamily.BluRay => "蓝光",
+            OpticalDiscFamily.BluRay => L.T("蓝光"),
             _ => "CD",
         };
 
@@ -207,8 +208,8 @@ public partial class HomeViewModel : ObservableObject
         if (!File.Exists(entry.ProjectPath))
         {
             _shell.ShowToast(
-                "无法打开工程",
-                $"工程文件已移动或删除：\n{entry.ProjectPath}",
+                L.T("无法打开工程"),
+                L.F("工程文件已移动或删除：\n{0}", entry.ProjectPath),
                 ToastKind.Warning);
             return;
         }

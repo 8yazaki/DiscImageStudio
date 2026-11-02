@@ -108,6 +108,8 @@ dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
 ```
 
+不想在本机安装 SDK 时，也可以在 GitHub 的 Actions → build 运行结果里下载 `DiscImageStudio-win-x64`（自包含单文件 EXE；`main` 与 `i18n-*` 分支的每次推送都会生成）。
+
 构建回归检查：
 
 ```powershell
@@ -121,7 +123,7 @@ python tools/check_locales.py
 
 ## 界面语言
 
-应用界面支持 **简体中文 / English / 日本語**。默认跟随系统界面语言；也可在「设置 → 通用 → 界面语言」中手动选择，**重新启动后生效**。命令行默认保持中文输出，可用 `--lang en|ja|zh-CN` 或环境变量 `DISC_IMAGE_STUDIO_LANG` 切换。翻译机制与新增语言的方法见 [docs/LOCALIZATION.md](docs/LOCALIZATION.md)。`docs/` 下的技术文档目前仅有中文版，界面截图为中文界面。
+应用界面支持 **简体中文 / English / 日本語**。默认跟随系统界面语言；也可在「设置 → 通用 → 界面语言」中手动选择，**重新启动后生效**。命令行输出默认为英文（与系统和界面语言无关），可用 `--lang en|ja|zh-CN` 或环境变量 `DISC_IMAGE_STUDIO_LANG` 切换。翻译机制与新增语言的方法见 [docs/LOCALIZATION.md](docs/LOCALIZATION.md)。`docs/` 下的技术文档目前仅有中文版，界面截图为中文界面。
 
 ## 命令行
 

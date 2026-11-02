@@ -19,10 +19,11 @@ internal static class Program
         }
 
         AttachToParentConsole();
-        // Command-line output stays in the source language unless asked otherwise, so
-        // existing scripts keep parsing the same text: --lang <code> or the environment variable.
+        // Command-line output is English unless asked otherwise (independent of the OS and GUI
+        // language, so scripts and logs look the same everywhere): --lang <code> or the
+        // DISC_IMAGE_STUDIO_LANG environment variable.
         arguments = ExtractLanguage(arguments, out string? language);
-        L.Initialize(language ?? Environment.GetEnvironmentVariable(L.EnvironmentVariable) ?? L.SourceLanguage);
+        L.Initialize(language ?? Environment.GetEnvironmentVariable(L.EnvironmentVariable) ?? "en");
         return UnifiedCommandRunner.Run(arguments);
     }
 

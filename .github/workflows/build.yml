@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'i18n-*']
   pull_request:
   workflow_dispatch:
   workflow_call:
@@ -69,6 +69,21 @@ jobs:
 
       - name: Render GUI screenshot
         run: dotnet run --project src/DiscImageStudio.App --configuration Release --no-build -- ui-snapshot --output artifacts/store/home-screen.png
+
+      - name: Publish self-contained Windows EXE
+        shell: pwsh
+        run: >
+          dotnet publish src/DiscImageStudio.App/DiscImageStudio.App.csproj
+          --configuration Release --runtime win-x64 --self-contained true
+          --output artifacts/exe -maxcpucount:1 -p:BuildInParallel=false
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:IncludeAllContentForSelfExtract=true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DiscImageStudio-win-x64
+          path: artifacts/exe/DiscImageStudio.exe
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         with:

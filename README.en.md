@@ -98,7 +98,7 @@ See the [assisted calibration notes](docs/CALIBRATION.md) (Chinese) for the work
 
 ## Interface language
 
-The interface is available in **简体中文 / English / 日本語**. It follows the OS display language by default; you can also choose one in "Settings → General → Interface language", and the change **takes effect after a restart**. Command-line output stays in Chinese by default; use `--lang en|ja|zh-CN` or the `DISC_IMAGE_STUDIO_LANG` environment variable to change it. See [docs/LOCALIZATION.md](docs/LOCALIZATION.md) for how translation works and how to add a language.
+The interface is available in **简体中文 / English / 日本語**. It follows the OS display language by default; you can also choose one in "Settings → General → Interface language", and the change **takes effect after a restart**. Command-line output is English by default (independent of the OS and GUI language); use `--lang en|ja|zh-CN` or the `DISC_IMAGE_STUDIO_LANG` environment variable to change it. See [docs/LOCALIZATION.md](docs/LOCALIZATION.md) for how translation works and how to add a language.
 
 ## System and device requirements
 
@@ -112,6 +112,8 @@ The interface is available in **简体中文 / English / 日本語**. It follows
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
 ```
+
+If you would rather not install the SDK, download `DiscImageStudio-win-x64` (a self-contained single-file EXE) from the GitHub Actions → build run; it is produced on every push to `main` and `i18n-*` branches.
 
 Regression checks:
 

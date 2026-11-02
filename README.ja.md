@@ -98,7 +98,7 @@ Disc Image Studio には、賢く正確な補助校正の手順があります�
 
 ## 表示言語
 
-画面は **簡体字中国語 / English / 日本語** に対応しています。既定ではシステムの表示言語に従います。「設定 → 一般 → 表示言語」で手動で選ぶこともでき、**再起動後に反映されます**。コマンドラインの出力は既定では中国語のままで、`--lang en|ja|zh-CN` または環境変数 `DISC_IMAGE_STUDIO_LANG` で切り替えられます。翻訳の仕組みと言語の追加方法は [docs/LOCALIZATION.md](docs/LOCALIZATION.md)（英語）を参照してください。
+画面は **簡体字中国語 / English / 日本語** に対応しています。既定ではシステムの表示言語に従います。「設定 → 一般 → 表示言語」で手動で選ぶこともでき、**再起動後に反映されます**。コマンドラインの出力は既定で英語（OS や画面の言語とは無関係）で、`--lang en|ja|zh-CN` または環境変数 `DISC_IMAGE_STUDIO_LANG` で切り替えられます。翻訳の仕組みと言語の追加方法は [docs/LOCALIZATION.md](docs/LOCALIZATION.md)（英語）を参照してください。
 
 ## システムとデバイスの要件
 
@@ -112,6 +112,8 @@ Disc Image Studio には、賢く正確な補助校正の手順があります�
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
 ```
+
+SDK をインストールしたくない場合は、GitHub の Actions → build の実行結果から `DiscImageStudio-win-x64`（自己完結型の単一ファイル EXE）をダウンロードできます。`main` と `i18n-*` ブランチへの push のたびに生成されます。
 
 回帰チェック：
 

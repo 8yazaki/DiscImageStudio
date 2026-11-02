@@ -3,7 +3,7 @@
 ## Unreleased
 
 - 界面新增多语言支持：简体中文、English、日本語。默认跟随系统界面语言，可在「设置 → 通用 → 界面语言」中手动选择，重新启动后生效；设置保存在 `settings.json` 的 `language` 字段。内置盘片预设的名称与说明随语言显示，日语界面改用系统日文字体。命令行输出默认改为英文（与系统和界面语言无关），可用 `--lang zh-CN|en|ja` 或环境变量 `DISC_IMAGE_STUDIO_LANG` 切换；依赖旧中文输出的脚本请加 `--lang zh-CN`。
-- 新增无依赖的 `DiscImageStudio.Localization` 项目（以中文原文为键的 JSON 翻译表）、`tools/check_locales.py` 与 `tests/DiscImageStudio.LocalizationTests`；README 提供 English 与日本語版本，翻译与扩展说明见 `docs/LOCALIZATION.md`。
+- 新增无依赖的 `DiscImageStudio.Localization` 项目（以中文原文为键的 JSON 翻译表）、`tools/check_locales.py` 与 `tests/DiscImageStudio.LocalizationTests`；`README.md` 改为英文默认页，中文原文移至 `README.zh-CN.md`，另有 `README.ja.md`，翻译与扩展说明见 `docs/LOCALIZATION.md`。
 - 标题栏新增「…」应用菜单，提供「设置…」（Ctrl+,）与「关于…」，主页和工程态均可用；侧边栏底部的「关于」入口移除。
 - 新增设置窗口，分「通用」「存储」两类：深色／浅色／跟随系统主题保存后立即应用到所有窗口，代码绘制的侧边栏、分段控件、盘面画布与任务坞同步刷新。
 - 新增默认工程位置与缓存位置设置：默认工程位置作为新建工程对话框的初始目录，留空使用系统文档目录；缓存位置用于设计合成图、缩略图与预览图，可查看占用、清空本应用缓存文件或打开应用数据目录。清空缓存只删除白名单内的缓存图片与 sidecar，工程和导出文件不受影响，任务运行期间按钮禁用。

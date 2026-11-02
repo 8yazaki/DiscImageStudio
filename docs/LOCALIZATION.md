@@ -32,4 +32,4 @@ Disc Image Studio's UI is available in **Simplified Chinese (zh-CN, the source l
 1. Add `Locales/<code>.json` (it is embedded automatically by the `Locales\*.json` glob).
 2. Add the language to `L.SupportedLanguages` and to `L.Normalize`, and add its native name to the picker (it is generated from `SupportedLanguages`).
 3. If its script needs a different font, extend `AppHost.ApplyLanguageFonts`.
-4. Extend `tools/check_locales.py` / the localization tests if needed, and add a `README.<code>.md`.
+4. Extend `tools/check_locales.py` / the localization tests if needed, and add a `README.<code>.md` (the default `README.md` is English; `README.zh-CN.md` is the Chinese original).

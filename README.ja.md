@@ -1,6 +1,6 @@
 <div align="center">
 
-<p align="center"><a href="README.md">简体中文</a> · <a href="README.en.md">English</a> · <b>日本語</b></p>
+<p align="center"><a href="README.zh-CN.md">简体中文</a> · <a href="README.md">English</a> · <b>日本語</b></p>
 
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -17,7 +17,7 @@ Disc Image Studio は、ディスク表面用の画像を生成して書き込�
 
 </div>
 
-> これは[中国語の原文 README](README.md) の日本語訳です。内容に食い違いがある場合は中国語版が正となります。`docs/` 以下の技術文書は現在中国語版のみで、スクリーンショットも中国語表示の画面です。
+> これは[中国語の原文 README](README.zh-CN.md) の日本語訳です。内容に食い違いがある場合は中国語版が正となります。`docs/` 以下の技術文書は現在中国語版のみで、スクリーンショットも中国語表示の画面です。
 
 ---
 

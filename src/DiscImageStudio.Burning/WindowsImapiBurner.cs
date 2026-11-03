@@ -4,7 +4,7 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace DiscImageStudio.Burning;
 
-public sealed class WindowsImapiBurner : IOpticalDiscBurner
+public sealed class WindowsImapiBurner : IOpticalDiscBurner, IOpticalMediaInspector
 {
     private readonly OpticalBurnOperationGate _operationGate = new();
     private const int CdRawSubcodeIsCooked = 2;
@@ -37,6 +37,16 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner
             deviceId,
             mediaKind,
             cancellationToken)), cancellationToken);
+    }
+
+    public Task<OpticalMediaInfo> InspectMediaAsync(
+        string deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(deviceId);
+        return _operationGate.RunAsync(
+            () => RunOnStaThread(() => ImapiMediaInspector.Inspect(deviceId, cancellationToken)),
+            cancellationToken);
     }
 
     public Task<OpticalBurnResult> BurnAsync(
@@ -843,14 +853,14 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner
         }
     }
 
-    private static dynamic CreateRecorder(string id)
+    internal static dynamic CreateRecorder(string id)
     {
         dynamic recorder = CreateComObject("IMAPI2.MsftDiscRecorder2");
         recorder.InitializeDiscRecorder(id);
         return recorder;
     }
 
-    private static dynamic CreateComObject(string programmaticId)
+    internal static dynamic CreateComObject(string programmaticId)
     {
         Type type = Type.GetTypeFromProgID(programmaticId, throwOnError: false)
             ?? throw new PlatformNotSupportedException(
@@ -879,7 +889,7 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner
         return result;
     }
 
-    private static void ReleaseComObject(object value)
+    internal static void ReleaseComObject(object value)
     {
         if (Marshal.IsComObject(value))
         {

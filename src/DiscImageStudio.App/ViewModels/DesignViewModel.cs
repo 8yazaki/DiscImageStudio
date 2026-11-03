@@ -207,6 +207,26 @@ public partial class DesignViewModel : ObservableObject
 
     // ---- Layer operations ----
 
+    /// <summary>Adds one picture as the top layer and selects it. False when the file cannot
+    /// be decoded; the caller reports that.</summary>
+    internal bool AddImageLayer(string path)
+    {
+        DesignLayerViewModel layer = new()
+        {
+            ImagePath = path,
+            Name = Path.GetFileName(path),
+        };
+        if (!layer.LoadImage(ContentOuterRadiusMm))
+        {
+            return false;
+        }
+
+        SubscribeLayer(layer);
+        Layers.Insert(0, layer);
+        SelectedLayer = layer;
+        return true;
+    }
+
     private void ImportImages()
     {
         string[]? picked = _shell.Dialogs?.PickImages();

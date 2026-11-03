@@ -44,6 +44,9 @@
                         <Button Style="{StaticResource SecondaryButton}" Content="{loc:Text Xaml.OpenProject}"
                                 Height="{StaticResource ControlHeight}" Padding="18,0"
                                 Command="{Binding OpenProjectCommand}" />
+                        <Button Style="{StaticResource SecondaryButton}" Content="{loc:Text Xaml.EasyMode}"
+                                Height="{StaticResource ControlHeight}" Padding="18,0" Margin="10,0,0,0"
+                                Command="{Binding EasyModeCommand}" />
                         <Button Style="{StaticResource PrimaryButton}" Content="{loc:Text Xaml.NewProject}"
                                 Height="{StaticResource ControlHeight}" Padding="18,0" Margin="10,0,0,0"
                                 Command="{Binding NewProjectCommand}" />

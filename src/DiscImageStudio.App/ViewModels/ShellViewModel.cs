@@ -64,6 +64,7 @@ public partial class ShellViewModel : ObservableObject
         BrowseDvdIsoCommand = new RelayCommand(() => BrowseDvdIso(), () => !IsBusy);
         BrowseBluRayIsoCommand = new RelayCommand(() => BrowseBluRayIso(), () => !IsBusy);
         NewProjectCommand = new AsyncRelayCommand(() => RequestNewProjectAsync(null, null), () => !IsBusy);
+        EasyModeCommand = new AsyncRelayCommand(RequestEasyModeAsync, () => !IsBusy);
         OpenProjectCommand = new AsyncRelayCommand(OpenProjectAsync, () => !IsBusy);
         EditProjectCommand = new AsyncRelayCommand(EditProjectAsync, () => !IsBusy && IsProjectOpen);
         SaveProjectCommand = new AsyncRelayCommand(SaveProjectAsync, () => IsProjectOpen && !IsBusy);
@@ -105,6 +106,9 @@ public partial class ShellViewModel : ObservableObject
 
     /// <summary>Installed by the window; opens ProjectDialogWindow modally. Null cancels.</summary>
     internal Func<ProjectDialogRequest, ProjectDialogResult?>? ShowProjectDialogHandler { get; set; }
+
+    /// <summary>Installed by the window; opens the easy mode dialog modally. Null cancels.</summary>
+    internal Func<EasyModeResult?>? ShowEasyModeHandler { get; set; }
 
     [ObservableProperty]
     private Workspace _currentWorkspace = Workspace.Home;
@@ -296,6 +300,8 @@ public partial class ShellViewModel : ObservableObject
 
     public IAsyncRelayCommand NewProjectCommand { get; }
 
+    public IAsyncRelayCommand EasyModeCommand { get; }
+
     public IAsyncRelayCommand OpenProjectCommand { get; }
 
     public IAsyncRelayCommand EditProjectCommand { get; }
@@ -441,6 +447,69 @@ public partial class ShellViewModel : ObservableObject
             return;
         }
 
+        ProjectDocument document = BuildNewDocument(result);
+        try
+        {
+            ProjectJsonStore.Save(result.SavePath, document);
+        }
+        catch (Exception exception)
+        {
+            ShowToast(L.T("无法创建工程"), exception.Message, ToastKind.Error);
+            return;
+        }
+
+        CloseCurrentProject();
+        OpenDocument(result.SavePath, document);
+        ShowToast(L.T("工程已创建"), result.Name, ToastKind.Success);
+    }
+
+    /// <summary>Easy mode: the dialog reads the disc and picks the preset; this creates the
+    /// project, puts the picture on a layer, and lands on the burn page with the same drive.</summary>
+    private async Task RequestEasyModeAsync()
+    {
+        if (_isBusy)
+        {
+            ShowToast(L.T("操作未执行"), L.T("已有任务正在运行。"), ToastKind.Info);
+            return;
+        }
+
+        if (!await EnsureNoUnsavedChangesAsync(L.T("新建工程")))
+        {
+            return;
+        }
+
+        EasyModeResult? easy = ShowEasyModeHandler?.Invoke();
+        if (easy is null)
+        {
+            return;
+        }
+
+        ProjectDocument document = BuildNewDocument(easy.Project);
+        try
+        {
+            ProjectJsonStore.Save(easy.Project.SavePath, document);
+        }
+        catch (Exception exception)
+        {
+            ShowToast(L.T("无法创建工程"), exception.Message, ToastKind.Error);
+            return;
+        }
+
+        CloseCurrentProject();
+        OpenDocument(easy.Project.SavePath, document);
+        if (!Design.AddImageLayer(easy.ImagePath))
+        {
+            ShowToast(L.T("图片无法导入"), easy.ImagePath, ToastKind.Warning);
+            return;
+        }
+
+        Burn.PreferredDeviceId = easy.DeviceId;
+        ShowToast(L.T("工程已创建"), easy.Project.Name, ToastKind.Success);
+        NavigateTo(Workspace.Burn);
+    }
+
+    private static ProjectDocument BuildNewDocument(ProjectDialogResult result)
+    {
         DateTimeOffset now = DateTimeOffset.Now;
         string family = result.Family switch
         {
@@ -450,7 +519,7 @@ public partial class ShellViewModel : ObservableObject
         };
         bool compactDisc = result.Family == OpticalDiscFamily.CompactDisc;
         bool bluRay = result.Family == OpticalDiscFamily.BluRay;
-        ProjectDocument document = new(
+        return new ProjectDocument(
             ProjectJsonStore.CurrentSchemaVersion,
             result.Name,
             family,
@@ -476,19 +545,6 @@ public partial class ShellViewModel : ObservableObject
             now,
             Tone: ToneProfile.Photo,
             BluRay: bluRay ? new ProjectBluRaySettings(result.BluRayInvertMapping) : null);
-        try
-        {
-            ProjectJsonStore.Save(result.SavePath, document);
-        }
-        catch (Exception exception)
-        {
-            ShowToast(L.T("无法创建工程"), exception.Message, ToastKind.Error);
-            return;
-        }
-
-        CloseCurrentProject();
-        OpenDocument(result.SavePath, document);
-        ShowToast(L.T("工程已创建"), result.Name, ToastKind.Success);
     }
 
     /// <summary>Home page template cards: opens the create dialog with a family/template
@@ -1204,6 +1260,7 @@ public partial class ShellViewModel : ObservableObject
         BrowseDvdIsoCommand?.NotifyCanExecuteChanged();
         BrowseBluRayIsoCommand?.NotifyCanExecuteChanged();
         NewProjectCommand?.NotifyCanExecuteChanged();
+        EasyModeCommand?.NotifyCanExecuteChanged();
         OpenProjectCommand?.NotifyCanExecuteChanged();
         EditProjectCommand?.NotifyCanExecuteChanged();
         SaveProjectCommand?.NotifyCanExecuteChanged();

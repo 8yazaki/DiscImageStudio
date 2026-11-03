@@ -19,6 +19,10 @@ public partial class BurnViewModel : ObservableObject
     private readonly DiscParametersState _state;
     private readonly DesignViewModel _design;
     private readonly IOpticalDiscBurner _opticalDiscBurner;
+
+    /// <summary>The drive easy mode already inspected; the next device refresh selects it when
+    /// it is still present, instead of the first drive in the list.</summary>
+    internal string? PreferredDeviceId { get; set; }
     private CancellationTokenSource? _burnCancellation;
     private int _burnWriteSpeedRefreshRevision;
     private int _burnPreparationRevision;
@@ -399,7 +403,9 @@ public partial class BurnViewModel : ObservableObject
             IReadOnlyList<OpticalBurnDevice> devices =
                 await _opticalDiscBurner.GetDevicesAsync();
             Devices = devices;
-            SelectedDevice = devices.Count == 0 ? null : devices[0];
+            SelectedDevice = devices.Count == 0
+                ? null
+                : devices.FirstOrDefault(device => device.Id == PreferredDeviceId) ?? devices[0];
             DeviceStatusText = devices.Count == 0
                 ? L.T("未检测到支持 IMAPI2 的 CD/DVD/BD 刻录机。")
                 : L.F($"检测到 {devices.Count} 台刻录机");

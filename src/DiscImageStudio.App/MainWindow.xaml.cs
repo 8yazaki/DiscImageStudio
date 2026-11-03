@@ -10,8 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using DiscImageStudio.Burning;
 using DiscImageStudio.Controls;
 using DiscImageStudio.Core;
+using DiscImageStudio.Core.Media;
 using DiscImageStudio.Services;
 using DiscImageStudio.ViewModels;
 using DiscImageStudio.Views;
@@ -53,6 +55,7 @@ public partial class MainWindow : Window
         _shell.SaveConfirmationHandler = (title, message, confirmLabel, neutralLabel)
             => BurnConfirmModal.ShowThreeWayAsync(title, message, confirmLabel, neutralLabel);
         _shell.ShowProjectDialogHandler = ShowProjectDialog;
+        _shell.ShowEasyModeHandler = ShowEasyMode;
         _shell.CalibrationParametersApplied += PlayProjectUpdateCelebration;
         _shell.ProjectSaved += PlayProjectSaveTrail;
         DataContext = _shell;
@@ -757,6 +760,17 @@ public partial class MainWindow : Window
     }
 
     // ---- Project dialog host ----
+
+    private EasyModeResult? ShowEasyMode()
+    {
+        EasyModeViewModel viewModel = new(
+            new WindowsImapiBurner(),
+            new WindowsImapiBurner(),
+            _shell.State,
+            new UserMediaPresetStore(UserMediaPresetStore.GetDefaultPath()),
+            _settings.DefaultProjectDirectory);
+        return EasyModeWindow.Show(this, viewModel, () => _shell.Dialogs?.PickImages()?.FirstOrDefault());
+    }
 
     private ProjectDialogResult? ShowProjectDialog(ProjectDialogRequest request)
     {

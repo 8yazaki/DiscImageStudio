@@ -1,0 +1,233 @@
+{
+  "下次遇到这种光盘时自动使用此预设": {
+    "zh-CN": "下次遇到这种光盘时自动使用此预设",
+    "en": "Use this preset automatically for this kind of disc next time",
+    "zh-TW": "下次遇到這種光碟時自動使用此預設",
+    "ja": "次回からこの種類のディスクにこのプリセットを自動で使う",
+    "tr": "Bu tür disk için bir dahaki sefere bu ön ayarı otomatik kullan"
+  },
+  "使用的预设": {
+    "zh-CN": "使用的预设",
+    "en": "Preset to use",
+    "zh-TW": "使用的預設",
+    "ja": "使用するプリセット",
+    "tr": "Kullanılacak ön ayar"
+  },
+  "光盘": {
+    "zh-CN": "光盘",
+    "en": "Disc",
+    "zh-TW": "光碟",
+    "ja": "ディスク",
+    "tr": "Disk"
+  },
+  "创建工程并前往刻录": {
+    "zh-CN": "创建工程并前往刻录",
+    "en": "Create project and go to burn",
+    "zh-TW": "建立專案並前往燒錄",
+    "ja": "プロジェクトを作成して書き込みへ",
+    "tr": "Projeyi oluştur ve yazmaya git"
+  },
+  "刻录机": {
+    "zh-CN": "刻录机",
+    "en": "Recorder",
+    "zh-TW": "燒錄機",
+    "ja": "ドライブ",
+    "tr": "Yazıcı"
+  },
+  "刻录机里没有光盘。请放入空白光盘，然后点“检查光盘”。": {
+    "zh-CN": "刻录机里没有光盘。请放入空白光盘，然后点“检查光盘”。",
+    "en": "There is no disc in the recorder. Insert a blank disc, then click \"Check disc\".",
+    "zh-TW": "燒錄機裡沒有光碟。請放入空白光碟，然後按「檢查光碟」。",
+    "ja": "ドライブにディスクがありません。空のディスクを入れて「ディスクを確認」を押してください。",
+    "tr": "Yazıcıda disk yok. Boş bir disk takın ve \"Diski denetle\"ye tıklayın."
+  },
+  "图片": {
+    "zh-CN": "图片",
+    "en": "Picture",
+    "zh-TW": "圖片",
+    "ja": "画像",
+    "tr": "Resim"
+  },
+  "尚未选择图片": {
+    "zh-CN": "尚未选择图片",
+    "en": "No picture selected yet",
+    "zh-TW": "尚未選擇圖片",
+    "ja": "画像が選択されていません",
+    "tr": "Henüz resim seçilmedi"
+  },
+  "工程名称": {
+    "zh-CN": "工程名称",
+    "en": "Project name",
+    "zh-TW": "專案名稱",
+    "ja": "プロジェクト名",
+    "tr": "Proje adı"
+  },
+  "插入空白光盘并选择一张图片，软件会自动选好参数并建好工程。": {
+    "zh-CN": "插入空白光盘并选择一张图片，软件会自动选好参数并建好工程。",
+    "en": "Insert a blank disc and choose a picture. The app picks the parameters and creates the project for you.",
+    "zh-TW": "插入空白光碟並選擇一張圖片，軟體會自動選好參數並建立專案。",
+    "ja": "空のディスクを入れて画像を選ぶと、パラメーターの選択とプロジェクトの作成を自動で行います。",
+    "tr": "Boş bir disk takın ve bir resim seçin. Uygulama parametreleri seçer ve projeyi sizin için oluşturur."
+  },
+  "无法判断光盘类型。请在下方手动选择预设。": {
+    "zh-CN": "无法判断光盘类型。请在下方手动选择预设。",
+    "en": "The disc type could not be determined. Choose a preset manually below.",
+    "zh-TW": "無法判斷光碟類型。請在下方手動選擇預設。",
+    "ja": "ディスクの種類を判別できません。下でプリセットを手動で選んでください。",
+    "tr": "Disk türü belirlenemedi. Aşağıdan bir ön ayarı elle seçin."
+  },
+  "检查光盘": {
+    "zh-CN": "检查光盘",
+    "en": "Check disc",
+    "zh-TW": "檢查光碟",
+    "ja": "ディスクを確認",
+    "tr": "Diski denetle"
+  },
+  "正在读取光盘信息…": {
+    "zh-CN": "正在读取光盘信息…",
+    "en": "Reading disc information…",
+    "zh-TW": "正在讀取光碟資訊…",
+    "ja": "ディスク情報を読み取っています…",
+    "tr": "Disk bilgisi okunuyor…"
+  },
+  "没有适用于这种光盘的预设。": {
+    "zh-CN": "没有适用于这种光盘的预设。",
+    "en": "There is no preset for this kind of disc.",
+    "zh-TW": "沒有適用於這種光碟的預設。",
+    "ja": "この種類のディスクに使えるプリセットがありません。",
+    "tr": "Bu tür disk için ön ayar yok."
+  },
+  "状态：已写入数据": {
+    "zh-CN": "状态：已写入数据",
+    "en": "Status: already written",
+    "zh-TW": "狀態：已寫入資料",
+    "ja": "状態：データ書き込み済み",
+    "tr": "Durum: veri yazılmış"
+  },
+  "状态：空白": {
+    "zh-CN": "状态：空白",
+    "en": "Status: blank",
+    "zh-TW": "狀態：空白",
+    "ja": "状態：空のディスク",
+    "tr": "Durum: boş"
+  },
+  "盘片识别码：无法读取": {
+    "zh-CN": "盘片识别码：无法读取",
+    "en": "Disc ID: could not be read",
+    "zh-TW": "光碟識別碼：無法讀取",
+    "ja": "ディスクID：読み取れませんでした",
+    "tr": "Disk kimliği: okunamadı"
+  },
+  "简单模式": {
+    "zh-CN": "简单模式",
+    "en": "Easy mode",
+    "zh-TW": "簡易模式",
+    "ja": "かんたんモード",
+    "tr": "Kolay mod"
+  },
+  "请先检查光盘。": {
+    "zh-CN": "请先检查光盘。",
+    "en": "Check the disc first.",
+    "zh-TW": "請先檢查光碟。",
+    "ja": "先にディスクを確認してください。",
+    "tr": "Önce diski denetleyin."
+  },
+  "请选择一张图片。": {
+    "zh-CN": "请选择一张图片。",
+    "en": "Choose a picture.",
+    "zh-TW": "請選擇一張圖片。",
+    "ja": "画像を選択してください。",
+    "tr": "Bir resim seçin."
+  },
+  "读取光盘信息失败：": {
+    "zh-CN": "读取光盘信息失败：",
+    "en": "Could not read the disc: ",
+    "zh-TW": "讀取光碟資訊失敗：",
+    "ja": "ディスク情報の読み取りに失敗しました：",
+    "tr": "Disk bilgisi okunamadı: "
+  },
+  "这张光盘不是空白盘。刻录需要未使用过的光盘。": {
+    "zh-CN": "这张光盘不是空白盘。刻录需要未使用过的光盘。",
+    "en": "This disc is not blank. Burning needs an unused disc.",
+    "zh-TW": "這張光碟不是空白碟。燒錄需要未使用過的光碟。",
+    "ja": "このディスクは空ではありません。書き込みには未使用のディスクが必要です。",
+    "tr": "Bu disk boş değil. Yazmak için kullanılmamış bir disk gerekir."
+  },
+  "选择图片…": {
+    "zh-CN": "选择图片…",
+    "en": "Choose picture…",
+    "zh-TW": "選擇圖片…",
+    "ja": "画像を選択…",
+    "tr": "Resim seç…"
+  },
+  "使用你选择的预设：{0}": {
+    "zh-CN": "使用你选择的预设：{0}",
+    "en": "Using the preset you chose: {0}",
+    "zh-TW": "使用你選擇的預設：{0}",
+    "ja": "選択したプリセットを使用：{0}",
+    "tr": "Seçtiğiniz ön ayar kullanılıyor: {0}"
+  },
+  "使用已保存的校准预设：{0}": {
+    "zh-CN": "使用已保存的校准预设：{0}",
+    "en": "Using your saved calibrated preset: {0}",
+    "zh-TW": "使用已儲存的校準預設：{0}",
+    "ja": "保存済みの校正プリセットを使用：{0}",
+    "tr": "Kayıtlı kalibre ön ayar kullanılıyor: {0}"
+  },
+  "光盘类型：{0}": {
+    "zh-CN": "光盘类型：{0}",
+    "en": "Disc type: {0}",
+    "zh-TW": "光碟類型：{0}",
+    "ja": "ディスクの種類：{0}",
+    "tr": "Disk türü: {0}"
+  },
+  "可用空间：{0:N0} 扇区": {
+    "zh-CN": "可用空间：{0:N0} 扇区",
+    "en": "Free space: {0:N0} sectors",
+    "zh-TW": "可用空間：{0:N0} 磁區",
+    "ja": "空き容量：{0:N0} セクター",
+    "tr": "Boş alan: {0:N0} sektör"
+  },
+  "已识别这种光盘，使用实测预设：{0}": {
+    "zh-CN": "已识别这种光盘，使用实测预设：{0}",
+    "en": "This disc is recognized; using its measured preset: {0}",
+    "zh-TW": "已識別這種光碟，使用實測預設：{0}",
+    "ja": "このディスクを識別しました。実測プリセットを使用：{0}",
+    "tr": "Bu disk tanındı; ölçülmüş ön ayarı kullanılıyor: {0}"
+  },
+  "所选预设（{0}）与这张光盘的类型不符。": {
+    "zh-CN": "所选预设（{0}）与这张光盘的类型不符。",
+    "en": "The chosen preset ({0}) does not match this disc type.",
+    "zh-TW": "所選預設（{0}）與這張光碟的類型不符。",
+    "ja": "選択したプリセット（{0}）はこのディスクの種類と合いません。",
+    "tr": "Seçilen ön ayar ({0}) bu disk türüyle uyuşmuyor."
+  },
+  "盘片识别码：{0}": {
+    "zh-CN": "盘片识别码：{0}",
+    "en": "Disc ID: {0}",
+    "zh-TW": "光碟識別碼：{0}",
+    "ja": "ディスクID：{0}",
+    "tr": "Disk kimliği: {0}"
+  },
+  "这种光盘还没有校准。可以先用标准预设（{0}）制作，但图案可能会错位或发虚。如有校准过的预设，请在下方选择。": {
+    "zh-CN": "这种光盘还没有校准。可以先用标准预设（{0}）制作，但图案可能会错位或发虚。如有校准过的预设，请在下方选择。",
+    "en": "This kind of disc has not been calibrated yet. You can go ahead with the standard preset ({0}), but the picture may be shifted or blurry. If you have a calibrated preset, choose it below.",
+    "zh-TW": "這種光碟還沒有校準。可以先用標準預設（{0}）製作，但圖案可能會錯位或模糊。如有校準過的預設，請在下方選擇。",
+    "ja": "このディスクはまだ校正されていません。標準プリセット（{0}）で作成できますが、絵がずれたりぼやけたりすることがあります。校正済みのプリセットがあれば下で選んでください。",
+    "tr": "Bu tür disk henüz kalibre edilmedi. Standart ön ayarla ({0}) devam edebilirsiniz ancak resim kayabilir veya bulanık çıkabilir. Kalibre edilmiş bir ön ayarınız varsa aşağıdan seçin."
+  },
+  "预设（{0}）比光盘的可用空间多 {1:N0} 个扇区，无法写入。请选择其他预设。": {
+    "zh-CN": "预设（{0}）比光盘的可用空间多 {1:N0} 个扇区，无法写入。请选择其他预设。",
+    "en": "The preset ({0}) needs {1:N0} more sectors than the disc has free, so it cannot be written. Choose another preset.",
+    "zh-TW": "預設（{0}）比光碟的可用空間多 {1:N0} 個磁區，無法寫入。請選擇其他預設。",
+    "ja": "プリセット（{0}）はディスクの空き容量より {1:N0} セクター多く、書き込めません。別のプリセットを選んでください。",
+    "tr": "Ön ayar ({0}) diskin boş alanından {1:N0} sektör fazla, yazılamaz. Başka bir ön ayar seçin."
+  },
+  "Xaml.EasyMode": {
+    "zh-CN": "简单模式",
+    "en": "Easy mode",
+    "zh-TW": "簡易模式",
+    "ja": "かんたんモード",
+    "tr": "Kolay mod"
+  }
+}

@@ -110,6 +110,7 @@ LocalizationTests.Run();
 ThemePaletteTests.Run();
 TempFilesCacheTests.Run();
 RelocalizationTests.Run();
+EasyModeTests.Run();
 
 Console.WriteLine("architecture-selftest: all checks passed");
 return;

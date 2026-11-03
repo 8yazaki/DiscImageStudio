@@ -37,6 +37,9 @@ public partial class HomeViewModel : ObservableObject
         NewProjectCommand = new AsyncRelayCommand(
             _ => _shell.NewProjectCommand.ExecuteAsync(null),
             () => !_shell.IsBusy);
+        EasyModeCommand = new AsyncRelayCommand(
+            _ => _shell.EasyModeCommand.ExecuteAsync(null),
+            () => !_shell.IsBusy);
         OpenProjectCommand = new AsyncRelayCommand(
             _ => _shell.OpenProjectCommand.ExecuteAsync(null),
             () => !_shell.IsBusy);
@@ -71,6 +74,8 @@ public partial class HomeViewModel : ObservableObject
     public string CurrentProjectName => _shell.CurrentProject?.Name ?? string.Empty;
 
     public IAsyncRelayCommand NewProjectCommand { get; }
+
+    public IAsyncRelayCommand EasyModeCommand { get; }
 
     public IAsyncRelayCommand OpenProjectCommand { get; }
 
@@ -117,6 +122,7 @@ public partial class HomeViewModel : ObservableObject
     private void NotifyCommands()
     {
         NewProjectCommand.NotifyCanExecuteChanged();
+        EasyModeCommand.NotifyCanExecuteChanged();
         OpenProjectCommand.NotifyCanExecuteChanged();
         TemplateCommand.NotifyCanExecuteChanged();
         OpenRecentCommand.NotifyCanExecuteChanged();

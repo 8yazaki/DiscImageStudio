@@ -4,7 +4,7 @@ name: fork-exe
 
 on:
   push:
-    branches: [wide-calibration-arms]
+    branches: [wide-calibration-arms, easy-mode]
   workflow_dispatch:
 
 permissions:

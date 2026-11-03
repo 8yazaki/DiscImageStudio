@@ -4,6 +4,7 @@
 
 ### 中文
 
+- 新增“简单模式”：放入空白光盘并选择图片，软件读取光盘类型、容量和盘片识别码，自动选好预设并建好工程，直接进入刻录页。识别不到已校准的预设时会明确提示；校准过的预设可记住并在下次自动使用。读盘为只读操作，不会写入或擦除。
 - 新增威宝 BD-R (64293) 内置预设，参数与 64099 相同，贡献者 bczhc。
 - 新增威宝 DVD+R AZO (43498) 内置预设，贡献者 Disappear9。
 - 新增铼德 DVD-R E时代系列内置预设，贡献者 bczhc。
@@ -15,6 +16,7 @@
 
 ### English
 
+- Added Easy mode: insert a blank disc and pick a picture; the app reads the disc type, capacity and disc ID, chooses the preset, creates the project and opens the burn page. A disc with no calibrated preset is flagged clearly, and a calibrated preset can be remembered for next time. Reading the disc is read-only; nothing is written or erased.
 - Added a built-in Verbatim BD-R (64293) preset with the same parameters as 64099, contributed by bczhc.
 - Added a built-in Verbatim DVD+R AZO (43498) preset, contributed by Disappear9.
 - Added a built-in Ritek DVD-R E-Series preset, contributed by bczhc.

@@ -1,0 +1,49 @@
+# Fork-only helper: build, test and upload a portable win-x64 EXE for hand testing.
+# Not part of any upstream change.
+name: fork-exe
+
+on:
+  push:
+    branches: [wide-calibration-arms]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-exe:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        run: dotnet build DiscImageStudio.slnx --configuration Release
+
+      - name: Test module architecture
+        run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build
+
+      - name: Publish standalone EXE
+        shell: pwsh
+        run: >
+          dotnet publish src/DiscImageStudio.App/DiscImageStudio.App.csproj
+          --configuration Release --runtime win-x64 --self-contained true
+          --output artifacts/exe -maxcpucount:1 -p:BuildInParallel=false
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:IncludeAllContentForSelfExtract=true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DiscImageStudio-win-x64-wide-arms
+          path: artifacts/exe/DiscImageStudio.exe
+          if-no-files-found: error
+          retention-days: 14

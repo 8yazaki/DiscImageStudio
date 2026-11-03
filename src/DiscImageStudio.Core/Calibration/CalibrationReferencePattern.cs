@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace DiscImageStudio.Core.Calibration;
 
 /// <summary>
-/// The user's exact target_slim.png. Its pixel coordinates are mapped by the same
+/// The built-in target_slim.png (original ring layout, 40 px wide cross arms). Its pixel coordinates are mapped by the same
 /// conventions as the ordinary image encoder for the selected disc type.
 /// </summary>
 public static class CalibrationReferencePattern
@@ -12,10 +12,13 @@ public static class CalibrationReferencePattern
     public const int PixelSize = 2400;
     // A physical-disc background for previews, never the image's encoding scale.
     public const double CanvasRadiusMm = 60;
+    // Ring guides keep the original ~10 px line; the cross arms are 40 px so the radial
+    // lines stay visible on dye discs (a 10 px arm is only ~0.5 mm wide).
     public const double NominalLineWidthPixels = 10;
+    public const double NominalArmWidthPixels = 40;
     public const string FileName = "target_slim.png";
-    public const string PngSha256 = "c98ffe87db7cf9c3f132352814e1ce611c44f704de5b7212da4083188257c829";
-    private const string GraySha256 = "3d351bdfb817b943c1d1b4aedc97fc4f0a111e7e1537748f70cb5b180ba96852";
+    public const string PngSha256 = "86ff8fe1b1298f3407fe126befd2278561c01eca4d7fb83107249bc6b2ceadd3";
+    private const string GraySha256 = "023fafef2152940daad2663f33fb4c9f39eabbe3d85b46c66efd8225fed1688e";
     private const string ResourcePrefix = "DiscImageStudio.Core.Calibration.";
     private static readonly Lazy<byte[]> Gray = new(LoadGray);
 

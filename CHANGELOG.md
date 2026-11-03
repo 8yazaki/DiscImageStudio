@@ -11,6 +11,7 @@
 - 新增铼德 DVD+R E时代系列内置预设。
 - 新建工程不再按模板自动填充工程名，输入框保持为空；填写名称后才能创建。
 - 侧栏工程头卡片右侧新增软盘保存按钮。
+- 标定盘的十字臂由 10 像素加宽到 40 像素（约 2 mm，外半径 58 mm 时），圆环不变。原先约 0.5 mm 的细臂在部分染料盘（如 maxell DVD-R）上肉眼几乎不可见，无法描点标定。新增 `tools/make_wide_calibration_target.py` 可重新生成图案。
 
 ### English
 
@@ -21,6 +22,7 @@
 - Added a built-in Ritek DVD+R E-Series preset.
 - New projects leave the project name empty instead of filling it from the selected template; the project can be created once a name is entered.
 - Added a floppy-disk Save button on the right of the sidebar project header.
+- Widened the calibration cross arms from 10 px to 40 px (about 2 mm at a 58 mm outer radius); the rings are unchanged. The old ~0.5 mm arms were nearly invisible by eye on some dye discs (for example maxell DVD-R), so no curve could be traced. `tools/make_wide_calibration_target.py` regenerates the pattern.
 
 ## [1.3.6] - 2026-11-02
 

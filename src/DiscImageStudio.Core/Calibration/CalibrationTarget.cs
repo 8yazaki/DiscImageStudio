@@ -528,7 +528,7 @@ public sealed class CalibrationTarget
         {
             double angle = -90 + index * 90;
             return new CalibrationGroup($"C-{index}", index, CalibrationGroupRole.Coarse, angle, [],
-                0, angle, angle, CalibrationReferencePattern.NominalLineWidthPixels
+                0, angle, angle, CalibrationReferencePattern.NominalArmWidthPixels
                     * CalibrationReferencePattern.MillimetresPerPixel(parameters.OuterRadiusMm, parameters.Kind),
                 parameters.DrawingInnerRadiusMm, parameters.DrawingOuterRadiusMm);
         }).ToArray();

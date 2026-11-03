@@ -48,7 +48,7 @@ internal static class CalibrationEncoderTests
     {
         byte[] original = CalibrationReferencePattern.ReadPngBytes();
         Require(Convert.ToHexString(SHA256.HashData(original)).Equals(
-                "c98ffe87db7cf9c3f132352814e1ce611c44f704de5b7212da4083188257c829", StringComparison.OrdinalIgnoreCase),
+                "86ff8fe1b1298f3407fe126befd2278561c01eca4d7fb83107249bc6b2ceadd3", StringComparison.OrdinalIgnoreCase),
             "the embedded PNG is byte-for-byte the user's target_slim.png");
         string originalPath = Path.Combine(directory, "target_slim.png");
         File.WriteAllBytes(originalPath, original);

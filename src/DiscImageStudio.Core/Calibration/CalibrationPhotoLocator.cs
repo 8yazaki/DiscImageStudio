@@ -56,8 +56,36 @@ public static class CalibrationPhotoLocator
         // Centre hole: a small circle near the disc centre; it has the disc's own aspect and tilt.
         double mean = outer.MeanRadius;
         (double cx, double cy, double radius)? hole = FindCircle(
-            gx, gy, magnitude, w, h, 0, 0, 85, (outer.CenterX, outer.CenterY, mean * 0.4), cancellationToken, mean * 0.08, mean * 0.2);
+            gx, gy, magnitude, w, h, 0, 0, 85, (outer.CenterX, outer.CenterY, mean * 0.4), cancellationToken, mean * 0.108, mean * 0.138);
         double holeX = hole?.cx ?? outer.CenterX, holeY = hole?.cy ?? outer.CenterY, holeR = hole?.radius ?? mean * 0.125;
+
+        // Follow the hole edge itself (a tilted photo makes it an ellipse of its own, and a finger or
+        // the table inside it must not decide its size), then keep its fitted outline.
+        Ellipse? holeEllipse = Ellipse.Fit(FollowRing(image, w, h, holeX, holeY, holeR * 0.92, holeR * 1.08, 36, cancellationToken));
+        if (holeEllipse is { IsFinite: true } he && he.MeanRadius > mean * 0.07 && he.MeanRadius < mean * 0.2
+            && Math.Abs(he.CenterX - outer.CenterX) < mean * 0.25 && Math.Abs(he.CenterY - outer.CenterY) < mean * 0.25)
+        {
+            CalibrationPoint[] outerOnly = outer.Points(pointCount, 1, outer.CenterX, outer.CenterY, scale);
+            // The hole edge is a chamfer, so its apparent size is uncertain by a fraction of a
+            // millimetre. Take the size closest to the detected one that is consistent with the rim
+            // under the photo correction; keep the detected outline if none is.
+            double[] factors = [1, 0.98, 1.02, 0.96, 1.04, 0.94, 1.06, 0.92, 1.08, 0.9, 1.1, 0.88, 1.12];
+            CalibrationPoint[]? chosen = null;
+            foreach (double factor in factors)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                CalibrationPoint[] candidate = he.Points(pointCount, factor, he.CenterX, he.CenterY, scale);
+                if (CalibrationPhotoRectifier.Fit(outerOnly, candidate, 60, 7.5, cancellationToken).Succeeded)
+                {
+                    chosen = candidate;
+                    break;
+                }
+            }
+
+            return new CalibrationPhotoLocation(
+                Array.AsReadOnly(outerOnly),
+                Array.AsReadOnly(chosen ?? he.Points(pointCount, 1, he.CenterX, he.CenterY, scale)));
+        }
 
         CalibrationPoint[] outerPoints = outer.Points(pointCount, 1, outer.CenterX, outer.CenterY, scale);
         CalibrationPoint[] holePoints = outer.Points(pointCount, holeR / mean, holeX, holeY, scale);

@@ -126,8 +126,18 @@ public partial class ShellViewModel : ObservableObject
     [ObservableProperty]
     private MeasurementContext? _activeMeasurement;
 
+    /// <summary>0 for the first calibration disc; 1 after the rings have corrected the radii and a
+    /// second disc is due.</summary>
+    [ObservableProperty]
+    private int _measurementRound;
+
+    partial void OnMeasurementRoundChanged(int value) => OnPropertyChanged(nameof(MeasurementGuide));
+
     public string MeasurementGuide => ActiveMeasurement is { } measurement
         ? L.F($"正在测量：{measurement.Identity}。① 刻录标定盘 → ② 给光盘拍照 → ③ 在“标定”页计算并应用。应用后会自动保存，以后同种光盘直接选图片就能烧。")
+            + (MeasurementRound > 0
+                ? "\n" + L.T("已按圆环修正半径。请再刻一张标定盘：这次十字线应该能看清，再用它求出完整参数。")
+                : string.Empty)
         : string.Empty;
 
     public Visibility MeasurementGuideVisibility => ActiveMeasurement is null ? Visibility.Collapsed : Visibility.Visible;
@@ -526,6 +536,7 @@ public partial class ShellViewModel : ObservableObject
                 return;
             }
 
+            MeasurementRound = 0;
             ActiveMeasurement = measurement;
             Burn.PreferredDeviceId = easy.DeviceId;
             NavigateTo(Workspace.Burn);

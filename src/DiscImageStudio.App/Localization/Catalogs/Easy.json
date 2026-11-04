@@ -285,5 +285,68 @@
     "zh-TW": "無法儲存校準結果",
     "ja": "校正結果を保存できませんでした",
     "tr": "Kalibrasyon kaydedilemedi"
+  },
+  "Xaml.MeasureRings": {
+    "zh-CN": "用圆环测量半径",
+    "en": "Measure radii from rings",
+    "zh-TW": "用圓環測量半徑",
+    "ja": "リングから半径を測る",
+    "tr": "Halkalardan yarıçapı ölç"
+  },
+  "Xaml.MeasureRingsHint": {
+    "zh-CN": "十字线完全看不见时先用这个：圆环不受相位影响，可以先把内外半径校准到十字线能出现的程度。",
+    "en": "Use this first when the cross arms are not visible at all. Rings do not depend on phase, so they can bring the inner and outer radius close enough for the arms to appear.",
+    "zh-TW": "十字線完全看不見時先用這個：圓環不受相位影響，可以先把內外半徑校準到十字線能出現的程度。",
+    "ja": "十字の線がまったく見えないときは、まずこれを使います。リングは位相の影響を受けないため、十字が現れる程度まで内外半径を合わせられます。",
+    "tr": "Çapraz çizgiler hiç görünmüyorsa önce bunu kullanın. Halkalar faza bağlı değildir; iç ve dış yarıçapı çizgilerin görünebileceği düzeye getirebilir."
+  },
+  "无法测量圆环": {
+    "zh-CN": "无法测量圆环",
+    "en": "Could not measure the rings",
+    "zh-TW": "無法測量圓環",
+    "ja": "リングを測定できません",
+    "tr": "Halkalar ölçülemedi"
+  },
+  "请先导入照片并完成照片矫正。": {
+    "zh-CN": "请先导入照片并完成照片矫正。",
+    "en": "Import a photo and finish the photo correction first.",
+    "zh-TW": "請先匯入照片並完成照片矯正。",
+    "ja": "先に写真を読み込み、写真の補正を完了してください。",
+    "tr": "Önce bir fotoğraf içe aktarın ve fotoğraf düzeltmesini tamamlayın."
+  },
+  "正在测量圆环位置…": {
+    "zh-CN": "正在测量圆环位置…",
+    "en": "Measuring the ring positions…",
+    "zh-TW": "正在測量圓環位置…",
+    "ja": "リングの位置を測定しています…",
+    "tr": "Halka konumları ölçülüyor…"
+  },
+  "没有清楚地找到圆环（可信度 {0:0.0}）。请换一张圆环更清楚的照片。": {
+    "zh-CN": "没有清楚地找到圆环（可信度 {0:0.0}）。请换一张圆环更清楚的照片。",
+    "en": "The rings were not found clearly (confidence {0:0.0}). Try a photo where the rings are clearer.",
+    "zh-TW": "沒有清楚地找到圓環（可信度 {0:0.0}）。請換一張圓環更清楚的照片。",
+    "ja": "リングをはっきり検出できませんでした（信頼度 {0:0.0}）。リングがもっとはっきり写った写真を使ってください。",
+    "tr": "Halkalar net bulunamadı (güven {0:0.0}). Halkaların daha net göründüğü bir fotoğraf deneyin."
+  },
+  "已按圆环更新半径：内 {0:0.000} mm，外 {1:0.000} mm（相对原值 {2:+0.000;-0.000} / {3:+0.000;-0.000} mm）。请用新参数重新刻一张标定盘，十字线才会清楚。": {
+    "zh-CN": "已按圆环更新半径：内 {0:0.000} mm，外 {1:0.000} mm（相对原值 {2:+0.000;-0.000} / {3:+0.000;-0.000} mm）。请用新参数重新刻一张标定盘，十字线才会清楚。",
+    "en": "Radii updated from the rings: inner {0:0.000} mm, outer {1:0.000} mm (change {2:+0.000;-0.000} / {3:+0.000;-0.000} mm). Burn another calibration disc with the new parameters so the cross arms become clear.",
+    "zh-TW": "已按圓環更新半徑：內 {0:0.000} mm，外 {1:0.000} mm（相對原值 {2:+0.000;-0.000} / {3:+0.000;-0.000} mm）。請用新引數重新刻一張標定盤，十字線才會清楚。",
+    "ja": "リングから半径を更新しました：内 {0:0.000} mm、外 {1:0.000} mm（元の値との差 {2:+0.000;-0.000} / {3:+0.000;-0.000} mm）。新しいパラメーターで標定盤をもう1枚書くと、十字の線がはっきりします。",
+    "tr": "Yarıçaplar halkalardan güncellendi: iç {0:0.000} mm, dış {1:0.000} mm (değişim {2:+0.000;-0.000} / {3:+0.000;-0.000} mm). Çapraz çizgilerin netleşmesi için yeni parametrelerle bir kalibrasyon diski daha yazın."
+  },
+  "已更新半径": {
+    "zh-CN": "已更新半径",
+    "en": "Radii updated",
+    "zh-TW": "已更新半徑",
+    "ja": "半径を更新しました",
+    "tr": "Yarıçaplar güncellendi"
+  },
+  "已按圆环修正半径。请再刻一张标定盘：这次十字线应该能看清，再用它求出完整参数。": {
+    "zh-CN": "已按圆环修正半径。请再刻一张标定盘：这次十字线应该能看清，再用它求出完整参数。",
+    "en": "The radii were corrected from the rings. Burn another calibration disc: the cross arms should be clear this time, and they give the full parameters.",
+    "zh-TW": "已按圓環修正半徑。請再刻一張標定盤：這次十字線應該能看清，再用它求出完整引數。",
+    "ja": "リングから半径を修正しました。標定盤をもう1枚書いてください。今度は十字の線がはっきり見えるはずで、それで完全なパラメーターを求めます。",
+    "tr": "Yarıçaplar halkalardan düzeltildi. Bir kalibrasyon diski daha yazın: bu kez çapraz çizgiler net görünmeli ve tam parametreler onlardan çıkarılır."
   }
 }

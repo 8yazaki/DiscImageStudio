@@ -111,6 +111,7 @@ ThemePaletteTests.Run();
 TempFilesCacheTests.Run();
 RelocalizationTests.Run();
 EasyModeTests.Run();
+CalibrationRingFitterTests.Run();
 
 Console.WriteLine("architecture-selftest: all checks passed");
 return;

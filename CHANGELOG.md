@@ -4,6 +4,7 @@
 
 ### 中文
 
+- 标定页新增“用圆环测量半径”：圆环是完整的圆，不受相位影响，十字线完全看不见时可先用它测出内外半径。半径偏差超过约 0.01 mm 时十字线会卷成很密的螺旋而看不到，这是未校准盘片上十字线不出现的原因。测量模式下，改好半径后会直接生成并刻录第二张标定盘。
 - 刻录进度、日志和错误信息（CD/DVD 与通用 IMAPI 部分）现在随界面语言显示；此前这些文字由刻录层以中文硬编码输出。Windows 自身返回的错误文本以及蓝光（BD-R）的底层诊断信息暂仍为原文。
 - 简单模式新增“先测量这种光盘”：对没有校准过的盘片，一键建好标定盘并跳到刻录；标定页应用结果后，自动保存为预设并与该盘片识别码配对，以后同种光盘直接选图片即可。刻录页和标定页顶部显示测量进度提示。
 - 盘片识别码中间夹有一个不可读字节时（如 CMC MAG. AM3）不再被拆成两段。
@@ -19,6 +20,7 @@
 
 ### English
 
+- The calibration page can now "Measure radii from rings". Rings are full circles and do not depend on phase, so they work when the cross arms are not visible at all. A radius error beyond about 0.01 mm winds the arms into a spiral too dense to see, which is why they do not appear on an uncalibrated disc. In a measurement, the second calibration disc is prepared right after the radii are corrected.
 - Burn progress, log lines and errors (the CD/DVD and general IMAPI parts) now follow the UI language; they used to be hard-coded Chinese from the burning layer. Text written by Windows itself and the low-level Blu-ray (BD-R) diagnostics are still shown as is.
 - Easy mode can now "Measure this disc first": for a disc with no calibrated preset it builds the calibration disc and jumps to burning; applying the result on the calibration page saves it as a preset paired with the disc ID, so later discs of that kind only need a picture. The burn and calibration pages show the measurement steps at the top.
 - A single unreadable byte inside a disc ID (such as CMC MAG. AM3) no longer splits it into two codes.

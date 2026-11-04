@@ -247,6 +247,12 @@
                                            Style="{StaticResource CompactHint}" Margin="0,0,0,8" />
                                 <Button Content="{loc:Text Xaml.BackToPhotoCorrection}" Command="{Binding BackToPhotoCommand}"
                                         Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,10" />
+                                <!-- Coarse first step for an uncalibrated disc: rings stay visible when the
+                                     cross arms have wound into an unreadable spiral. -->
+                                <Button Content="{loc:Text Xaml.MeasureRings}" Command="{Binding MeasureRingsCommand}"
+                                        Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,4" />
+                                <TextBlock Text="{loc:Text Xaml.MeasureRingsHint}"
+                                           Style="{StaticResource CompactHint}" Margin="0,0,0,10" />
                                 <controls:VisibilityGate IsOpen="{Binding IsDvdTarget}">
                                     <StackPanel Margin="0,0,0,10">
                                         <CheckBox IsChecked="{Binding FitDvdPitch, Mode=TwoWay}" Content="{loc:Text Xaml.FitCubicDVDTrackPitch}"

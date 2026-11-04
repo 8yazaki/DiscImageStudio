@@ -61,7 +61,7 @@ public partial class CalibrationViewModel
     }
 
     private sealed record PhotoSnapshot(
-        BitmapSource? Photo, byte[]? Png, IReadOnlyList<CalibrationPhotoBoundaryPoint> Boundary,
+        BitmapSource? Photo, string? Png, IReadOnlyList<CalibrationPhotoBoundaryPoint> Boundary,
         IReadOnlyList<System.Windows.Point[]> Contours, CalibrationPhotoTransform? Transform,
         CalibrationPhotoFitResult? Fit, BitmapSource? Rectified, bool RectificationReady,
         bool Preview, bool PhotoStep, string Summary, IReadOnlyList<CalibrationTracePoint> Trace);

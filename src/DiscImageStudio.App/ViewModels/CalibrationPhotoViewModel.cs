@@ -183,7 +183,7 @@ public partial class CalibrationViewModel
             InvalidatePhotoRectification();
             PhotoImage = result.Image; _photoPng = result.Png;
             SetBoundaryPoints(result.Contours.Outer, result.Contours.Hole);
-            _statusMessage = L.T("照片已导入。请把两组控制点拖到光盘实体外缘和实体内缘，然后计算矫正。");
+            _statusMessage = L.T("照片已导入，已自动贴近光盘外缘和中心孔。请检查控制点，必要时拖动微调，然后计算矫正。");
             RefreshCommands();
         });
     }

@@ -48,6 +48,11 @@ public static class CalibrationPhotoService
         cancellationToken.ThrowIfCancellationRequested();
         if (count is < 5 or > 64) throw new ArgumentOutOfRangeException(nameof(count), L.T("每条初始轮廓应有 5–64 个点。"));
         if (image.PixelWidth < 16 || image.PixelHeight < 16) throw new ArgumentException(L.T("照片太小，无法输入轮廓。"));
+        if (TryLocate(image, count, cancellationToken) is { } located)
+        {
+            return located;
+        }
+
         double cx = (image.PixelWidth - 1) / 2.0, cy = (image.PixelHeight - 1) / 2.0;
         double rx = image.PixelWidth * 0.43, ry = image.PixelHeight * 0.43;
         CalibrationPoint[] Make(double ratio) => Enumerable.Range(0, count).Select(index =>
@@ -57,6 +62,24 @@ public static class CalibrationPhotoService
             return new CalibrationPoint(cx + rx * ratio * Math.Cos(angle), cy + ry * ratio * Math.Sin(angle));
         }).ToArray();
         return new(Array.AsReadOnly(Make(1)), Array.AsReadOnly(Make(0.125)));
+    }
+
+    /// <summary>Finds the disc rim and centre hole in the photo; null when nothing disc-like is found.</summary>
+    private static CalibrationPhotoContours? TryLocate(BitmapSource image, int count, CancellationToken cancellationToken)
+    {
+        try
+        {
+            BitmapSource grey = image.Format == PixelFormats.Gray8 ? image : new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0);
+            int width = grey.PixelWidth, height = grey.PixelHeight;
+            byte[] pixels = new byte[checked(width * height)];
+            grey.CopyPixels(pixels, width, 0);
+            CalibrationPhotoLocation? found = CalibrationPhotoLocator.Locate(pixels, width, height, count, cancellationToken);
+            return found is null ? null : new(found.Outer, found.Hole);
+        }
+        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or NotSupportedException or OverflowException)
+        {
+            return null;
+        }
     }
 
     public static BitmapSource Rectify(BitmapSource image, CalibrationPhotoTransform transform,

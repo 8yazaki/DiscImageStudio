@@ -348,5 +348,12 @@
     "zh-TW": "已按圓環修正半徑。請再刻一張標定盤：這次十字線應該能看清，再用它求出完整引數。",
     "ja": "リングから半径を修正しました。標定盤をもう1枚書いてください。今度は十字の線がはっきり見えるはずで、それで完全なパラメーターを求めます。",
     "tr": "Yarıçaplar halkalardan düzeltildi. Bir kalibrasyon diski daha yazın: bu kez çapraz çizgiler net görünmeli ve tam parametreler onlardan çıkarılır."
+  },
+  "照片已导入，已自动贴近光盘外缘和中心孔。请检查控制点，必要时拖动微调，然后计算矫正。": {
+    "zh-CN": "照片已导入，已自动贴近光盘外缘和中心孔。请检查控制点，必要时拖动微调，然后计算矫正。",
+    "zh-TW": "照片已匯入，已自動貼近光碟外緣與中心孔。請檢查控制點，必要時拖曳微調，然後計算矯正。",
+    "en": "Photo imported; the control points were placed on the disc edge and centre hole automatically. Check them, drag to fine-tune if needed, then calculate the correction.",
+    "ja": "写真を読み込み、ディスクの外縁と中心の穴に制御点を自動で合わせました。確認して、必要なら少しドラッグで調整し、補正を計算してください。",
+    "tr": "Fotoğraf içe aktarıldı; kontrol noktaları disk kenarına ve merkez deliğine otomatik yerleştirildi. Kontrol edin, gerekirse sürükleyerek ince ayar yapın, sonra düzeltmeyi hesaplayın."
   }
 }

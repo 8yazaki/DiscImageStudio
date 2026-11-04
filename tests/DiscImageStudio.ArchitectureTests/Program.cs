@@ -112,6 +112,7 @@ TempFilesCacheTests.Run();
 RelocalizationTests.Run();
 EasyModeTests.Run();
 CalibrationRingFitterTests.Run();
+CalibrationPhotoLocatorTests.Run();
 
 Console.WriteLine("architecture-selftest: all checks passed");
 return;

@@ -232,58 +232,58 @@
   },
   "先测量这种光盘（推荐）": {
     "zh-CN": "先测量这种光盘（推荐）",
-    "en": "先测量这种光盘（推荐）",
-    "zh-TW": "Measure this disc first (recommended)",
-    "ja": "先測量這種光碟（建議）",
-    "tr": "このディスクを先に測定（おすすめ）"
+    "en": "Measure this disc first (recommended)",
+    "zh-TW": "先測量這種光碟（建議）",
+    "ja": "このディスクを先に測定（おすすめ）",
+    "tr": "Bu diski önce ölç (önerilir)"
   },
   "烧一张标定盘并拍照，算出这种光盘的参数。结果会保存，以后这种光盘直接选图片就能烧。": {
     "zh-CN": "烧一张标定盘并拍照，算出这种光盘的参数。结果会保存，以后这种光盘直接选图片就能烧。",
-    "en": "烧一张标定盘并拍照，算出这种光盘的参数。结果会保存，以后这种光盘直接选图片就能烧。",
-    "zh-TW": "Burn one calibration disc and photograph it to work out this disc's parameters. The result is saved, so later discs of this kind only need a picture.",
-    "ja": "燒一張標定碟並拍照，算出這種光碟的參數。結果會儲存，以後這種光碟直接選圖片就能燒。",
-    "tr": "校正用ディスクを1枚書いて撮影し、このディスクのパラメーターを求めます。結果は保存され、次回からこの種類のディスクは画像を選ぶだけで書けます。"
+    "en": "Burn one calibration disc and photograph it to work out this disc's parameters. The result is saved, so later discs of this kind only need a picture.",
+    "zh-TW": "燒一張標定碟並拍照，算出這種光碟的參數。結果會儲存，以後這種光碟直接選圖片就能燒。",
+    "ja": "校正用ディスクを1枚書いて撮影し、このディスクのパラメーターを求めます。結果は保存され、次回からこの種類のディスクは画像を選ぶだけで書けます。",
+    "tr": "Bir kalibrasyon diski yazıp fotoğrafını çekin; bu diskin parametreleri hesaplanır. Sonuç kaydedilir, sonraki disklerde yalnızca resim seçmeniz yeter."
   },
   "校准-{0}": {
     "zh-CN": "校准-{0}",
-    "en": "校准-{0}",
-    "zh-TW": "Calibration-{0}",
-    "ja": "校準-{0}",
-    "tr": "校正-{0}"
+    "en": "Calibration-{0}",
+    "zh-TW": "校準-{0}",
+    "ja": "校正-{0}",
+    "tr": "Kalibrasyon-{0}"
   },
   "校准：{0}": {
     "zh-CN": "校准：{0}",
-    "en": "校准：{0}",
-    "zh-TW": "Calibrated: {0}",
-    "ja": "校準：{0}",
-    "tr": "校正済み：{0}"
+    "en": "Calibrated: {0}",
+    "zh-TW": "校準：{0}",
+    "ja": "校正済み：{0}",
+    "tr": "Kalibre: {0}"
   },
   "正在测量：{0}。① 刻录标定盘 → ② 给光盘拍照 → ③ 在“标定”页计算并应用。应用后会自动保存，以后同种光盘直接选图片就能烧。": {
     "zh-CN": "正在测量：{0}。① 刻录标定盘 → ② 给光盘拍照 → ③ 在“标定”页计算并应用。应用后会自动保存，以后同种光盘直接选图片就能烧。",
-    "en": "正在测量：{0}。① 刻录标定盘 → ② 给光盘拍照 → ③ 在“标定”页计算并应用。应用后会自动保存，以后同种光盘直接选图片就能烧。",
-    "zh-TW": "Measuring: {0}. 1) Burn the calibration disc → 2) Photograph the disc → 3) Solve and apply on the Calibration page. It is saved automatically, and later discs of this kind only need a picture.",
-    "ja": "正在測量：{0}。① 燒錄標定碟 → ② 替光碟拍照 → ③ 在「標定」頁計算並套用。套用後會自動儲存，以後同種光碟直接選圖片就能燒。",
-    "tr": "測定中：{0}。① 校正用ディスクを書き込む → ② ディスクを撮影 → ③「キャリブレーション」ページで計算して適用。適用すると自動で保存され、次回からこの種類のディスクは画像を選ぶだけで書けます。"
+    "en": "Measuring: {0}. 1) Burn the calibration disc → 2) Photograph the disc → 3) Solve and apply on the Calibration page. It is saved automatically, and later discs of this kind only need a picture.",
+    "zh-TW": "正在測量：{0}。① 燒錄標定碟 → ② 替光碟拍照 → ③ 在「標定」頁計算並套用。套用後會自動儲存，以後同種光碟直接選圖片就能燒。",
+    "ja": "測定中：{0}。① 校正用ディスクを書き込む → ② ディスクを撮影 → ③「キャリブレーション」ページで計算して適用。適用すると自動で保存され、次回からこの種類のディスクは画像を選ぶだけで書けます。",
+    "tr": "Ölçülüyor: {0}. 1) Kalibrasyon diskini yazın → 2) Diskin fotoğrafını çekin → 3) Kalibrasyon sayfasında hesaplayıp uygulayın. Otomatik kaydedilir; sonraki disklerde yalnızca resim seçmeniz yeter."
   },
   "已保存这种光盘的校准结果": {
     "zh-CN": "已保存这种光盘的校准结果",
-    "en": "已保存这种光盘的校准结果",
-    "zh-TW": "Calibration saved for this kind of disc",
-    "ja": "已儲存這種光碟的校準結果",
-    "tr": "このディスクの校正結果を保存しました"
+    "en": "Calibration saved for this kind of disc",
+    "zh-TW": "已儲存這種光碟的校準結果",
+    "ja": "このディスクの校正結果を保存しました",
+    "tr": "Bu tür disk için kalibrasyon kaydedildi"
   },
   "以后遇到 {0} 会自动使用，直接选图片就能烧。": {
     "zh-CN": "以后遇到 {0} 会自动使用，直接选图片就能烧。",
-    "en": "以后遇到 {0} 会自动使用，直接选图片就能烧。",
-    "zh-TW": "{0} will be used automatically from now on; just pick a picture and burn.",
-    "ja": "以後遇到 {0} 會自動使用，直接選圖片就能燒。",
-    "tr": "今後 {0} は自動で使われます。画像を選ぶだけで書けます。"
+    "en": "{0} will be used automatically from now on; just pick a picture and burn.",
+    "zh-TW": "以後遇到 {0} 會自動使用，直接選圖片就能燒。",
+    "ja": "今後 {0} は自動で使われます。画像を選ぶだけで書けます。",
+    "tr": "Bundan sonra {0} otomatik kullanılır; yalnızca resim seçip yazın."
   },
   "无法保存校准结果": {
     "zh-CN": "无法保存校准结果",
-    "en": "无法保存校准结果",
-    "zh-TW": "Could not save the calibration",
-    "ja": "無法儲存校準結果",
-    "tr": "校正結果を保存できませんでした"
+    "en": "Could not save the calibration",
+    "zh-TW": "無法儲存校準結果",
+    "ja": "校正結果を保存できませんでした",
+    "tr": "Kalibrasyon kaydedilemedi"
   }
 }

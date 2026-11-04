@@ -23,6 +23,10 @@ public partial class BurnViewModel : ObservableObject
     /// <summary>The drive easy mode already inspected; the next device refresh selects it when
     /// it is still present, instead of the first drive in the list.</summary>
     internal string? PreferredDeviceId { get; set; }
+
+    public string MeasurementGuide => _shell.MeasurementGuide;
+
+    public System.Windows.Visibility MeasurementGuideVisibility => _shell.MeasurementGuideVisibility;
     private CancellationTokenSource? _burnCancellation;
     private int _burnWriteSpeedRefreshRevision;
     private int _burnPreparationRevision;
@@ -117,6 +121,12 @@ public partial class BurnViewModel : ObservableObject
         // target's family), so a project switch or a new target has to re-derive and re-arm.
         _shell.PropertyChanged += (_, args) =>
         {
+            if (args.PropertyName == nameof(ShellViewModel.ActiveMeasurement))
+            {
+                OnPropertyChanged(nameof(MeasurementGuide));
+                OnPropertyChanged(nameof(MeasurementGuideVisibility));
+            }
+
             if (args.PropertyName is nameof(ShellViewModel.IsProjectOpen)
                 or nameof(ShellViewModel.CurrentProject))
             {

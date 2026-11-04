@@ -14,9 +14,16 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <controls:PageHeader Grid.Row="0" Title="{loc:Text Xaml.Calibration2}"
-                             Workspace="{x:Static vm:Workspace.Calibration}"
-                             Hint="{loc:Text Xaml.UseDiscImageStudioSBuiltInAlgorithmsTo}" />
+        <StackPanel Grid.Row="0">
+            <controls:PageHeader Title="{loc:Text Xaml.Calibration2}"
+                                 Workspace="{x:Static vm:Workspace.Calibration}"
+                                 Hint="{loc:Text Xaml.UseDiscImageStudioSBuiltInAlgorithmsTo}" />
+            <Border Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource PrimaryBrush}"
+                    BorderThickness="1" CornerRadius="{StaticResource RadiusPanel}" Padding="14,10"
+                    Margin="0,0,0,16" Visibility="{Binding MeasurementGuideVisibility}">
+                <TextBlock Text="{Binding MeasurementGuide}" Style="{StaticResource BodyText}" TextWrapping="Wrap" />
+            </Border>
+        </StackPanel>
         <!-- One scroll surface: in the wide layout the work area is exactly the viewport tall
              (the step column is an accordion that never grows past it), in the narrow layout
              it stacks and the page scrolls as one. -->

@@ -12,6 +12,11 @@
             <controls:PageHeader Title="{loc:Text Xaml.Burn}" Badge="{Binding FamilyLabel}"
                                  Workspace="{x:Static vm:Workspace.Burn}"
                                  Hint="{loc:Text Xaml.StreamDataDirectlyToABlankDiscWithoutFirst}" />
+            <Border Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource PrimaryBrush}"
+                    BorderThickness="1" CornerRadius="{StaticResource RadiusPanel}" Padding="14,10"
+                    Margin="0,0,0,16" Visibility="{Binding MeasurementGuideVisibility}">
+                <TextBlock Text="{Binding MeasurementGuide}" Style="{StaticResource BodyText}" TextWrapping="Wrap" />
+            </Border>
 
             <!-- Source: what lands on the disc. The switch is the page's own input selector,
                  the same pattern as the preview workspace's 输入原图/输入镜像; the summary

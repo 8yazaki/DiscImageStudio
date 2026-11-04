@@ -10,6 +10,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiscImageStudio.Burning;
 using DiscImageStudio.Core;
+using DiscImageStudio.Core.Calibration;
+using DiscImageStudio.Core.Media;
 using DiscImageStudio.Services;
 
 namespace DiscImageStudio.ViewModels;
@@ -118,6 +120,23 @@ public partial class ShellViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _isProjectOpen;
+
+    /// <summary>Set while a disc model is being measured (easy mode → burn pattern → photo →
+    /// apply). Applying the calibration then saves it and pairs it with this model.</summary>
+    [ObservableProperty]
+    private MeasurementContext? _activeMeasurement;
+
+    public string MeasurementGuide => ActiveMeasurement is { } measurement
+        ? L.F($"正在测量：{measurement.Identity}。① 刻录标定盘 → ② 给光盘拍照 → ③ 在“标定”页计算并应用。应用后会自动保存，以后同种光盘直接选图片就能烧。")
+        : string.Empty;
+
+    public Visibility MeasurementGuideVisibility => ActiveMeasurement is null ? Visibility.Collapsed : Visibility.Visible;
+
+    partial void OnActiveMeasurementChanged(MeasurementContext? value)
+    {
+        OnPropertyChanged(nameof(MeasurementGuide));
+        OnPropertyChanged(nameof(MeasurementGuideVisibility));
+    }
 
     [ObservableProperty]
     private bool _isDirty;
@@ -497,6 +516,22 @@ public partial class ShellViewModel : ObservableObject
 
         CloseCurrentProject();
         OpenDocument(easy.Project.SavePath, document);
+        if (easy.Measurement is { } measurement)
+        {
+            string sessionPath = Path.Combine(
+                Path.GetDirectoryName(easy.Project.SavePath) ?? string.Empty,
+                Path.GetFileNameWithoutExtension(easy.Project.SavePath) + ".calibration.json");
+            if (!Calibration.PrepareMeasurement(sessionPath))
+            {
+                return;
+            }
+
+            ActiveMeasurement = measurement;
+            Burn.PreferredDeviceId = easy.DeviceId;
+            NavigateTo(Workspace.Burn);
+            return;
+        }
+
         if (!Design.AddImageLayer(easy.ImagePath))
         {
             ShowToast(L.T("图片无法导入"), easy.ImagePath, ToastKind.Warning);
@@ -506,6 +541,52 @@ public partial class ShellViewModel : ObservableObject
         Burn.PreferredDeviceId = easy.DeviceId;
         ShowToast(L.T("工程已创建"), easy.Project.Name, ToastKind.Success);
         NavigateTo(Workspace.Burn);
+    }
+
+    /// <summary>Called when a calibration is applied while a disc model is being measured: saves
+    /// the result as a preset, pairs it with the model, and ends the measurement.</summary>
+    internal void CompleteMeasurement(CalibrationParameters parameters)
+    {
+        if (ActiveMeasurement is not { } measurement)
+        {
+            return;
+        }
+
+        OpticalDiscFamily family = parameters.Kind switch
+        {
+            CalibrationDiscKind.Cd => OpticalDiscFamily.CompactDisc,
+            CalibrationDiscKind.BluRay => OpticalDiscFamily.BluRay,
+            _ => OpticalDiscFamily.Dvd,
+        };
+        try
+        {
+            string presetId = State.AddUserPresetReturningId(
+                family,
+                L.F($"校准：{measurement.Identity}"),
+                parameters.InnerRadiusMm,
+                parameters.OuterRadiusMm,
+                parameters.Sectors,
+                parameters.PitchLinear,
+                parameters.PitchQuadratic,
+                parameters.PitchCubic,
+                parameters.BluRayInvertMapping);
+            new UserMediaPresetStore(UserMediaPresetStore.GetDefaultPath()).Remember(new(
+                measurement.Identity,
+                measurement.Family,
+                presetId,
+                measurement.DriveName,
+                DateTimeOffset.Now));
+            ActiveMeasurement = null;
+            ShowToast(
+                L.T("已保存这种光盘的校准结果"),
+                L.F($"以后遇到 {measurement.Identity} 会自动使用，直接选图片就能烧。"),
+                ToastKind.Success);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException
+            or ArgumentException or InvalidOperationException or InvalidDataException or OverflowException)
+        {
+            ShowToast(L.T("无法保存校准结果"), exception.Message, ToastKind.Warning);
+        }
     }
 
     private static ProjectDocument BuildNewDocument(ProjectDialogResult result)

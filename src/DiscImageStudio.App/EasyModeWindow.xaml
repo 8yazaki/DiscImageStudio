@@ -88,6 +88,14 @@
 
                             <ItemsControl ItemsSource="{Binding Notices}" ItemTemplate="{StaticResource NoticeTemplate}" />
 
+                            <StackPanel Visibility="{Binding CanOfferMeasure, Converter={StaticResource BoolToVisibility}}"
+                                        Margin="0,6,0,6">
+                                <Button Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left"
+                                        Content="{Binding MeasureLabel}" Command="{Binding MeasureCommand}" />
+                                <TextBlock Text="{Binding MeasureHint}" Style="{StaticResource HintText}"
+                                           Margin="0,6,0,0" />
+                            </StackPanel>
+
                             <CheckBox Content="{Binding RememberLabel}" IsChecked="{Binding RememberChoice}"
                                       Visibility="{Binding CanRemember, Converter={StaticResource BoolToVisibility}}"
                                       Margin="0,4,0,0" />

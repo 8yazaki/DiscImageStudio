@@ -326,6 +326,24 @@ public partial class DiscParametersState : ObservableObject
         double pitchCubic = 0,
         bool invertMapping = false)
     {
+        AddUserPresetReturningId(family, displayName, innerRadiusMm, outerRadiusMm, sectors,
+            pitchLinear, pitchQuadratic, pitchCubic, invertMapping);
+        return displayName;
+    }
+
+    /// <summary>Same as <see cref="AddUserPreset"/> but returns the new preset's id, for callers
+    /// that pair the preset with something else (a disc model).</summary>
+    public string AddUserPresetReturningId(
+        OpticalDiscFamily family,
+        string displayName,
+        double innerRadiusMm,
+        double outerRadiusMm,
+        long sectors,
+        double pitchLinear = 0,
+        double pitchQuadratic = 0,
+        double pitchCubic = 0,
+        bool invertMapping = false)
+    {
         string name = displayName.Trim();
         if (name.Length == 0)
         {
@@ -400,7 +418,7 @@ public partial class DiscParametersState : ObservableObject
 
         DiscPresetJsonStore.Save(_discPresetJsonPath, updated);
         LoadPresets();
-        return displayName;
+        return id;
     }
 
     /// <summary>

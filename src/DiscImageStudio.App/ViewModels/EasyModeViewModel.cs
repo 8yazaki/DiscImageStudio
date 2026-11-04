@@ -11,7 +11,15 @@ namespace DiscImageStudio.ViewModels;
 
 /// <summary>What the easy mode hands back: the project to create, the picture to draw on it and
 /// the recorder to preselect on the burn page.</summary>
-public sealed record EasyModeResult(ProjectDialogResult Project, string ImagePath, string? DeviceId);
+public sealed record EasyModeResult(
+    ProjectDialogResult Project,
+    string ImagePath,
+    string? DeviceId,
+    MeasurementContext? Measurement = null);
+
+/// <summary>The disc model being measured: once the calibration is applied, the result is saved as
+/// a preset and paired with this model so the next disc of the kind needs no measuring.</summary>
+public sealed record MeasurementContext(MediaFamily Family, string Identity, string? DriveName);
 
 /// <summary>One row of the preset list. A null id is the automatic choice.</summary>
 public sealed record EasyChoice(string? PresetId, string Title);
@@ -82,6 +90,7 @@ public sealed class EasyModeViewModel : ObservableObject
         InspectCommand = new AsyncRelayCommand(InspectAsync, () => !IsBusy && SelectedDevice is not null);
         BrowseImageCommand = new RelayCommand(BrowseImage, () => !IsBusy);
         CreateCommand = new RelayCommand(Confirm, CanCreate);
+        MeasureCommand = new RelayCommand(ConfirmMeasure, CanMeasure);
         Recompute();
     }
 
@@ -99,6 +108,8 @@ public sealed class EasyModeViewModel : ObservableObject
     public string RememberLabel => L.T("下次遇到这种光盘时自动使用此预设");
     public string CreateLabel => L.T("创建工程并前往刻录");
     public string CancelLabel => L.T("取消");
+    public string MeasureLabel => L.T("先测量这种光盘（推荐）");
+    public string MeasureHint => L.T("烧一张标定盘并拍照，算出这种光盘的参数。结果会保存，以后这种光盘直接选图片就能烧。");
 
     // ---- State ----
 
@@ -215,6 +226,7 @@ public sealed class EasyModeViewModel : ObservableObject
                 InspectCommand.NotifyCanExecuteChanged();
                 BrowseImageCommand.NotifyCanExecuteChanged();
                 CreateCommand.NotifyCanExecuteChanged();
+                MeasureCommand.NotifyCanExecuteChanged();
             }
         }
     }
@@ -226,6 +238,12 @@ public sealed class EasyModeViewModel : ObservableObject
     public IRelayCommand BrowseImageCommand { get; }
 
     public IRelayCommand CreateCommand { get; }
+
+    public IRelayCommand MeasureCommand { get; }
+
+    /// <summary>Measuring is offered only for a blank disc of a known model that has no
+    /// calibrated preset yet: the result has to be paired with something.</summary>
+    public bool CanOfferMeasure => _plan is { CanProceed: true, NeedsCalibration: true } && MediaIdKey().Length > 0;
 
     /// <summary>Installed by the window: shows the image picker and returns a path or null.</summary>
     internal Func<string?>? PickImage { get; set; }
@@ -330,6 +348,34 @@ public sealed class EasyModeViewModel : ObservableObject
         ErrorMessage = string.Empty;
     }
 
+    private bool CanMeasure() => !IsBusy && CanOfferMeasure;
+
+    private void ConfirmMeasure()
+    {
+        try
+        {
+            EasyPlan plan = _plan ?? throw new InvalidOperationException(L.T("请先检查光盘。"));
+            if (!CanOfferMeasure || plan.PresetId is null
+                || !_geometry.TryGetValue(plan.PresetId, out ProjectDialogResult? template))
+            {
+                throw new InvalidOperationException(L.T("请先检查光盘。"));
+            }
+
+            string identity = MediaIdKey();
+            string name = L.F($"校准-{identity}");
+            string savePath = Path.Combine(_saveDirectory, SanitizeFileName(name) + ProjectJsonStore.FileExtension);
+            Result = new(template with { Name = name, SavePath = savePath }, string.Empty, SelectedDevice?.Id,
+                new MeasurementContext(_media.Family, identity, SelectedDevice?.DisplayName));
+            ErrorMessage = string.Empty;
+            CloseWithConfirm?.Invoke();
+        }
+        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException
+            or IOException or UnauthorizedAccessException)
+        {
+            ErrorMessage = exception.Message;
+        }
+    }
+
     private bool CanCreate() => !IsBusy && _plan is { CanProceed: true }
         && ImagePath.Length > 0 && ProjectName.Trim().Length > 0;
 
@@ -420,7 +466,9 @@ public sealed class EasyModeViewModel : ObservableObject
 
         MediaSummary = DescribeMedia();
         OnPropertyChanged(nameof(CanRemember));
+        OnPropertyChanged(nameof(CanOfferMeasure));
         CreateCommand.NotifyCanExecuteChanged();
+        MeasureCommand.NotifyCanExecuteChanged();
     }
 
     private string DescribeMedia()
@@ -451,7 +499,7 @@ public sealed class EasyModeViewModel : ObservableObject
         EasyNoticeKind.UnknownMedia => L.T("无法判断光盘类型。请在下方手动选择预设。"),
         EasyNoticeKind.UsingSavedCalibration => L.F($"使用已保存的校准预设：{notice.Text}"),
         EasyNoticeKind.UsingBuiltInPreset => L.F($"已识别这种光盘，使用实测预设：{notice.Text}"),
-        EasyNoticeKind.Uncalibrated => L.F($"这种光盘还没有校准。可以先用标准预设（{notice.Text}）制作，但图案可能会错位或发虚。如有校准过的预设，请在下方选择。"),
+        EasyNoticeKind.Uncalibrated => L.F($"这种光盘还没有校准。直接用标准预设（{notice.Text}）烧的话，图案很可能错位或发虚。建议先点“先测量这种光盘”，只需做一次。"),
         EasyNoticeKind.ChosenManually => L.F($"使用你选择的预设：{notice.Text}"),
         EasyNoticeKind.NoPresetForFamily => L.T("没有适用于这种光盘的预设。"),
         EasyNoticeKind.FamilyMismatch => L.F($"所选预设（{notice.Text}）与这张光盘的类型不符。"),

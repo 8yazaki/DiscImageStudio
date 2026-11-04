@@ -4,6 +4,8 @@
 
 ### 中文
 
+- 简单模式新增“先测量这种光盘”：对没有校准过的盘片，一键建好标定盘并跳到刻录；标定页应用结果后，自动保存为预设并与该盘片识别码配对，以后同种光盘直接选图片即可。刻录页和标定页顶部显示测量进度提示。
+- 盘片识别码中间夹有一个不可读字节时（如 CMC MAG. AM3）不再被拆成两段。
 - 新增“简单模式”：放入空白光盘并选择图片，软件读取光盘类型、容量和盘片识别码，自动选好预设并建好工程，直接进入刻录页。识别不到已校准的预设时会明确提示；校准过的预设可记住并在下次自动使用。读盘为只读操作，不会写入或擦除。
 - 新增威宝 BD-R (64293) 内置预设，参数与 64099 相同，贡献者 bczhc。
 - 新增威宝 DVD+R AZO (43498) 内置预设，贡献者 Disappear9。
@@ -16,6 +18,8 @@
 
 ### English
 
+- Easy mode can now "Measure this disc first": for a disc with no calibrated preset it builds the calibration disc and jumps to burning; applying the result on the calibration page saves it as a preset paired with the disc ID, so later discs of that kind only need a picture. The burn and calibration pages show the measurement steps at the top.
+- A single unreadable byte inside a disc ID (such as CMC MAG. AM3) no longer splits it into two codes.
 - Added Easy mode: insert a blank disc and pick a picture; the app reads the disc type, capacity and disc ID, chooses the preset, creates the project and opens the burn page. A disc with no calibrated preset is flagged clearly, and a calibrated preset can be remembered for next time. Reading the disc is read-only; nothing is written or erased.
 - Added a built-in Verbatim BD-R (64293) preset with the same parameters as 64099, contributed by bczhc.
 - Added a built-in Verbatim DVD+R AZO (43498) preset, contributed by Disappear9.

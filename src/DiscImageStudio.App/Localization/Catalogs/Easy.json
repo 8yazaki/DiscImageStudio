@@ -209,13 +209,6 @@
     "ja": "ディスクID：{0}",
     "tr": "Disk kimliği: {0}"
   },
-  "这种光盘还没有校准。可以先用标准预设（{0}）制作，但图案可能会错位或发虚。如有校准过的预设，请在下方选择。": {
-    "zh-CN": "这种光盘还没有校准。可以先用标准预设（{0}）制作，但图案可能会错位或发虚。如有校准过的预设，请在下方选择。",
-    "en": "This kind of disc has not been calibrated yet. You can go ahead with the standard preset ({0}), but the picture may be shifted or blurry. If you have a calibrated preset, choose it below.",
-    "zh-TW": "這種光碟還沒有校準。可以先用標準預設（{0}）製作，但圖案可能會錯位或模糊。如有校準過的預設，請在下方選擇。",
-    "ja": "このディスクはまだ校正されていません。標準プリセット（{0}）で作成できますが、絵がずれたりぼやけたりすることがあります。校正済みのプリセットがあれば下で選んでください。",
-    "tr": "Bu tür disk henüz kalibre edilmedi. Standart ön ayarla ({0}) devam edebilirsiniz ancak resim kayabilir veya bulanık çıkabilir. Kalibre edilmiş bir ön ayarınız varsa aşağıdan seçin."
-  },
   "预设（{0}）比光盘的可用空间多 {1:N0} 个扇区，无法写入。请选择其他预设。": {
     "zh-CN": "预设（{0}）比光盘的可用空间多 {1:N0} 个扇区，无法写入。请选择其他预设。",
     "en": "The preset ({0}) needs {1:N0} more sectors than the disc has free, so it cannot be written. Choose another preset.",
@@ -229,5 +222,68 @@
     "zh-TW": "簡易模式",
     "ja": "かんたんモード",
     "tr": "Kolay mod"
+  },
+  "这种光盘还没有校准。直接用标准预设（{0}）烧的话，图案很可能错位或发虚。建议先点“先测量这种光盘”，只需做一次。": {
+    "zh-CN": "这种光盘还没有校准。直接用标准预设（{0}）烧的话，图案很可能错位或发虚。建议先点“先测量这种光盘”，只需做一次。",
+    "en": "This kind of disc has not been calibrated yet. Burning with the standard preset ({0}) will very likely give a shifted or blurry picture. Click \"Measure this disc first\"; it only has to be done once.",
+    "zh-TW": "這種光碟還沒有校準。直接用標準預設（{0}）燒錄的話，圖案很可能錯位或模糊。建議先按「先測量這種光碟」，只需做一次。",
+    "ja": "このディスクはまだ校正されていません。標準プリセット（{0}）でそのまま書くと、絵がずれたりぼやけたりする可能性が高いです。先に「このディスクを先に測定」を押してください（一度だけで済みます）。",
+    "tr": "Bu tür disk henüz kalibre edilmedi. Standart ön ayarla ({0}) yazarsanız resim büyük olasılıkla kayar veya bulanık çıkar. Önce \"Bu diski önce ölç\"e tıklayın; yalnızca bir kez yapılır."
+  },
+  "先测量这种光盘（推荐）": {
+    "zh-CN": "先测量这种光盘（推荐）",
+    "en": "先测量这种光盘（推荐）",
+    "zh-TW": "Measure this disc first (recommended)",
+    "ja": "先測量這種光碟（建議）",
+    "tr": "このディスクを先に測定（おすすめ）"
+  },
+  "烧一张标定盘并拍照，算出这种光盘的参数。结果会保存，以后这种光盘直接选图片就能烧。": {
+    "zh-CN": "烧一张标定盘并拍照，算出这种光盘的参数。结果会保存，以后这种光盘直接选图片就能烧。",
+    "en": "烧一张标定盘并拍照，算出这种光盘的参数。结果会保存，以后这种光盘直接选图片就能烧。",
+    "zh-TW": "Burn one calibration disc and photograph it to work out this disc's parameters. The result is saved, so later discs of this kind only need a picture.",
+    "ja": "燒一張標定碟並拍照，算出這種光碟的參數。結果會儲存，以後這種光碟直接選圖片就能燒。",
+    "tr": "校正用ディスクを1枚書いて撮影し、このディスクのパラメーターを求めます。結果は保存され、次回からこの種類のディスクは画像を選ぶだけで書けます。"
+  },
+  "校准-{0}": {
+    "zh-CN": "校准-{0}",
+    "en": "校准-{0}",
+    "zh-TW": "Calibration-{0}",
+    "ja": "校準-{0}",
+    "tr": "校正-{0}"
+  },
+  "校准：{0}": {
+    "zh-CN": "校准：{0}",
+    "en": "校准：{0}",
+    "zh-TW": "Calibrated: {0}",
+    "ja": "校準：{0}",
+    "tr": "校正済み：{0}"
+  },
+  "正在测量：{0}。① 刻录标定盘 → ② 给光盘拍照 → ③ 在“标定”页计算并应用。应用后会自动保存，以后同种光盘直接选图片就能烧。": {
+    "zh-CN": "正在测量：{0}。① 刻录标定盘 → ② 给光盘拍照 → ③ 在“标定”页计算并应用。应用后会自动保存，以后同种光盘直接选图片就能烧。",
+    "en": "正在测量：{0}。① 刻录标定盘 → ② 给光盘拍照 → ③ 在“标定”页计算并应用。应用后会自动保存，以后同种光盘直接选图片就能烧。",
+    "zh-TW": "Measuring: {0}. 1) Burn the calibration disc → 2) Photograph the disc → 3) Solve and apply on the Calibration page. It is saved automatically, and later discs of this kind only need a picture.",
+    "ja": "正在測量：{0}。① 燒錄標定碟 → ② 替光碟拍照 → ③ 在「標定」頁計算並套用。套用後會自動儲存，以後同種光碟直接選圖片就能燒。",
+    "tr": "測定中：{0}。① 校正用ディスクを書き込む → ② ディスクを撮影 → ③「キャリブレーション」ページで計算して適用。適用すると自動で保存され、次回からこの種類のディスクは画像を選ぶだけで書けます。"
+  },
+  "已保存这种光盘的校准结果": {
+    "zh-CN": "已保存这种光盘的校准结果",
+    "en": "已保存这种光盘的校准结果",
+    "zh-TW": "Calibration saved for this kind of disc",
+    "ja": "已儲存這種光碟的校準結果",
+    "tr": "このディスクの校正結果を保存しました"
+  },
+  "以后遇到 {0} 会自动使用，直接选图片就能烧。": {
+    "zh-CN": "以后遇到 {0} 会自动使用，直接选图片就能烧。",
+    "en": "以后遇到 {0} 会自动使用，直接选图片就能烧。",
+    "zh-TW": "{0} will be used automatically from now on; just pick a picture and burn.",
+    "ja": "以後遇到 {0} 會自動使用，直接選圖片就能燒。",
+    "tr": "今後 {0} は自動で使われます。画像を選ぶだけで書けます。"
+  },
+  "无法保存校准结果": {
+    "zh-CN": "无法保存校准结果",
+    "en": "无法保存校准结果",
+    "zh-TW": "Could not save the calibration",
+    "ja": "無法儲存校準結果",
+    "tr": "校正結果を保存できませんでした"
   }
 }

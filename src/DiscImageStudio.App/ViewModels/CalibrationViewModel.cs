@@ -38,6 +38,14 @@ public partial class CalibrationViewModel : ObservableObject
     {
         _shell = shell;
         _state = state;
+        _shell.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(ShellViewModel.ActiveMeasurement))
+            {
+                OnPropertyChanged(nameof(MeasurementGuide));
+                OnPropertyChanged(nameof(MeasurementGuideVisibility));
+            }
+        };
         CreateTargetCommand = new RelayCommand(CreateTarget, () => !IsBusy);
         BrowseOutputCommand = new RelayCommand(BrowseOutput, () => !IsBusy);
         ExportPngCommand = new AsyncRelayCommand(ExportPngAsync, CanUseTarget);
@@ -172,6 +180,34 @@ public partial class CalibrationViewModel : ObservableObject
     public IAsyncRelayCommand SolveCommand { get; }
     public RelayCommand CancelCommand { get; }
     public RelayCommand ApplyParametersCommand { get; }
+
+    /// <summary>Easy mode's measurement start: builds the pattern for the project's geometry,
+    /// saves the session beside the project, and selects the pattern as the burn source.</summary>
+    internal bool PrepareMeasurement(string sessionPath)
+    {
+        EnsureTarget();
+        if (_target is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            SaveSessionTo(sessionPath);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            Report(ex);
+            return false;
+        }
+
+        _shell.Burn.UseCalibrationPattern = true;
+        return true;
+    }
+
+    public string MeasurementGuide => _shell.MeasurementGuide;
+
+    public Visibility MeasurementGuideVisibility => _shell.MeasurementGuideVisibility;
 
     internal void EnsureTarget()
     {
@@ -547,6 +583,7 @@ public partial class CalibrationViewModel : ObservableObject
         _statusMessage = L.F($"已应用到 {family} 参数。原标定盘记录仍保留，可继续补点核对。");
         _shell.AppendLog(L.F($"[{DateTime.Now:HH:mm:ss}] 标定 {Target?.Id}: {_statusMessage} 内半径={ri}, 外半径={ro}\n"));
         _shell.NotifyCalibrationParametersApplied();
+        _shell.CompleteMeasurement(p);
     }
 
     partial void OnSelectedCoarseCandidateChanged(CoarseCandidate? value)

@@ -7,7 +7,10 @@ public sealed record CalibrationRingFitResult(
     int RingCount,
     double Confidence,
     double InnerShiftMm,
-    double OuterShiftMm);
+    double OuterShiftMm,
+    double SpreadMm = 0,
+    double CenterXMm = 0,
+    double CenterYMm = 0);
 
 /// <summary>
 /// Measures where the burned ring guides really landed and derives the inner and outer radius of
@@ -30,6 +33,8 @@ public static class CalibrationRingFitter
     private const double RingMarginMm = 0.3;
     private const double CoarseStepMm = 0.1;
     private const double FineStepMm = 0.01;
+    private const double CenterSearchMm = 0.4;
+    private const double CenterStepMm = 0.4;
 
     /// <summary>Radial score curve: the mean normalized ring contrast of the photo at each radius.</summary>
     internal sealed record RadialScore(double StartMm, double StepMm, double[] Values)
@@ -68,9 +73,79 @@ public static class CalibrationRingFitter
             throw new InvalidOperationException("标定图案的圆环太少，无法测量。");
         }
 
-        RadialScore score = BuildRadialScore(generated, sampleGray, searchMm, cancellationToken);
-
+        // The photo centre is never exact (rectification, hand-placed control points). A centre error
+        // smears the rings and shifts the radii, so the centre is searched together with the radii.
+        double[][]? bestProfiles = null;
         (double Inner, double Outer, double Value) best = (generated.InnerRadiusMm, generated.OuterRadiusMm, double.NegativeInfinity);
+        (double X, double Y) bestCenter = (0, 0);
+        double bestConfidence = 0;
+        for (double offsetY = -CenterSearchMm; offsetY <= CenterSearchMm + 1e-9; offsetY += CenterStepMm)
+        {
+            for (double offsetX = -CenterSearchMm; offsetX <= CenterSearchMm + 1e-9; offsetX += CenterStepMm)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                (double dx, double dy) = (offsetX, offsetY);
+                double[][] profiles = BuildAngleProfiles(generated, (x, y) => sampleGray(x + dx, y + dy), searchMm, cancellationToken, out double start);
+                RadialScore score = SumProfiles(profiles, start, null);
+                (double Inner, double Outer, double Value, double Confidence)? found = Search(target, generated, ringRadii, score, searchMm, cancellationToken);
+                if (found is { } f && f.Value > best.Value)
+                {
+                    best = (f.Inner, f.Outer, f.Value);
+                    bestCenter = (dx, dy);
+                    bestConfidence = f.Confidence;
+                    bestProfiles = profiles;
+                }
+            }
+        }
+
+        if (bestProfiles is null)
+        {
+            throw new InvalidOperationException("在搜索范围内没有可用的半径组合。");
+        }
+
+        // Spread: the same search on each quarter of the angles. Where the rings agree the quarters
+        // agree; a large spread means the rectified photo is not a clean top view.
+        double start0 = Math.Max(1, generated.InnerRadiusMm - searchMm - FlankFarMm - 0.1);
+        List<double> inners = [], outers = [];
+        for (int quarter = 0; quarter < 4; quarter++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            RadialScore part = SumProfiles(bestProfiles, start0, (quarter * AngleSamples / 4, (quarter + 1) * AngleSamples / 4));
+            if (Search(target, generated, ringRadii, part, searchMm, cancellationToken) is { } q)
+            {
+                inners.Add(q.Inner);
+                outers.Add(q.Outer);
+            }
+        }
+
+        double spread = inners.Count >= 3 ? Math.Max(StandardDeviation(inners), StandardDeviation(outers)) : double.NaN;
+        return new CalibrationRingFitResult(
+            generated with { InnerRadiusMm = best.Inner, OuterRadiusMm = best.Outer },
+            ringRadii.Length,
+            bestConfidence,
+            best.Inner - generated.InnerRadiusMm,
+            best.Outer - generated.OuterRadiusMm,
+            spread,
+            bestCenter.X,
+            bestCenter.Y);
+    }
+
+    private static double StandardDeviation(List<double> values)
+    {
+        double mean = values.Average();
+        return Math.Sqrt(values.Sum(v => (v - mean) * (v - mean)) / values.Count);
+    }
+
+    /// <summary>Coarse grid over both radii, then a fine grid around the best cell.</summary>
+    private static (double Inner, double Outer, double Value, double Confidence)? Search(
+        CalibrationTarget target,
+        CalibrationParameters generated,
+        double[] ringRadii,
+        RadialScore score,
+        double searchMm,
+        CancellationToken cancellationToken)
+    {
+        (double Inner, double Outer, double Value) best = (0, 0, double.NegativeInfinity);
         List<double> coarseValues = [];
         for (double dInner = -searchMm; dInner <= searchMm + 1e-9; dInner += CoarseStepMm)
         {
@@ -92,7 +167,7 @@ public static class CalibrationRingFitter
 
         if (coarseValues.Count == 0)
         {
-            throw new InvalidOperationException("在搜索范围内没有可用的半径组合。");
+            return null;
         }
 
         // The coarse grid is 0.1 mm; the ring is ~0.5 mm wide, so the true optimum lies within one
@@ -102,7 +177,6 @@ public static class CalibrationRingFitter
         {
             for (double dOuter = -CoarseStepMm; dOuter <= CoarseStepMm + 1e-9; dOuter += FineStepMm)
             {
-                cancellationToken.ThrowIfCancellationRequested();
                 double value = Evaluate(target, generated, ringRadii, score, best.Inner + dInner, best.Outer + dOuter);
                 if (double.IsFinite(value) && value > refined.Value)
                 {
@@ -113,13 +187,7 @@ public static class CalibrationRingFitter
 
         double mean = coarseValues.Average();
         double deviation = Math.Sqrt(coarseValues.Sum(value => (value - mean) * (value - mean)) / coarseValues.Count);
-        double confidence = deviation > 0 ? (refined.Value - mean) / deviation : 0;
-        return new CalibrationRingFitResult(
-            generated with { InnerRadiusMm = refined.Inner, OuterRadiusMm = refined.Outer },
-            ringRadii.Length,
-            confidence,
-            refined.Inner - generated.InnerRadiusMm,
-            refined.Outer - generated.OuterRadiusMm);
+        return (refined.Inner, refined.Outer, refined.Value, deviation > 0 ? (refined.Value - mean) / deviation : 0);
     }
 
     /// <summary>Ring radii of the reference pattern in the generation geometry, limited to rings that
@@ -173,23 +241,23 @@ public static class CalibrationRingFitter
         }
     }
 
-    private static RadialScore BuildRadialScore(
+    /// <summary>Per-direction ring contrast over radius (each direction normalized to the same total).</summary>
+    private static double[][] BuildAngleProfiles(
         CalibrationParameters generated,
         Func<double, double, double?> sampleGray,
         double searchMm,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        out double start)
     {
-        double start = Math.Max(1, generated.InnerRadiusMm - searchMm - FlankFarMm - 0.1);
+        start = Math.Max(1, generated.InnerRadiusMm - searchMm - FlankFarMm - 0.1);
         double end = generated.OuterRadiusMm + searchMm + FlankFarMm + 0.1;
         int count = (int)Math.Ceiling((end - start) / ProfileStepMm) + 1;
         int core = (int)Math.Round(CoreHalfWidthMm / ProfileStepMm);
         int near = (int)Math.Round(FlankNearMm / ProfileStepMm);
         int far = (int)Math.Round(FlankFarMm / ProfileStepMm);
 
-        double[] sum = new double[count];
-        int[] used = new int[count];
+        double[][] result = new double[AngleSamples][];
         double[] profile = new double[count];
-        double[] contrast = new double[count];
         for (int angleIndex = 0; angleIndex < AngleSamples; angleIndex++)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -202,6 +270,7 @@ public static class CalibrationRingFitter
             }
 
             // Band-pass response: the mean inside the ring minus the mean of both flanks.
+            double[] contrast = new double[count];
             int valid = 0;
             double energy = 0;
             for (int i = 0; i < count; i++)
@@ -226,6 +295,7 @@ public static class CalibrationRingFitter
 
             if (valid < count / 4 || energy <= 0)
             {
+                result[angleIndex] = [];
                 continue;
             }
 
@@ -235,7 +305,44 @@ public static class CalibrationRingFitter
             {
                 if (double.IsFinite(contrast[i]))
                 {
-                    sum[i] += contrast[i] * scale;
+                    contrast[i] *= scale;
+                }
+            }
+
+            result[angleIndex] = contrast;
+        }
+
+        return result;
+    }
+
+    private static RadialScore SumProfiles(double[][] profiles, double start, (int From, int To)? range)
+    {
+        int count = profiles.First(p => p.Length > 0 || true).Length;
+        foreach (double[] p in profiles)
+        {
+            if (p.Length > 0)
+            {
+                count = p.Length;
+                break;
+            }
+        }
+
+        double[] sum = new double[count];
+        int[] used = new int[count];
+        int from = range?.From ?? 0, to = range?.To ?? profiles.Length;
+        for (int a = from; a < to; a++)
+        {
+            double[] contrast = profiles[a];
+            if (contrast.Length == 0)
+            {
+                continue;
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                if (double.IsFinite(contrast[i]))
+                {
+                    sum[i] += contrast[i];
                     used[i]++;
                 }
             }
@@ -243,10 +350,11 @@ public static class CalibrationRingFitter
 
         double[] values = new double[count];
         bool any = false;
+        int need = Math.Max(1, (to - from) / 4);
         for (int i = 0; i < count; i++)
         {
             values[i] = used[i] > 0 ? sum[i] / used[i] : 0;
-            any |= used[i] > AngleSamples / 4;
+            any |= used[i] > need;
         }
 
         if (!any)

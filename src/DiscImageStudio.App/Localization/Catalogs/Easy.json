@@ -369,5 +369,19 @@
     "zh-TW": "半徑已更新，不需要按「套用校準」（它只用於描線結果）。直接燒一張新的標定盤，再拍照確認十字線是否清楚。",
     "ja": "半径はすでに更新済みなので「キャリブレーションを適用」は不要です（これはトレース結果用です）。新しい標定盤を書き込み、撮影して十字の線がはっきり出るか確認してください。",
     "tr": "Yarıçaplar zaten güncellendi; \"Kalibrasyonu uygula\" gerekmez (yalnızca izleme sonucu içindir). Yeni bir kalibrasyon diski yazıp çapraz çizgilerin net olup olmadığını fotoğrafla kontrol edin."
+  },
+  " 测量的离散度 ±{0:0.00} mm。": {
+    "zh-CN": " 测量的离散度 ±{0:0.00} mm。",
+    "en": " Measurement spread ±{0:0.00} mm.",
+    "zh-TW": " 測量的離散度 ±{0:0.00} mm。",
+    "ja": " 測定のばらつき ±{0:0.00} mm。",
+    "tr": " Ölçüm dağılımı ±{0:0.00} mm."
+  },
+  " 离散度偏大：圆环位置在各方向不一致，请确认照片矫正的控制点或换一张更正的照片。": {
+    "zh-CN": " 离散度偏大：圆环位置在各方向不一致，请确认照片矫正的控制点或换一张更正的照片。",
+    "en": " The spread is large: the rings do not agree between directions. Check the control points of the photo correction or use a more head-on photo.",
+    "zh-TW": " 離散度偏大：圓環位置在各方向不一致，請確認照片矯正的控制點或換一張更正的照片。",
+    "ja": " ばらつきが大きいです：リングの位置が方向ごとに食い違っています。写真補正の制御点を確認するか、より正面から撮った写真を使ってください。",
+    "tr": " Dağılım büyük: halka konumları yönler arasında tutarsız. Fotoğraf düzeltmesinin kontrol noktalarını kontrol edin veya daha dik çekilmiş bir fotoğraf kullanın."
   }
 }

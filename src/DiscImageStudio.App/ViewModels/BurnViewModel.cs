@@ -725,7 +725,9 @@ public partial class BurnViewModel : ObservableObject
                 progress,
                 burnCancellation.Token);
             BurnProgressValue = 100;
-            SetBurnStatus("刻录完成，可以取出光盘。");
+            SetBurnStatus(result.CloseWarning is null
+                ? "刻录完成，可以取出光盘。"
+                : "数据已写完，但关闭步骤报告了警告。可以取出光盘，请在资源管理器里确认内容。");
             _shell.CompleteDockJob(L.T("完成：流式刻录 ") + contentDescription);
             _shell.AppendLog(
                 L.F($"[{DateTime.Now:HH:mm:ss}] 流式刻录完成：{result.BytesWritten} 字节，")
@@ -734,7 +736,16 @@ public partial class BurnViewModel : ObservableObject
                     ? "。\n"
                     : L.F($"，实际速度={FormatBurnWriteSpeed(result.ActualWriteSpeed, mediaKind)}。\n")));
             ConfirmChecked = false;
-            _shell.ShowToast(L.T("流式刻录完成"), L.T("流式刻录已经完成，可以取出光盘。"), ToastKind.Success);
+            if (result.CloseWarning is not null)
+            {
+                _shell.AppendLog(L.F($"[{DateTime.Now:HH:mm:ss}] 数据已全部写入，但关闭步骤返回错误：{result.CloseWarning}\n"));
+                _shell.ShowToast(L.T("数据已写入，关闭步骤有警告"),
+                    L.T("数据已写完，但关闭步骤报告了警告。可以取出光盘，请在资源管理器里确认内容。"), ToastKind.Warning);
+            }
+            else
+            {
+                _shell.ShowToast(L.T("流式刻录完成"), L.T("流式刻录已经完成，可以取出光盘。"), ToastKind.Success);
+            }
         }
         catch (OperationCanceledException)
         {

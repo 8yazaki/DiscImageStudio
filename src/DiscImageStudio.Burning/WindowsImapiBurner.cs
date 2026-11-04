@@ -162,6 +162,7 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner, IOpticalMediaInspec
             value => progress?.Report(value));
         string currentOperation = "初始化 Windows 刻录接口";
         List<string> cleanupWarnings = [];
+        string? closeWarning = null;
         cancellationToken.ThrowIfCancellationRequested();
         progress?.Report(new OpticalBurnProgress(
             "device",
@@ -283,7 +284,8 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner, IOpticalMediaInspec
                     request,
                     cancellationToken,
                     reportDataWriteSpeed,
-                    writeProgress.ReportDataUpdate);
+                    writeProgress.ReportDataUpdate,
+                    warning => closeWarning = warning);
             }
 
             stopwatch.Stop();
@@ -292,7 +294,8 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner, IOpticalMediaInspec
                 request.MediaKind,
                 request.ContentLength,
                 stopwatch.Elapsed,
-                actualWriteSpeed);
+                actualWriteSpeed,
+                closeWarning);
         }
         catch (COMException exception)
         {
@@ -314,7 +317,9 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner, IOpticalMediaInspec
 
         progress?.Report(new OpticalBurnProgress(
             "complete",
-            "刻录完成，盘片会话已关闭。",
+            result!.CloseWarning is null
+                ? "刻录完成，盘片会话已关闭。"
+                : $"数据已全部写入，但盘片关闭步骤返回了错误 {result.CloseWarning}。盘片内容通常可以读取，但可能没有封盘。",
             request.ContentLength,
             request.ContentLength));
         return result!;
@@ -605,7 +610,8 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner, IOpticalMediaInspec
         OpticalBurnRequest request,
         CancellationToken cancellationToken,
         Action<OpticalWriteSpeed>? reportWriteSpeed = null,
-        Action<object>? reportWriteProgress = null)
+        Action<object>? reportWriteProgress = null,
+        Action<string>? reportCloseWarning = null)
     {
         ValidateDataMedia(
             request,
@@ -642,6 +648,12 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner, IOpticalMediaInspec
         }
         catch (COMException) { /* Optional telemetry must not prevent writing. */ }
         try { format.Write(content); }
+        catch (COMException exception) when (content.IsFullyRead && exception.HResult == unchecked((int)0x80004005))
+        {
+            // Every byte already went to the recorder; only the final close step was refused.
+            // The data positions are fixed by then, so the burn is reported as done with a warning.
+            reportCloseWarning?.Invoke($"0x{exception.HResult:X8}：{exception.Message}");
+        }
         finally
         {
             if (subscribed)

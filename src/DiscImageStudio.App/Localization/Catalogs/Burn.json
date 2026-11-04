@@ -418,5 +418,33 @@
     "zh-TW": "要求的功能頁面受支援，但現在沒有標記為當前頁面",
     "ja": "要求された機能ページはサポートされていますが、現在のページとしてマークされていません",
     "tr": "İstenen özellik sayfası destekleniyor ancak geçerli sayfa olarak işaretlenmemiş"
+  },
+  "数据已全部写入，但盘片关闭步骤返回了错误 {0}。盘片内容通常可以读取，但可能没有封盘。": {
+    "zh-CN": "数据已全部写入，但盘片关闭步骤返回了错误 {0}。盘片内容通常可以读取，但可能没有封盘。",
+    "en": "All data was written, but the disc close step returned error {0}. The disc is usually readable, but it may not be finalized.",
+    "zh-TW": "資料已全部寫入，但光碟關閉步驟回傳了錯誤 {0}。光碟內容通常可以讀取，但可能沒有封碟。",
+    "ja": "データはすべて書き込まれましたが、ディスクを閉じる処理でエラー {0} が返されました。通常は読み取れますが、ファイナライズされていない可能性があります。",
+    "tr": "Tüm veri yazıldı, ancak disk kapatma adımı {0} hatasını döndürdü. Disk genellikle okunabilir, ancak sonlandırılmamış olabilir."
+  },
+  "数据已写完，但关闭步骤报告了警告。可以取出光盘，请在资源管理器里确认内容。": {
+    "zh-CN": "数据已写完，但关闭步骤报告了警告。可以取出光盘，请在资源管理器里确认内容。",
+    "en": "The data was written, but the close step reported a warning. You can take the disc out; check its contents in Explorer.",
+    "zh-TW": "資料已寫完，但關閉步驟回報了警告。可以取出光碟，請在檔案總管確認內容。",
+    "ja": "データは書き込まれましたが、閉じる処理で警告が出ました。ディスクを取り出して、エクスプローラーで内容を確認してください。",
+    "tr": "Veri yazıldı, ancak kapatma adımı bir uyarı bildirdi. Diski çıkarabilirsiniz; içeriğini Dosya Gezgini'nde kontrol edin."
+  },
+  "数据已写入，关闭步骤有警告": {
+    "zh-CN": "数据已写入，关闭步骤有警告",
+    "en": "Data written; the close step gave a warning",
+    "zh-TW": "資料已寫入，關閉步驟有警告",
+    "ja": "書き込み済み、閉じる処理で警告",
+    "tr": "Veri yazıldı; kapatma adımında uyarı var"
+  },
+  "[{0:HH:mm:ss}] 数据已全部写入，但关闭步骤返回错误：{1}\n": {
+    "zh-CN": "[{0:HH:mm:ss}] 数据已全部写入，但关闭步骤返回错误：{1}\n",
+    "en": "[{0:HH:mm:ss}] All data was written, but the close step returned an error: {1}\n",
+    "zh-TW": "[{0:HH:mm:ss}] 資料已全部寫入，但關閉步驟回傳錯誤：{1}\n",
+    "ja": "[{0:HH:mm:ss}] データはすべて書き込まれましたが、閉じる処理でエラーが返されました：{1}\n",
+    "tr": "[{0:HH:mm:ss}] Tüm veri yazıldı, ancak kapatma adımı hata döndürdü: {1}\n"
   }
 }

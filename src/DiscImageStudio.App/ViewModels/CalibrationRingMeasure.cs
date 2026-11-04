@@ -16,7 +16,8 @@ namespace DiscImageStudio.ViewModels;
 /// </summary>
 public partial class CalibrationViewModel
 {
-    private const double MinimumRingConfidence = 3.0;
+    private const double MinimumRingConfidence = 3.3;
+    private const double UncertainSpreadMm = 0.3;
     private IAsyncRelayCommand? _measureRingsCommand;
 
     private RelayCommand? _burnMeasuredCommand;
@@ -57,8 +58,17 @@ public partial class CalibrationViewModel
 
             ApplyRadii(result.Parameters);
             _statusMessage = L.F($"已按圆环更新半径：内 {result.Parameters.InnerRadiusMm:0.000} mm，外 {result.Parameters.OuterRadiusMm:0.000} mm（相对原值 {result.InnerShiftMm:+0.000;-0.000} / {result.OuterShiftMm:+0.000;-0.000} mm）。请用新参数重新刻一张标定盘，十字线才会清楚。");
+            bool uncertain = !double.IsFinite(result.SpreadMm) || result.SpreadMm > UncertainSpreadMm;
+            _statusMessage += double.IsFinite(result.SpreadMm)
+                ? L.F($" 测量的离散度 ±{result.SpreadMm:0.00} mm。")
+                : string.Empty;
+            if (uncertain)
+            {
+                _statusMessage += L.T(" 离散度偏大：圆环位置在各方向不一致，请确认照片矫正的控制点或换一张更正的照片。");
+            }
+
             _shell.AppendLog(L.F($"[{DateTime.Now:HH:mm:ss}] 标定：{_statusMessage}\n"));
-            _shell.ShowToast(L.T("已更新半径"), _statusMessage, ToastKind.Success);
+            _shell.ShowToast(L.T("已更新半径"), _statusMessage, uncertain ? ToastKind.Warning : ToastKind.Success);
             // Rebuilding the target clears the photo step; the photo and its correction stay valid
             // (they do not depend on the radii), so they are put back and the user keeps working.
             PhotoSnapshot snapshot = TakePhotoSnapshot();

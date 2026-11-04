@@ -34,6 +34,9 @@ internal sealed class GeneratedContentComStream : IStream, IDisposable
     private bool _disposed;
     internal OpticalBurnBufferOptions BufferOptions { get; }
 
+    /// <summary>True once the recorder has taken every byte of the content.</summary>
+    internal bool IsFullyRead => Interlocked.Read(ref _position) >= _length;
+
     internal GeneratedContentComStream(
         long length,
         Action<Stream, CancellationToken> producer,

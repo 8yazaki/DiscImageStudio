@@ -111,7 +111,8 @@ public sealed record OpticalBurnResult(
     OpticalBurnMediaKind MediaKind,
     long BytesWritten,
     TimeSpan Elapsed,
-    OpticalWriteSpeed? ActualWriteSpeed = null);
+    OpticalWriteSpeed? ActualWriteSpeed = null,
+    string? CloseWarning = null);
 
 public interface IOpticalDiscBurner
 {

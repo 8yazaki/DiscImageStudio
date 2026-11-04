@@ -74,7 +74,15 @@ public static class CalibrationPhotoService
             byte[] pixels = new byte[checked(width * height)];
             grey.CopyPixels(pixels, width, 0);
             CalibrationPhotoLocation? found = CalibrationPhotoLocator.Locate(pixels, width, height, count, cancellationToken);
-            return found is null ? null : new(found.Outer, found.Hole);
+            if (found is null)
+            {
+                return null;
+            }
+
+            // The handles must start inside the photo even when part of the rim is cut off by the frame.
+            CalibrationPoint[] Inside(IReadOnlyList<CalibrationPoint> points) => points
+                .Select(p => new CalibrationPoint(Math.Clamp(p.X, 0, width - 1.0), Math.Clamp(p.Y, 0, height - 1.0))).ToArray();
+            return new(Array.AsReadOnly(Inside(found.Outer)), Array.AsReadOnly(Inside(found.Hole)));
         }
         catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or NotSupportedException or OverflowException)
         {

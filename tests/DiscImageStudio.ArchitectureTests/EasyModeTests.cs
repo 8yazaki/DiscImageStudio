@@ -32,6 +32,10 @@ internal static class EasyModeTests
         Require(MediaIdentity.FromStructure(MediaStructureKind.DvdAdip, spaced) == "MCC 004 000",
             "padding collapses to single spaces");
 
+        byte[] split = [0, 0, 0, 0, 0x01, .. Encoding.ASCII.GetBytes("CMC MA"), 0x0F, .. Encoding.ASCII.GetBytes("G. AM3"), 0x00, 0x00];
+        Require(MediaIdentity.FromStructure(MediaStructureKind.DvdPreRecorded, split) == "CMC MAG. AM3",
+            "a single stray byte inside a code is ignored");
+
         Require(MediaIdentity.FromStructure(MediaStructureKind.DvdAdip, new byte[40]) is null,
             "an all-zero structure has no identity");
         Require(MediaIdentity.FromStructure(MediaStructureKind.None, dvdR) is null, "no structure, no identity");

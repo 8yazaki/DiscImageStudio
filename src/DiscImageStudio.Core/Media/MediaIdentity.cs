@@ -45,22 +45,61 @@ public static class MediaIdentity
             _ => null,
         };
 
-    /// <summary>Readable ASCII runs of the payload, normalized and joined with " | ".</summary>
+    /// <summary>Readable ASCII runs of the payload, normalized and joined with " | ". Two runs
+    /// split by a single unreadable byte are one code with a stray byte inside (a drive may put
+    /// a separator in the middle of <c>CMC MAG. AM3</c>), so they are glued back together.</summary>
     public static string? FromAscii(ReadOnlySpan<byte> payload)
     {
-        List<string> runs = [];
+        List<string> pieces = [];
+        List<int> gaps = [];
         StringBuilder current = new();
-        for (int index = 0; index <= payload.Length; index++)
+        int gap = 0;
+        for (int index = 0; index < payload.Length; index++)
         {
-            byte value = index < payload.Length ? payload[index] : (byte)0;
+            byte value = payload[index];
             if (value is >= 0x20 and <= 0x7E)
             {
+                if (current.Length == 0)
+                {
+                    gaps.Add(gap);
+                    gap = 0;
+                }
+
                 current.Append((char)value);
                 continue;
             }
 
-            AddRun(runs, current.ToString());
-            current.Clear();
+            if (current.Length > 0)
+            {
+                pieces.Add(current.ToString());
+                current.Clear();
+            }
+
+            gap++;
+        }
+
+        if (current.Length > 0)
+        {
+            pieces.Add(current.ToString());
+        }
+
+        List<string> merged = [];
+        for (int index = 0; index < pieces.Count; index++)
+        {
+            if (index > 0 && gaps[index] == 1 && merged.Count > 0)
+            {
+                merged[^1] += pieces[index];
+            }
+            else
+            {
+                merged.Add(pieces[index]);
+            }
+        }
+
+        List<string> runs = [];
+        foreach (string piece in merged)
+        {
+            AddRun(runs, piece);
             if (runs.Count >= MaximumRuns)
             {
                 break;

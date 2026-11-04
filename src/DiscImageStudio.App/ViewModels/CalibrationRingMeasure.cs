@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using DiscImageStudio.Controls;
 using DiscImageStudio.Core.Calibration;
 using DiscImageStudio.Localization;
+using DiscImageStudio.Services;
 
 namespace DiscImageStudio.ViewModels;
 
@@ -18,9 +19,28 @@ public partial class CalibrationViewModel
 {
     private const double MinimumRingConfidence = 3.3;
     private const double UncertainSpreadMm = 0.3;
+    private const double ImplausibleShiftMm = 2.0;
     private IAsyncRelayCommand? _measureRingsCommand;
 
     private RelayCommand? _burnMeasuredCommand;
+    private bool _keepRingBase;
+
+    /// <summary>Inner and outer radius the disc in the photo was burned with. Rings land where the burned
+    /// pattern put them, so the measurement must start from these, not from whatever the target holds now
+    /// (it changes after every measurement). Filled from the target when a photo is imported.</summary>
+    [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty] private string _ringBaseInner = string.Empty;
+    [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty] private string _ringBaseOuter = string.Empty;
+
+    private void SyncRingBase()
+    {
+        if (_target is not { } target)
+        {
+            return;
+        }
+
+        RingBaseInner = target.Parameters.InnerRadiusMm.ToString("0.000", CultureInfo.InvariantCulture);
+        RingBaseOuter = target.Parameters.OuterRadiusMm.ToString("0.000", CultureInfo.InvariantCulture);
+    }
 
     /// <summary>True after the radii were measured from the rings: the new pattern is ready to burn and
     /// "apply calibration" is not needed (it only exists for the traced result).</summary>
@@ -42,16 +62,36 @@ public partial class CalibrationViewModel
             return;
         }
 
+        CalibrationTarget reference;
+        try
+        {
+            double baseInner = ParameterParser.ParsePositiveDouble(RingBaseInner, L.T("内半径"));
+            double baseOuter = ParameterParser.ParsePositiveDouble(RingBaseOuter, L.T("外半径"));
+            reference = CalibrationTarget.Create(target.Parameters with { InnerRadiusMm = baseInner, OuterRadiusMm = baseOuter });
+        }
+        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or FormatException)
+        {
+            _shell.ShowToast(L.T("无法测量圆环"), exception.Message, ToastKind.Warning);
+            return;
+        }
+
         // Pixels are copied on the UI thread; the search itself runs on a worker.
         Func<double, double, double?> sampler = CreateDiscSampler(image, transform);
         await RunAsync(L.T("正在测量圆环位置…"), async token =>
         {
             CalibrationRingFitResult result = await Task.Run(
-                () => CalibrationRingFitter.Fit(target, sampler, CalibrationRingFitter.DefaultSearchMm, token), token);
+                () => CalibrationRingFitter.Fit(reference, sampler, CalibrationRingFitter.DefaultSearchMm, token), token);
             token.ThrowIfCancellationRequested();
             if (result.Confidence < MinimumRingConfidence)
             {
                 _statusMessage = L.F($"没有清楚地找到圆环（可信度 {result.Confidence:0.0}）。请换一张圆环更清楚的照片。");
+                _shell.ShowToast(L.T("无法测量圆环"), _statusMessage, ToastKind.Warning);
+                return;
+            }
+
+            if (Math.Abs(result.InnerShiftMm) > ImplausibleShiftMm || Math.Abs(result.OuterShiftMm) > ImplausibleShiftMm)
+            {
+                _statusMessage = L.F($"测得的半径偏离刻录时的半径 {result.InnerShiftMm:+0.00;-0.00} / {result.OuterShiftMm:+0.00;-0.00} mm，不合理，未采用。请确认“刻录时的半径”与这张盘一致。");
                 _shell.ShowToast(L.T("无法测量圆环"), _statusMessage, ToastKind.Warning);
                 return;
             }
@@ -72,7 +112,9 @@ public partial class CalibrationViewModel
             // Rebuilding the target clears the photo step; the photo and its correction stay valid
             // (they do not depend on the radii), so they are put back and the user keeps working.
             PhotoSnapshot snapshot = TakePhotoSnapshot();
-            CreateTarget();
+            _keepRingBase = true;
+            try { CreateTarget(); }
+            finally { _keepRingBase = false; }
             RestorePhotoSnapshot(snapshot);
             RingsMeasured = true;
             if (_shell.ActiveMeasurement is not null)

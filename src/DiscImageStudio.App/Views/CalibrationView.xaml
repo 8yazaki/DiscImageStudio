@@ -249,6 +249,23 @@
                                         Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,10" />
                                 <!-- Coarse first step for an uncalibrated disc: rings stay visible when the
                                      cross arms have wound into an unreadable spiral. -->
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{loc:Text Xaml.RingBaseRadii}" Margin="0,0,0,2" />
+                                <Grid Margin="0,0,0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{loc:Text Xaml.InnerRadiusMm}" />
+                                        <TextBox Style="{StaticResource CompactTextBox}" Text="{Binding RingBaseInner, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{loc:Text Xaml.OuterRadiusMm}" />
+                                        <TextBox Style="{StaticResource CompactTextBox}" Text="{Binding RingBaseOuter, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Text="{loc:Text Xaml.RingBaseRadiiHint}" Style="{StaticResource CompactHint}" Margin="0,0,0,8" />
                                 <Button Content="{loc:Text Xaml.MeasureRings}" Command="{Binding MeasureRingsCommand}"
                                         Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,4" />
                                 <TextBlock Text="{loc:Text Xaml.MeasureRingsHint}"

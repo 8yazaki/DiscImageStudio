@@ -383,5 +383,26 @@
     "zh-TW": " 離散度偏大：圓環位置在各方向不一致，請確認照片矯正的控制點或換一張更正的照片。",
     "ja": " ばらつきが大きいです：リングの位置が方向ごとに食い違っています。写真補正の制御点を確認するか、より正面から撮った写真を使ってください。",
     "tr": " Dağılım büyük: halka konumları yönler arasında tutarsız. Fotoğraf düzeltmesinin kontrol noktalarını kontrol edin veya daha dik çekilmiş bir fotoğraf kullanın."
+  },
+  "Xaml.RingBaseRadii": {
+    "zh-CN": "刻录这张盘时用的半径",
+    "en": "Radii this disc was burned with",
+    "zh-TW": "刻錄這張碟時用的半徑",
+    "ja": "この盤を焼いたときの半径",
+    "tr": "Bu disk yazılırken kullanılan yarıçaplar"
+  },
+  "Xaml.RingBaseRadiiHint": {
+    "zh-CN": "测量从这两个值出发，所以同一张照片重复测量结果不变。照片导入时会自动填入当前半径；如果这张盘是用别的半径刻的，请改成当时的值。",
+    "en": "Measurement starts from these two values, so measuring the same photo again gives the same result. They are filled with the current radii when a photo is imported; if the disc was burned with other radii, enter those.",
+    "zh-TW": "測量從這兩個值出發，所以同一張照片重複測量結果不變。照片匯入時會自動填入目前半徑；如果這張碟是用別的半徑刻的，請改成當時的值。",
+    "ja": "測定はこの2つの値から始めるので、同じ写真を繰り返し測っても結果は変わりません。写真を読み込むと現在の半径が自動で入ります。別の半径で焼いた盤なら、そのときの値に直してください。",
+    "tr": "Ölçüm bu iki değerden başlar; bu yüzden aynı fotoğrafı tekrar ölçmek aynı sonucu verir. Fotoğraf içe aktarılınca geçerli yarıçaplar otomatik girilir; disk başka yarıçaplarla yazıldıysa onları girin."
+  },
+  "测得的半径偏离刻录时的半径 {0:+0.00;-0.00} / {1:+0.00;-0.00} mm，不合理，未采用。请确认“刻录时的半径”与这张盘一致。": {
+    "zh-CN": "测得的半径偏离刻录时的半径 {0:+0.00;-0.00} / {1:+0.00;-0.00} mm，不合理，未采用。请确认“刻录时的半径”与这张盘一致。",
+    "en": "The measured radii differ from the burn radii by {0:+0.00;-0.00} / {1:+0.00;-0.00} mm, which is implausible, so they were not used. Check that \"Radii this disc was burned with\" matches this disc.",
+    "zh-TW": "測得的半徑偏離刻錄時的半徑 {0:+0.00;-0.00} / {1:+0.00;-0.00} mm，不合理，未採用。請確認「刻錄這張碟時用的半徑」與這張碟一致。",
+    "ja": "測定した半径が焼いたときの半径から {0:+0.00;-0.00} / {1:+0.00;-0.00} mm もずれていて不自然なため、採用しませんでした。「この盤を焼いたときの半径」がこの盤と合っているか確認してください。",
+    "tr": "Ölçülen yarıçaplar yazma yarıçaplarından {0:+0.00;-0.00} / {1:+0.00;-0.00} mm farklı; makul değil, kullanılmadı. \"Bu disk yazılırken kullanılan yarıçaplar\" değerlerinin bu diskle eşleştiğini kontrol edin."
   }
 }

@@ -328,6 +328,7 @@ public partial class CalibrationViewModel : ObservableObject
             ResetPhoto();
             RingsMeasured = false;
             _target = target;
+            if (!_keepRingBase) SyncRingBase();
             _cdInterleave = interleave;
             _searchCenter = options?.SearchCenter ?? target.Parameters;
             _loadedFitOptions = options ?? new();

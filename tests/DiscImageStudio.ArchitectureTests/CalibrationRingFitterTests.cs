@@ -53,6 +53,7 @@ internal static class CalibrationRingFitterTests
         Require(Math.Abs(fit.Parameters.OuterRadiusMm - actual.OuterRadiusMm) < 0.03,
             $"outer radius recovered for shift {dOuter:+0.00;-0.00} (got {fit.Parameters.OuterRadiusMm:F3})");
         Require(fit.Confidence > 3, $"clear rings give high confidence (got {fit.Confidence:F1})");
+        Require(fit.SpreadMm < 0.15, $"rings agree between directions (spread {fit.SpreadMm:F3})");
     }
 
     private static void TestNoiseGivesLowConfidence()

@@ -103,22 +103,40 @@ public static class CalibrationRingFitter
             throw new InvalidOperationException("在搜索范围内没有可用的半径组合。");
         }
 
-        // Spread: the same search on each quarter of the angles. Where the rings agree the quarters
-        // agree; a large spread means the rectified photo is not a clean top view.
+        // Spread: how far each ring's peak, seen separately in each eighth of the photo, lies from
+        // where the fitted radii put it. Where the rectified photo is a clean top view this is tiny;
+        // a large value means the rings do not agree between directions.
         double start0 = Math.Max(1, generated.InnerRadiusMm - searchMm - FlankFarMm - 0.1);
-        List<double> inners = [], outers = [];
-        for (int quarter = 0; quarter < 4; quarter++)
+        Func<CalibrationPoint, CalibrationPoint> landedMap = target.CreateMapping(
+            generated with { InnerRadiusMm = best.Inner, OuterRadiusMm = best.Outer });
+        double squares = 0;
+        int samples = 0;
+        const int sectors = 8;
+        for (int sector = 0; sector < sectors; sector++)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            RadialScore part = SumProfiles(bestProfiles, start0, (quarter * AngleSamples / 4, (quarter + 1) * AngleSamples / 4));
-            if (Search(target, generated, ringRadii, part, searchMm, cancellationToken) is { } q)
+            RadialScore part = SumProfiles(bestProfiles, start0, (sector * AngleSamples / sectors, (sector + 1) * AngleSamples / sectors));
+            foreach (double radius in ringRadii)
             {
-                inners.Add(q.Inner);
-                outers.Add(q.Outer);
+                CalibrationPoint landed = landedMap(new CalibrationPoint(radius, 0));
+                double expected = Math.Sqrt(landed.X * landed.X + landed.Y * landed.Y);
+                double bestRadius = expected, bestValue = double.NegativeInfinity;
+                for (double r = expected - 0.8; r <= expected + 0.8 + 1e-9; r += 0.02)
+                {
+                    double value = part.At(r);
+                    if (value > bestValue)
+                    {
+                        bestValue = value;
+                        bestRadius = r;
+                    }
+                }
+
+                squares += (bestRadius - expected) * (bestRadius - expected);
+                samples++;
             }
         }
 
-        double spread = inners.Count >= 3 ? Math.Max(StandardDeviation(inners), StandardDeviation(outers)) : double.NaN;
+        double spread = samples > 0 ? Math.Sqrt(squares / samples) : double.NaN;
         return new CalibrationRingFitResult(
             generated with { InnerRadiusMm = best.Inner, OuterRadiusMm = best.Outer },
             ringRadii.Length,
@@ -128,12 +146,6 @@ public static class CalibrationRingFitter
             spread,
             bestCenter.X,
             bestCenter.Y);
-    }
-
-    private static double StandardDeviation(List<double> values)
-    {
-        double mean = values.Average();
-        return Math.Sqrt(values.Sum(v => (v - mean) * (v - mean)) / values.Count);
     }
 
     /// <summary>Coarse grid over both radii, then a fine grid around the best cell.</summary>

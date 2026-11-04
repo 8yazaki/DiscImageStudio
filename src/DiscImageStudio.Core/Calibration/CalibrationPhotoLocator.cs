@@ -59,37 +59,83 @@ public static class CalibrationPhotoLocator
             gx, gy, magnitude, w, h, 0, 0, 85, (outer.CenterX, outer.CenterY, mean * 0.4), cancellationToken, mean * 0.108, mean * 0.138);
         double holeX = hole?.cx ?? outer.CenterX, holeY = hole?.cy ?? outer.CenterY, holeR = hole?.radius ?? mean * 0.125;
 
-        // Follow the hole edge itself (a tilted photo makes it an ellipse of its own, and a finger or
-        // the table inside it must not decide its size), then keep its fitted outline.
-        Ellipse? holeEllipse = Ellipse.Fit(FollowRing(image, w, h, holeX, holeY, holeR * 0.92, holeR * 1.08, 36, cancellationToken));
-        if (holeEllipse is { IsFinite: true } he && he.MeanRadius > mean * 0.07 && he.MeanRadius < mean * 0.2
-            && Math.Abs(he.CenterX - outer.CenterX) < mean * 0.25 && Math.Abs(he.CenterY - outer.CenterY) < mean * 0.25)
+        // The hole edge has a chamfer and sits next to the transparent hub, so the strongest circle
+        // can be one of the outer edges. Two candidates are tried: the innermost clearly visible edge
+        // and the strongest circle. For each, the hole outline is followed (a tilted photo makes it an
+        // ellipse of its own) and the size consistent with the rim under the photo correction is taken.
+        CalibrationPoint[] outerOnly = outer.Points(pointCount, 1, outer.CenterX, outer.CenterY, scale);
+        double innermost = InnermostEdgeRadius(image, w, h, outer, holeX, holeY, mean, holeR);
+        double[] factors = [1, 0.98, 1.02, 0.96, 1.04, 0.94, 1.06, 0.92, 1.08, 0.9, 1.1, 0.88, 1.12];
+        CalibrationPoint[]? fallbackHole = null;
+        foreach (double baseRadius in new[] { innermost, holeR })
         {
-            CalibrationPoint[] outerOnly = outer.Points(pointCount, 1, outer.CenterX, outer.CenterY, scale);
-            // The hole edge is a chamfer, so its apparent size is uncertain by a fraction of a
-            // millimetre. Take the size closest to the detected one that is consistent with the rim
-            // under the photo correction; keep the detected outline if none is.
-            double[] factors = [1, 0.98, 1.02, 0.96, 1.04, 0.94, 1.06, 0.92, 1.08, 0.9, 1.1, 0.88, 1.12];
-            CalibrationPoint[]? chosen = null;
+            Ellipse? holeEllipse = Ellipse.Fit(FollowRing(image, w, h, holeX, holeY, baseRadius * 0.92, baseRadius * 1.08, 36, cancellationToken));
+            if (holeEllipse is not { IsFinite: true } he || he.MeanRadius <= mean * 0.07 || he.MeanRadius >= mean * 0.2
+                || Math.Abs(he.CenterX - outer.CenterX) >= mean * 0.25 || Math.Abs(he.CenterY - outer.CenterY) >= mean * 0.25)
+            {
+                continue;
+            }
+
+            fallbackHole ??= he.Points(pointCount, 1, he.CenterX, he.CenterY, scale);
             foreach (double factor in factors)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 CalibrationPoint[] candidate = he.Points(pointCount, factor, he.CenterX, he.CenterY, scale);
                 if (CalibrationPhotoRectifier.Fit(outerOnly, candidate, 60, 7.5, cancellationToken).Succeeded)
                 {
-                    chosen = candidate;
-                    break;
+                    return new CalibrationPhotoLocation(Array.AsReadOnly(outerOnly), Array.AsReadOnly(candidate));
                 }
             }
+        }
 
-            return new CalibrationPhotoLocation(
-                Array.AsReadOnly(outerOnly),
-                Array.AsReadOnly(chosen ?? he.Points(pointCount, 1, he.CenterX, he.CenterY, scale)));
+        if (fallbackHole is not null)
+        {
+            return new CalibrationPhotoLocation(Array.AsReadOnly(outerOnly), Array.AsReadOnly(fallbackHole));
         }
 
         CalibrationPoint[] outerPoints = outer.Points(pointCount, 1, outer.CenterX, outer.CenterY, scale);
         CalibrationPoint[] holePoints = outer.Points(pointCount, holeR / mean, holeX, holeY, scale);
         return new CalibrationPhotoLocation(Array.AsReadOnly(outerPoints), Array.AsReadOnly(holePoints));
+    }
+
+    /// <summary>Radius (as an outer-ellipse-shaped ring) of the innermost edge that is nearly as strong
+    /// as the strongest one within the plausible hole size.</summary>
+    private static double InnermostEdgeRadius(double[] image, int w, int h, Ellipse outer, double cx, double cy, double mean, double fallback)
+    {
+        double low = mean * 0.1, high = mean * 0.145;
+        int steps = Math.Max(8, (int)((high - low) / 0.5));
+        double[] score = new double[steps + 1];
+        const int angles = 72;
+        for (int i = 0; i <= steps; i++)
+        {
+            double r = low + (high - low) * i / steps;
+            double total = 0;
+            for (int a = 0; a < angles; a++)
+            {
+                double t = 2 * Math.PI * a / angles;
+                (double x0, double y0) = outer.Local(t, (r - 1.0) / mean);
+                (double x1, double y1) = outer.Local(t, (r + 1.0) / mean);
+                total += Math.Abs(Sample(image, w, h, cx + x1, cy + y1) - Sample(image, w, h, cx + x0, cy + y0));
+            }
+
+            score[i] = total / angles;
+        }
+
+        double max = score.Max();
+        if (max <= 0)
+        {
+            return fallback;
+        }
+
+        for (int i = 1; i < steps; i++)
+        {
+            if (score[i] >= 0.7 * max && score[i] >= score[i - 1] && score[i] >= score[i + 1])
+            {
+                return low + (high - low) * i / steps;
+            }
+        }
+
+        return fallback;
     }
 
     private static double[] Downscale(byte[] gray, int width, int height, int w, int h, double scale)
@@ -488,6 +534,14 @@ public static class CalibrationPhotoLocator
             }
 
             return new Ellipse(mx + cx, my + cy, [1 / Math.Sqrt(l1), 1 / Math.Sqrt(l2)], cos, sin);
+        }
+
+        /// <summary>Offset from the centre of the point at parameter t on this ellipse's shape,
+        /// scaled by <paramref name="factor"/> (1 = the ellipse itself).</summary>
+        public (double X, double Y) Local(double t, double factor)
+        {
+            double u = _axes[0] * Math.Cos(t) * factor, v = _axes[1] * Math.Sin(t) * factor;
+            return (u * _cos - v * _sin, u * _sin + v * _cos);
         }
 
         /// <summary>Points on this ellipse's shape, scaled and moved; angle 0 is the top, clockwise.</summary>

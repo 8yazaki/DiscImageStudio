@@ -253,6 +253,14 @@
                                         Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,4" />
                                 <TextBlock Text="{loc:Text Xaml.MeasureRingsHint}"
                                            Style="{StaticResource CompactHint}" Margin="0,0,0,10" />
+                                <controls:VisibilityGate IsOpen="{Binding RingsMeasured}">
+                                    <StackPanel Margin="0,0,0,10">
+                                        <Button Content="{loc:Text Xaml.BurnWithMeasuredRadii}" Command="{Binding BurnMeasuredCommand}"
+                                                Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,4" />
+                                        <TextBlock Text="{loc:Text Xaml.BurnWithMeasuredRadiiHint}"
+                                                   Style="{StaticResource CompactHint}" />
+                                    </StackPanel>
+                                </controls:VisibilityGate>
                                 <controls:VisibilityGate IsOpen="{Binding IsDvdTarget}">
                                     <StackPanel Margin="0,0,0,10">
                                         <CheckBox IsChecked="{Binding FitDvdPitch, Mode=TwoWay}" Content="{loc:Text Xaml.FitCubicDVDTrackPitch}"

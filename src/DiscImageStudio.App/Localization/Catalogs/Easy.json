@@ -355,5 +355,19 @@
     "en": "Photo imported; the control points were placed on the disc edge and centre hole automatically. Check them, drag to fine-tune if needed, then calculate the correction.",
     "ja": "写真を読み込み、ディスクの外縁と中心の穴に制御点を自動で合わせました。確認して、必要なら少しドラッグで調整し、補正を計算してください。",
     "tr": "Fotoğraf içe aktarıldı; kontrol noktaları disk kenarına ve merkez deliğine otomatik yerleştirildi. Kontrol edin, gerekirse sürükleyerek ince ayar yapın, sonra düzeltmeyi hesaplayın."
+  },
+  "Xaml.BurnWithMeasuredRadii": {
+    "zh-CN": "用新半径刻录标定盘",
+    "en": "Burn a calibration disc with the new radii",
+    "zh-TW": "用新半徑燒錄標定盤",
+    "ja": "新しい半径で標定盤を書き込む",
+    "tr": "Yeni yarıçaplarla kalibrasyon diski yaz"
+  },
+  "Xaml.BurnWithMeasuredRadiiHint": {
+    "zh-CN": "半径已更新，不需要点“应用校准”（它只用于描线结果）。直接刻一张新的标定盘，再拍照确认十字线是否清楚。",
+    "en": "The radii are already updated, so \"Apply calibration\" is not needed (it is only for the traced result). Burn a new calibration disc and photograph it to see whether the cross arms are clear.",
+    "zh-TW": "半徑已更新，不需要按「套用校準」（它只用於描線結果）。直接燒一張新的標定盤，再拍照確認十字線是否清楚。",
+    "ja": "半径はすでに更新済みなので「キャリブレーションを適用」は不要です（これはトレース結果用です）。新しい標定盤を書き込み、撮影して十字の線がはっきり出るか確認してください。",
+    "tr": "Yarıçaplar zaten güncellendi; \"Kalibrasyonu uygula\" gerekmez (yalnızca izleme sonucu içindir). Yeni bir kalibrasyon diski yazıp çapraz çizgilerin net olup olmadığını fotoğrafla kontrol edin."
   }
 }

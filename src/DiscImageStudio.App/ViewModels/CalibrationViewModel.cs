@@ -326,6 +326,7 @@ public partial class CalibrationViewModel : ObservableObject
         {
             _previewCancellation?.Cancel();
             ResetPhoto();
+            RingsMeasured = false;
             _target = target;
             _cdInterleave = interleave;
             _searchCenter = options?.SearchCenter ?? target.Parameters;

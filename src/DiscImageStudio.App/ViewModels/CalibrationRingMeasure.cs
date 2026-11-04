@@ -19,6 +19,18 @@ public partial class CalibrationViewModel
     private const double MinimumRingConfidence = 3.0;
     private IAsyncRelayCommand? _measureRingsCommand;
 
+    private RelayCommand? _burnMeasuredCommand;
+
+    /// <summary>True after the radii were measured from the rings: the new pattern is ready to burn and
+    /// "apply calibration" is not needed (it only exists for the traced result).</summary>
+    [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty] private bool _ringsMeasured;
+
+    public RelayCommand BurnMeasuredCommand => _burnMeasuredCommand ??= new RelayCommand(() =>
+    {
+        _shell.Burn.UseCalibrationPattern = true;
+        _shell.NavigateTo(Workspace.Burn);
+    });
+
     public IAsyncRelayCommand MeasureRingsCommand => _measureRingsCommand ??= new AsyncRelayCommand(MeasureRingsAsync);
 
     private async Task MeasureRingsAsync()
@@ -52,6 +64,7 @@ public partial class CalibrationViewModel
             PhotoSnapshot snapshot = TakePhotoSnapshot();
             CreateTarget();
             RestorePhotoSnapshot(snapshot);
+            RingsMeasured = true;
             if (_shell.ActiveMeasurement is not null)
             {
                 _shell.MeasurementRound++;

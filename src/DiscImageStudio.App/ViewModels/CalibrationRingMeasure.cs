@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.Input;
+using DiscImageStudio.Controls;
 using DiscImageStudio.Core.Calibration;
 using DiscImageStudio.Localization;
 
@@ -46,13 +47,41 @@ public partial class CalibrationViewModel
             _statusMessage = L.F($"已按圆环更新半径：内 {result.Parameters.InnerRadiusMm:0.000} mm，外 {result.Parameters.OuterRadiusMm:0.000} mm（相对原值 {result.InnerShiftMm:+0.000;-0.000} / {result.OuterShiftMm:+0.000;-0.000} mm）。请用新参数重新刻一张标定盘，十字线才会清楚。");
             _shell.AppendLog(L.F($"[{DateTime.Now:HH:mm:ss}] 标定：{_statusMessage}\n"));
             _shell.ShowToast(L.T("已更新半径"), _statusMessage, ToastKind.Success);
+            // Rebuilding the target clears the photo step; the photo and its correction stay valid
+            // (they do not depend on the radii), so they are put back and the user keeps working.
+            PhotoSnapshot snapshot = TakePhotoSnapshot();
             CreateTarget();
+            RestorePhotoSnapshot(snapshot);
             if (_shell.ActiveMeasurement is not null)
             {
                 _shell.MeasurementRound++;
                 PrepareSecondRound();
             }
         });
+    }
+
+    private sealed record PhotoSnapshot(
+        BitmapSource? Photo, byte[]? Png, IReadOnlyList<CalibrationPhotoBoundaryPoint> Boundary,
+        IReadOnlyList<System.Windows.Point[]> Contours, CalibrationPhotoTransform? Transform,
+        CalibrationPhotoFitResult? Fit, BitmapSource? Rectified, bool RectificationReady,
+        bool Preview, bool PhotoStep, string Summary, IReadOnlyList<CalibrationTracePoint> Trace);
+
+    private PhotoSnapshot TakePhotoSnapshot() => new(
+        PhotoImage, _photoPng, PhotoBoundaryPoints, PhotoBoundaryContours, _photoTransform, _rectificationFit,
+        RectifiedPhoto, IsRectificationReady, PreviewRectification, IsPhotoStep, RectificationSummary, TracePoints);
+
+    private void RestorePhotoSnapshot(PhotoSnapshot s)
+    {
+        if (s.Photo is null || s.Transform is null)
+        {
+            return;
+        }
+
+        PhotoImage = s.Photo; _photoPng = s.Png; PhotoBoundaryPoints = s.Boundary; PhotoBoundaryContours = s.Contours;
+        _photoTransform = s.Transform; _rectificationFit = s.Fit; RectifiedPhoto = s.Rectified;
+        IsRectificationReady = s.RectificationReady; PreviewRectification = s.Preview; IsPhotoStep = s.PhotoStep;
+        RectificationSummary = s.Summary; TracePoints = s.Trace;
+        RefreshPhotoCommands();
     }
 
     /// <summary>In a measurement the next disc is burned right away: the new pattern is saved beside the

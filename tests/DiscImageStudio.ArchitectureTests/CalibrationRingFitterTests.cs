@@ -7,6 +7,7 @@ internal static class CalibrationRingFitterTests
     internal static void Run()
     {
         TestRecoversRadii(0.18, -0.11, 1);
+        TestRecoversRadii(-1.7, -0.9, 4);
         TestRecoversRadii(-0.42, 0.37, 2);
         TestRecoversRadii(0.0, 0.0, 3);
         TestNoiseGivesLowConfidence();
@@ -63,7 +64,7 @@ internal static class CalibrationRingFitterTests
         double? Sample(double x, double y)
             => table[Math.Abs((int)(Math.Sqrt(x * x + y * y) * 53) * 17 + (int)((Math.Atan2(y, x) + Math.PI) * 70)) % table.Length];
         CalibrationRingFitResult fit = CalibrationRingFitter.Fit(target, Sample);
-        Require(fit.Confidence < 3.5, $"no rings, low confidence (got {fit.Confidence:F1})");
+        Require(fit.Confidence < 3.0, $"no rings, low confidence (got {fit.Confidence:F1})");
     }
 
     private static double[] LandedRadii(CalibrationTarget target, CalibrationParameters generated, CalibrationParameters actual)

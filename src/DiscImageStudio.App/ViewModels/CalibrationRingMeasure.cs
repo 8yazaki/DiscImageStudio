@@ -15,7 +15,7 @@ namespace DiscImageStudio.ViewModels;
 /// </summary>
 public partial class CalibrationViewModel
 {
-    private const double MinimumRingConfidence = 3.5;
+    private const double MinimumRingConfidence = 3.0;
     private IAsyncRelayCommand? _measureRingsCommand;
 
     public IAsyncRelayCommand MeasureRingsCommand => _measureRingsCommand ??= new AsyncRelayCommand(MeasureRingsAsync);

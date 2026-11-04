@@ -18,7 +18,10 @@ public sealed record CalibrationRingFitResult(
 /// </summary>
 public static class CalibrationRingFitter
 {
-    public const double DefaultSearchMm = 1.5;
+    public const double DefaultSearchMm = 2.5;
+    public const double MaxSearchMm = 3.0;
+    /// <summary>Largest shift of a single ring; beyond half the ring spacing it could be mistaken for the next ring.</summary>
+    private const double MaxRingShiftMm = 1.9;
     private const int AngleSamples = 360;
     private const double ProfileStepMm = 0.02;
     private const double CoreHalfWidthMm = 0.2;
@@ -53,10 +56,9 @@ public static class CalibrationRingFitter
     {
         ArgumentNullException.ThrowIfNull(target);
         ArgumentNullException.ThrowIfNull(sampleGray);
-        if (!double.IsFinite(searchMm) || searchMm <= 0 || searchMm > 1.9)
+        if (!double.IsFinite(searchMm) || searchMm <= 0 || searchMm > MaxSearchMm)
         {
-            // Rings are about 3.9 mm apart; a wider search could lock onto the neighbouring ring.
-            throw new ArgumentOutOfRangeException(nameof(searchMm));
+                        throw new ArgumentOutOfRangeException(nameof(searchMm));
         }
 
         CalibrationParameters generated = target.Parameters;
@@ -153,7 +155,14 @@ public static class CalibrationRingFitter
             foreach (double radius in ringRadii)
             {
                 CalibrationPoint landed = map(new CalibrationPoint(radius, 0));
-                total += score.At(Math.Sqrt(landed.X * landed.X + landed.Y * landed.Y));
+                double landedRadius = Math.Sqrt(landed.X * landed.X + landed.Y * landed.Y);
+                if (Math.Abs(landedRadius - radius) > MaxRingShiftMm)
+                {
+                    // Rings are ~3.9 mm apart: a larger shift would lock onto the neighbouring ring.
+                    return double.NaN;
+                }
+
+                total += score.At(landedRadius);
             }
 
             return total;

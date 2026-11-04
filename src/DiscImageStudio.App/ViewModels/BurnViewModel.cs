@@ -424,8 +424,8 @@ public partial class BurnViewModel : ObservableObject
         {
             Devices = null;
             SelectedDevice = null;
-            _deviceStatusError = exception.Message;
-            DeviceStatusText = L.T("检测刻录机失败：") + exception.Message;
+            _deviceStatusError = BurnMessageLocalizer.Localize(exception.Message);
+            DeviceStatusText = L.T("检测刻录机失败：") + _deviceStatusError;
         }
         finally
         {
@@ -494,9 +494,9 @@ public partial class BurnViewModel : ObservableObject
         {
             if (revision == _burnWriteSpeedRefreshRevision)
             {
-                _speedStatusError = exception.Message;
+                _speedStatusError = BurnMessageLocalizer.Localize(exception.Message);
                 SpeedStatusText =
-                    L.T("未能读取当前盘片速度，将使用刻录接口的保守回退设置：") + exception.Message;
+                    L.T("未能读取当前盘片速度，将使用刻录接口的保守回退设置：") + _speedStatusError;
             }
         }
         finally
@@ -747,10 +747,11 @@ public partial class BurnViewModel : ObservableObject
         {
             SetBurnStatus("刻录未完成，请查看错误信息。");
             _shell.AbortDockJob(L.T("失败：流式刻录"), expandLog: true);
-            _shell.AppendLog(L.F($"[{DateTime.Now:HH:mm:ss}] 流式刻录失败：{exception.Message}\n"));
+            string failureText = BurnMessageLocalizer.Localize(exception.Message);
+            _shell.AppendLog(L.F($"[{DateTime.Now:HH:mm:ss}] 流式刻录失败：{failureText}\n"));
             _shell.ShowToast(
                 L.T("流式刻录未完成"),
-                exception.Message + L.T("\n\n如果写入已经开始，当前盘片可能无法继续使用。"),
+                failureText + L.T("\n\n如果写入已经开始，当前盘片可能无法继续使用。"),
                 ToastKind.Error);
         }
         finally

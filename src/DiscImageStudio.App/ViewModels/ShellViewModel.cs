@@ -1274,7 +1274,8 @@ public partial class ShellViewModel : ObservableObject
     internal void ReportBurnProgress(OpticalBurnProgress progress)
     {
         if (_burnProgressDisplay is null) return;
-        string? diagnostic = _burnProgressDisplay.Apply(progress);
+        string? diagnostic = _burnProgressDisplay.Apply(
+            progress with { Message = BurnMessageLocalizer.Localize(progress.Message) });
         UpdateBurnTelemetry();
         if (!string.IsNullOrWhiteSpace(diagnostic)) AppendLog($"[{DateTime.Now:HH:mm:ss}] {diagnostic}\n");
     }

@@ -1,0 +1,422 @@
+{
+  "正在检查刻录机和空白介质…": {
+    "zh-CN": "正在检查刻录机和空白介质…",
+    "en": "Checking the recorder and blank disc…",
+    "zh-TW": "正在檢查燒錄機和空白介質…",
+    "ja": "ドライブと空のディスクを確認しています…",
+    "tr": "Yazıcı ve boş disk denetleniyor…"
+  },
+  "正在准备盘片和写入设备…": {
+    "zh-CN": "正在准备盘片和写入设备…",
+    "en": "Preparing the disc and recorder…",
+    "zh-TW": "正在準備碟片和寫入裝置…",
+    "ja": "ディスクと書き込みデバイスを準備しています…",
+    "tr": "Disk ve yazma aygıtı hazırlanıyor…"
+  },
+  "正在写入，等待刻录机进度…": {
+    "zh-CN": "正在写入，等待刻录机进度…",
+    "en": "Writing; waiting for progress from the recorder…",
+    "zh-TW": "正在寫入，等待燒錄機進度…",
+    "ja": "書き込み中です。ドライブの進捗を待っています…",
+    "tr": "Yazılıyor; yazıcıdan ilerleme bekleniyor…"
+  },
+  "正在写入 CD 导入区…": {
+    "zh-CN": "正在写入 CD 导入区…",
+    "en": "Writing the CD lead-in…",
+    "zh-TW": "正在寫入 CD 匯入區…",
+    "ja": "CD のリードインを書き込んでいます…",
+    "tr": "CD lead-in alanı yazılıyor…"
+  },
+  "刻录完成，盘片会话已关闭。": {
+    "zh-CN": "刻录完成，盘片会话已关闭。",
+    "en": "Burn complete; the disc session is closed.",
+    "zh-TW": "燒錄完成，碟片會話已關閉。",
+    "ja": "書き込みが完了し、ディスクのセッションを閉じました。",
+    "tr": "Yazma tamamlandı; disk oturumu kapatıldı."
+  },
+  "当前盘片未报告可选速度，将使用刻录接口的保守回退设置…": {
+    "zh-CN": "当前盘片未报告可选速度，将使用刻录接口的保守回退设置…",
+    "en": "The disc reported no selectable speeds; the burning interface's conservative fallback will be used…",
+    "zh-TW": "當前碟片未報告可選速度，將使用燒錄介面的保守回退設定…",
+    "ja": "このディスクは選択可能な速度を報告しないため、書き込みインターフェースの安全な既定設定を使用します…",
+    "tr": "Disk seçilebilir hız bildirmedi; yazma arayüzünün temkinli varsayılanı kullanılacak…"
+  },
+  "正在关闭 CD 刻录会话…": {
+    "zh-CN": "正在关闭 CD 刻录会话…",
+    "en": "Closing the CD burn session…",
+    "zh-TW": "正在關閉 CD 燒錄會話…",
+    "ja": "CD の書き込みセッションを閉じています…",
+    "tr": "CD yazma oturumu kapatılıyor…"
+  },
+  "所选光驱不支持这种刻录方式。": {
+    "zh-CN": "所选光驱不支持这种刻录方式。",
+    "en": "The selected drive does not support this burning method.",
+    "zh-TW": "所選光碟機不支援這種燒錄方式。",
+    "ja": "選択したドライブはこの書き込み方式に対応していません。",
+    "tr": "Seçilen sürücü bu yazma yöntemini desteklemiyor."
+  },
+  "请放入与所选 CD/DVD/蓝光模式兼容的可写盘片。": {
+    "zh-CN": "请放入与所选 CD/DVD/蓝光模式兼容的可写盘片。",
+    "en": "Insert a writable disc that matches the selected CD/DVD/Blu-ray mode.",
+    "zh-TW": "請放入與所選 CD/DVD/藍光模式相容的可寫碟片。",
+    "ja": "選択した CD/DVD/Blu-ray モードに対応する書き込み可能なディスクを入れてください。",
+    "tr": "Seçilen CD/DVD/Blu-ray moduna uygun, yazılabilir bir disk takın."
+  },
+  "当前盘片与所选 CD/DVD/蓝光模式不兼容。": {
+    "zh-CN": "当前盘片与所选 CD/DVD/蓝光模式不兼容。",
+    "en": "The current disc is not compatible with the selected CD/DVD/Blu-ray mode.",
+    "zh-TW": "當前碟片與所選 CD/DVD/藍光模式不相容。",
+    "ja": "現在のディスクは選択した CD/DVD/Blu-ray モードと互換性がありません。",
+    "tr": "Geçerli disk seçilen CD/DVD/Blu-ray moduyla uyumlu değil."
+  },
+  "所选光驱不支持 CD DAO 所需的 Cooked R-W 子通道格式。": {
+    "zh-CN": "所选光驱不支持 CD DAO 所需的 Cooked R-W 子通道格式。",
+    "en": "The selected drive does not support the cooked R-W subchannel format required for CD DAO.",
+    "zh-TW": "所選光碟機不支援 CD DAO 所需的 Cooked R-W 子通道格式。",
+    "ja": "選択したドライブは CD DAO に必要な Cooked R-W サブチャンネル形式に対応していません。",
+    "tr": "Seçilen sürücü CD DAO için gereken Cooked R-W alt kanal biçimini desteklemiyor."
+  },
+  "蓝光刻录已取消。": {
+    "zh-CN": "蓝光刻录已取消。",
+    "en": "Blu-ray burning was canceled.",
+    "zh-TW": "藍光燒錄已取消。",
+    "ja": "Blu-ray の書き込みをキャンセルしました。",
+    "tr": "Blu-ray yazma iptal edildi."
+  },
+  "刻录流程已完成，但设备未能正常释放。": {
+    "zh-CN": "刻录流程已完成，但设备未能正常释放。",
+    "en": "The burn finished, but the device was not released cleanly.",
+    "zh-TW": "燒錄流程已完成，但裝置未能正常釋放。",
+    "ja": "書き込みは完了しましたが、デバイスを正常に解放できませんでした。",
+    "tr": "Yazma tamamlandı ancak aygıt düzgün serbest bırakılamadı."
+  },
+  "设备释放期间还出现以下问题（已尝试后续清理）：": {
+    "zh-CN": "设备释放期间还出现以下问题（已尝试后续清理）：",
+    "en": "The following problems also occurred while releasing the device (later cleanup was still attempted):",
+    "zh-TW": "裝置釋放期間還出現以下問題（已嘗試後續清理）：",
+    "ja": "デバイスの解放中に次の問題も発生しました（後続のクリーンアップは試行済み）：",
+    "tr": "Aygıt serbest bırakılırken şu sorunlar da oluştu (sonraki temizlik denendi):"
+  },
+  "初始化 Windows 刻录接口": {
+    "zh-CN": "初始化 Windows 刻录接口",
+    "en": "Initializing the Windows burning interface",
+    "zh-TW": "初始化 Windows 燒錄介面",
+    "ja": "Windows の書き込みインターフェースを初期化",
+    "tr": "Windows yazma arayüzü başlatılıyor"
+  },
+  "创建刻录格式": {
+    "zh-CN": "创建刻录格式",
+    "en": "Creating the burn format",
+    "zh-TW": "建立燒錄格式",
+    "ja": "書き込みフォーマットを作成",
+    "tr": "Yazma biçimi oluşturuluyor"
+  },
+  "连接刻录机": {
+    "zh-CN": "连接刻录机",
+    "en": "Connecting to the recorder",
+    "zh-TW": "連線燒錄機",
+    "ja": "ドライブに接続",
+    "tr": "Yazıcıya bağlanılıyor"
+  },
+  "检查刻录机支持": {
+    "zh-CN": "检查刻录机支持",
+    "en": "Checking recorder support",
+    "zh-TW": "檢查燒錄機支援",
+    "ja": "ドライブの対応状況を確認",
+    "tr": "Yazıcı desteği denetleniyor"
+  },
+  "检查当前盘片兼容性": {
+    "zh-CN": "检查当前盘片兼容性",
+    "en": "Checking disc compatibility",
+    "zh-TW": "檢查當前碟片相容性",
+    "ja": "ディスクの互換性を確認",
+    "tr": "Disk uyumluluğu denetleniyor"
+  },
+  "选择最低刻录速度": {
+    "zh-CN": "选择最低刻录速度",
+    "en": "Choosing the lowest burn speed",
+    "zh-TW": "選擇最低燒錄速度",
+    "ja": "最低の書き込み速度を選択",
+    "tr": "En düşük yazma hızı seçiliyor"
+  },
+  "写入 DVD 数据": {
+    "zh-CN": "写入 DVD 数据",
+    "en": "Writing DVD data",
+    "zh-TW": "寫入 DVD 資料",
+    "ja": "DVD データを書き込み",
+    "tr": "DVD verisi yazılıyor"
+  },
+  "释放刻录格式 COM 对象": {
+    "zh-CN": "释放刻录格式 COM 对象",
+    "en": "Releasing the burn format COM object",
+    "zh-TW": "釋放燒錄格式 COM 物件",
+    "ja": "書き込みフォーマットの COM オブジェクトを解放",
+    "tr": "Yazma biçimi COM nesnesi serbest bırakılıyor"
+  },
+  "释放刻录机 COM 对象": {
+    "zh-CN": "释放刻录机 COM 对象",
+    "en": "Releasing the recorder COM object",
+    "zh-TW": "釋放燒錄機 COM 物件",
+    "ja": "ドライブの COM オブジェクトを解放",
+    "tr": "Yazıcı COM nesnesi serbest bırakılıyor"
+  },
+  "锁定 BD-R 盘片": {
+    "zh-CN": "锁定 BD-R 盘片",
+    "en": "Locking the BD-R disc",
+    "zh-TW": "鎖定 BD-R 碟片",
+    "ja": "BD-R ディスクをロック",
+    "tr": "BD-R diski kilitleniyor"
+  },
+  "检查未格式化 BD-R 的原始容量": {
+    "zh-CN": "检查未格式化 BD-R 的原始容量",
+    "en": "Checking the raw capacity of the unformatted BD-R",
+    "zh-TW": "檢查未格式化 BD-R 的原始容量",
+    "ja": "未フォーマット BD-R の元の容量を確認",
+    "tr": "Biçimlendirilmemiş BD-R'nin ham kapasitesi denetleniyor"
+  },
+  "设置 BD-R 写入速度": {
+    "zh-CN": "设置 BD-R 写入速度",
+    "en": "Setting the BD-R write speed",
+    "zh-TW": "設定 BD-R 寫入速度",
+    "ja": "BD-R の書き込み速度を設定",
+    "tr": "BD-R yazma hızı ayarlanıyor"
+  },
+  "刷新 BD-R 缓存并封盘（请等待完成）": {
+    "zh-CN": "刷新 BD-R 缓存并封盘（请等待完成）",
+    "en": "Flushing the BD-R cache and finalizing the disc (please wait)",
+    "zh-TW": "重新整理 BD-R 快取並封盤（請等待完成）",
+    "ja": "BD-R のキャッシュをフラッシュしてディスクを閉じています（完了までお待ちください）",
+    "tr": "BD-R önbelleği boşaltılıyor ve disk sonlandırılıyor (lütfen bekleyin)"
+  },
+  "准备并锁定 CD 介质": {
+    "zh-CN": "准备并锁定 CD 介质",
+    "en": "Preparing and locking the CD",
+    "zh-TW": "準備並鎖定 CD 介質",
+    "ja": "CD メディアを準備してロック",
+    "tr": "CD ortamı hazırlanıp kilitleniyor"
+  },
+  "检查 CD 是否为空白盘": {
+    "zh-CN": "检查 CD 是否为空白盘",
+    "en": "Checking that the CD is blank",
+    "zh-TW": "檢查 CD 是否為空白盤",
+    "ja": "CD が空のディスクか確認",
+    "tr": "CD'nin boş olup olmadığı denetleniyor"
+  },
+  "设置 CD DAO 扇区格式": {
+    "zh-CN": "设置 CD DAO 扇区格式",
+    "en": "Setting the CD DAO sector format",
+    "zh-TW": "設定 CD DAO 扇區格式",
+    "ja": "CD DAO のセクター形式を設定",
+    "tr": "CD DAO sektör biçimi ayarlanıyor"
+  },
+  "设置 CD 刻录速度": {
+    "zh-CN": "设置 CD 刻录速度",
+    "en": "Setting the CD burn speed",
+    "zh-TW": "設定 CD 燒錄速度",
+    "ja": "CD の書き込み速度を設定",
+    "tr": "CD yazma hızı ayarlanıyor"
+  },
+  "使用 CD DAO 保守回退速度": {
+    "zh-CN": "使用 CD DAO 保守回退速度",
+    "en": "Using the conservative CD DAO fallback speed",
+    "zh-TW": "使用 CD DAO 保守回退速度",
+    "ja": "CD DAO の安全な既定速度を使用",
+    "tr": "Temkinli CD DAO yedek hızı kullanılıyor"
+  },
+  "构造 CD DAO {0}": {
+    "zh-CN": "构造 CD DAO {0}",
+    "en": "Building the CD DAO {0}",
+    "zh-TW": "構造 CD DAO {0}",
+    "ja": "CD DAO の{0}を構築",
+    "tr": "CD DAO {0} oluşturuluyor"
+  },
+  "写入 CD DAO {0}": {
+    "zh-CN": "写入 CD DAO {0}",
+    "en": "Writing the CD DAO {0}",
+    "zh-TW": "寫入 CD DAO {0}",
+    "ja": "CD DAO の{0}を書き込み",
+    "tr": "CD DAO {0} yazılıyor"
+  },
+  "关闭 CD 刻录会话": {
+    "zh-CN": "关闭 CD 刻录会话",
+    "en": "Closing the CD burn session",
+    "zh-TW": "關閉 CD 燒錄會話",
+    "ja": "CD の書き込みセッションを閉じる",
+    "tr": "CD yazma oturumu kapatılıyor"
+  },
+  "无备用区顺序写入 BD-R：{0} 扇区": {
+    "zh-CN": "无备用区顺序写入 BD-R：{0} 扇区",
+    "en": "Sequential no-spare-area write to BD-R: {0} sectors",
+    "zh-TW": "無備用區順序寫入 BD-R：{0} 扇區",
+    "ja": "BD-R に予備領域なしで順次書き込み：{0} セクター",
+    "tr": "BD-R'ye yedek alansız sıralı yazma: {0} sektör"
+  },
+  "使用 CD DAO 末端 overburn（超出 {0} 个 DAO 扇区）": {
+    "zh-CN": "使用 CD DAO 末端 overburn（超出 {0} 个 DAO 扇区）",
+    "en": "Using CD DAO end overburn ({0} DAO sectors over)",
+    "zh-TW": "使用 CD DAO 末端 overburn（超出 {0} 個 DAO 扇區）",
+    "ja": "CD DAO の終端オーバーバーンを使用（DAO セクター {0} 個超過）",
+    "tr": "CD DAO sonu overburn kullanılıyor ({0} DAO sektörü fazla)"
+  },
+  "数据轨": {
+    "zh-CN": "数据轨",
+    "en": "data track",
+    "zh-TW": "資料軌",
+    "ja": "データトラック",
+    "tr": "veri izi"
+  },
+  "音轨": {
+    "zh-CN": "音轨",
+    "en": "audio track",
+    "zh-TW": "音軌",
+    "ja": "オーディオトラック",
+    "tr": "ses izi"
+  },
+  "蓝光盘": {
+    "zh-CN": "蓝光盘",
+    "en": "Blu-ray disc",
+    "zh-TW": "藍光碟",
+    "ja": "Blu-ray ディスク",
+    "tr": "Blu-ray diski"
+  },
+  "CD-R 或 CD-RW": {
+    "zh-CN": "CD-R 或 CD-RW",
+    "en": "CD-R or CD-RW",
+    "zh-TW": "CD-R 或 CD-RW",
+    "ja": "CD-R または CD-RW",
+    "tr": "CD-R veya CD-RW"
+  },
+  "未格式化的单层顺序 BD-R（无备用区）": {
+    "zh-CN": "未格式化的单层顺序 BD-R（无备用区）",
+    "en": "an unformatted single-layer sequential BD-R (no spare area)",
+    "zh-TW": "未格式化的單層順序 BD-R（無備用區）",
+    "ja": "未フォーマットの単層シーケンシャル BD-R（予備領域なし）",
+    "tr": "biçimlendirilmemiş tek katmanlı sıralı BD-R (yedek alansız)"
+  },
+  "正在向刻录接口传输 {0} / {1} MiB…": {
+    "zh-CN": "正在向刻录接口传输 {0} / {1} MiB…",
+    "en": "Sending data to the burning interface {0} / {1} MiB…",
+    "zh-TW": "正在向燒錄介面傳輸 {0} / {1} MiB…",
+    "ja": "書き込みインターフェースへ転送中 {0} / {1} MiB…",
+    "tr": "Yazma arayüzüne aktarılıyor {0} / {1} MiB…"
+  },
+  "刻录机已接收 {0} / {1} MiB…": {
+    "zh-CN": "刻录机已接收 {0} / {1} MiB…",
+    "en": "Accepted by the recorder {0} / {1} MiB…",
+    "zh-TW": "燒錄機已接收 {0} / {1} MiB…",
+    "ja": "ドライブが受信済み {0} / {1} MiB…",
+    "tr": "Yazıcı aldı {0} / {1} MiB…"
+  },
+  "正在刻录 {0} / {1} MiB…": {
+    "zh-CN": "正在刻录 {0} / {1} MiB…",
+    "en": "Burning {0} / {1} MiB…",
+    "zh-TW": "正在燒錄 {0} / {1} MiB…",
+    "ja": "書き込み中 {0} / {1} MiB…",
+    "tr": "Yazılıyor {0} / {1} MiB…"
+  },
+  "自动选择最低写入速度：{0}×（{1} MB/s）…": {
+    "zh-CN": "自动选择最低写入速度：{0}×（{1} MB/s）…",
+    "en": "Automatically choosing the lowest write speed: {0}× ({1} MB/s)…",
+    "zh-TW": "自動選擇最低寫入速度：{0}×（{1} MB/s）…",
+    "ja": "最低の書き込み速度を自動選択：{0}×（{1} MB/s）…",
+    "tr": "En düşük yazma hızı otomatik seçiliyor: {0}× ({1} MB/s)…"
+  },
+  "设备设置速度={0}× · {1} MB/s（设备返回的设置值；实时吞吐另行测量）。": {
+    "zh-CN": "设备设置速度={0}× · {1} MB/s（设备返回的设置值；实时吞吐另行测量）。",
+    "en": "Speed set on the device = {0}× · {1} MB/s (the value the device reported; real throughput is measured separately).",
+    "zh-TW": "裝置設定速度={0}× · {1} MB/s（裝置返回的設定值；實時吞吐另行測量）。",
+    "ja": "デバイスの設定速度＝{0}× · {1} MB/s（デバイスが返した設定値。実際のスループットは別に測定）。",
+    "tr": "Aygıtta ayarlanan hız = {0}× · {1} MB/s (aygıtın bildirdiği değer; gerçek verim ayrıca ölçülür)."
+  },
+  "设备设置速度={0}× · {1} MB/s · CAV（设备返回的设置值；实时吞吐另行测量）。": {
+    "zh-CN": "设备设置速度={0}× · {1} MB/s · CAV（设备返回的设置值；实时吞吐另行测量）。",
+    "en": "Speed set on the device = {0}× · {1} MB/s · CAV (the value the device reported; real throughput is measured separately).",
+    "zh-TW": "裝置設定速度={0}× · {1} MB/s · CAV（裝置返回的設定值；實時吞吐另行測量）。",
+    "ja": "デバイスの設定速度＝{0}× · {1} MB/s · CAV（デバイスが返した設定値。実際のスループットは別に測定）。",
+    "tr": "Aygıtta ayarlanan hız = {0}× · {1} MB/s · CAV (aygıtın bildirdiği değer; gerçek verim ayrıca ölçülür)."
+  },
+  "Windows 刻录接口在“{0}”时返回错误 {1}：{2}": {
+    "zh-CN": "Windows 刻录接口在“{0}”时返回错误 {1}：{2}",
+    "en": "The Windows burning interface returned error {1} during “{0}”: {2}",
+    "zh-TW": "Windows 燒錄介面在“{0}”時返回錯誤 {1}：{2}",
+    "ja": "Windows の書き込みインターフェースが「{0}」の実行中にエラー {1} を返しました：{2}",
+    "tr": "Windows yazma arayüzü “{0}” sırasında {1} hatası verdi: {2}"
+  },
+  "读取当前盘片的刻录速度失败（{0}）：{1}": {
+    "zh-CN": "读取当前盘片的刻录速度失败（{0}）：{1}",
+    "en": "Could not read the burn speeds of the current disc ({0}): {1}",
+    "zh-TW": "讀取當前碟片的燒錄速度失敗（{0}）：{1}",
+    "ja": "現在のディスクの書き込み速度を読み取れませんでした（{0}）：{1}",
+    "tr": "Geçerli diskin yazma hızları okunamadı ({0}): {1}"
+  },
+  "{0}失败（HRESULT {1}）：{2}": {
+    "zh-CN": "{0}失败（HRESULT {1}）：{2}",
+    "en": "{0} failed (HRESULT {1}): {2}",
+    "zh-TW": "{0}失敗（HRESULT {1}）：{2}",
+    "ja": "「{0}」に失敗しました（HRESULT {1}）：{2}",
+    "tr": "{0} başarısız (HRESULT {1}): {2}"
+  },
+  "{0} 剩余容量不足：需要 {1} 扇区（{2} MiB），实际可写 {3} 扇区（{4} MiB），超出 {5} 扇区（{6} MiB）。": {
+    "zh-CN": "{0} 剩余容量不足：需要 {1} 扇区（{2} MiB），实际可写 {3} 扇区（{4} MiB），超出 {5} 扇区（{6} MiB）。",
+    "en": "Not enough free space on the {0}: {1} sectors ({2} MiB) are needed, {3} sectors ({4} MiB) are writable, {5} sectors ({6} MiB) too many.",
+    "zh-TW": "{0} 剩餘容量不足：需要 {1} 扇區（{2} MiB），實際可寫 {3} 扇區（{4} MiB），超出 {5} 扇區（{6} MiB）。",
+    "ja": "{0} の空き容量が足りません：{1} セクター（{2} MiB）が必要ですが、書き込める容量は {3} セクター（{4} MiB）で、{5} セクター（{6} MiB）超過しています。",
+    "tr": "{0} üzerinde yeterli boş alan yok: {1} sektör ({2} MiB) gerekiyor, {3} sektör ({4} MiB) yazılabilir, {5} sektör ({6} MiB) fazla."
+  },
+  "{0} 不是空白盘，已取消刻录。": {
+    "zh-CN": "{0} 不是空白盘，已取消刻录。",
+    "en": "The {0} is not blank; burning was canceled.",
+    "zh-TW": "{0} 不是空白盤，已取消燒錄。",
+    "ja": "{0} は空のディスクではないため、書き込みを中止しました。",
+    "tr": "{0} boş değil; yazma iptal edildi."
+  },
+  "{0} 未报告可用的数据容量（{1} 扇区）。": {
+    "zh-CN": "{0} 未报告可用的数据容量（{1} 扇区）。",
+    "en": "The {0} reported no usable data capacity ({1} sectors).",
+    "zh-TW": "{0} 未報告可用的資料容量（{1} 扇區）。",
+    "ja": "{0} は使用可能なデータ容量を報告しませんでした（{1} セクター）。",
+    "tr": "{0} kullanılabilir veri kapasitesi bildirmedi ({1} sektör)."
+  },
+  "所选刻录模式需要可写的 {0} 盘片；当前盘片不兼容。": {
+    "zh-CN": "所选刻录模式需要可写的 {0} 盘片；当前盘片不兼容。",
+    "en": "The selected burn mode needs a writable {0} disc; the current disc is not compatible.",
+    "zh-TW": "所選燒錄模式需要可寫的 {0} 碟片；當前碟片不相容。",
+    "ja": "選択した書き込みモードには書き込み可能な {0} ディスクが必要です。現在のディスクは互換性がありません。",
+    "tr": "Seçilen yazma modu yazılabilir bir {0} disk gerektirir; geçerli disk uyumlu değil."
+  },
+  "CD DAO lead-out 超出盘片边界 {0} 个扇区；最多允许 {1} 个 DAO 扇区的受限 overburn。": {
+    "zh-CN": "CD DAO lead-out 超出盘片边界 {0} 个扇区；最多允许 {1} 个 DAO 扇区的受限 overburn。",
+    "en": "The CD DAO lead-out runs {0} sectors past the disc boundary; at most {1} DAO sectors of limited overburn are allowed.",
+    "zh-TW": "CD DAO lead-out 超出碟片邊界 {0} 個扇區；最多允許 {1} 個 DAO 扇區的受限 overburn。",
+    "ja": "CD DAO のリードアウトがディスクの境界を {0} セクター超えています。許可される限定オーバーバーンは最大 {1} DAO セクターです。",
+    "tr": "CD DAO lead-out disk sınırını {0} sektör aşıyor; en fazla {1} DAO sektörlük sınırlı overburn'e izin verilir."
+  },
+  "光驱 {0}": {
+    "zh-CN": "光驱 {0}",
+    "en": "Drive {0}",
+    "zh-TW": "光碟機 {0}",
+    "ja": "ドライブ {0}",
+    "tr": "Sürücü {0}"
+  },
+  "无法创建 Windows 刻录组件 {0}。": {
+    "zh-CN": "无法创建 Windows 刻录组件 {0}。",
+    "en": "Could not create the Windows burning component {0}.",
+    "zh-TW": "無法建立 Windows 燒錄元件 {0}。",
+    "ja": "Windows の書き込みコンポーネント {0} を作成できません。",
+    "tr": "Windows yazma bileşeni {0} oluşturulamadı."
+  },
+  "Windows Image Mastering API 2 (IMAPI2) 不可用。": {
+    "zh-CN": "Windows Image Mastering API 2 (IMAPI2) 不可用。",
+    "en": "Windows Image Mastering API 2 (IMAPI2) is not available.",
+    "zh-TW": "Windows Image Mastering API 2 (IMAPI2) 不可用。",
+    "ja": "Windows Image Mastering API 2 (IMAPI2) を使用できません。",
+    "tr": "Windows Image Mastering API 2 (IMAPI2) kullanılamıyor."
+  },
+  "要求的功能页面受支持，但现在没有标记为当前页面": {
+    "zh-CN": "要求的功能页面受支持，但现在没有标记为当前页面",
+    "en": "The requested feature page is supported but is not marked as the current page",
+    "zh-TW": "要求的功能頁面受支援，但現在沒有標記為當前頁面",
+    "ja": "要求された機能ページはサポートされていますが、現在のページとしてマークされていません",
+    "tr": "İstenen özellik sayfası destekleniyor ancak geçerli sayfa olarak işaretlenmemiş"
+  }
+}
